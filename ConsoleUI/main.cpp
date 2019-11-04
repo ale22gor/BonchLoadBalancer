@@ -18,15 +18,16 @@ int main(int argc, char *argv[])
     Group group{Faculty::ISIT,25,632};
     group.test();
 
-    std::list<Lab> labs{{&group,13}};
-    std::list<Lecture> lectures{{&group,13}};
-    std::list<Seminar> seminars{{&group,13}};
+    std::list<Lab> labs{{&group,13},{&group,25}};
+    std::list<Lecture> lectures{{&group,13},{&group,25}};
+    std::list<Seminar> seminars{{&group,13},{&group,25}};
 
     Course myCourse{labs,lectures,seminars};
     myCourse.test();
 
     Professor prof{500,600};
-    prof.addSubCourse(&myCourse,1,1,1);
+    prof.addSubCourse(&myCourse,2,1,1);
+    prof.addSubCourse(&myCourse,0,1,1);
     prof.test();
 
 
