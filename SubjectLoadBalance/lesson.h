@@ -3,6 +3,7 @@ class AdministrativeUnit;
 #include "SubjectLoadBalance_global.h"
 
 #include <QtDebug>
+#include <memory>
 
 
 #ifndef LESSON_H
@@ -11,10 +12,10 @@ class AdministrativeUnit;
 
 class SUBJECTLOADBALANCE_EXPORT Lesson
 {
-    AdministrativeUnit* m_administrativeUnit;
+    std::shared_ptr <AdministrativeUnit> m_administrativeUnit;
     int m_hours;
 public:
-    Lesson(AdministrativeUnit* ,int );
+    Lesson(std::shared_ptr <AdministrativeUnit> ,int );
     int getHours();
     void test();
 };

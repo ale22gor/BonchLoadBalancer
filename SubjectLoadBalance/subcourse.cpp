@@ -9,9 +9,9 @@
 SubCourse::SubCourse(Course *course, int seminarAmount,int labAmount, int lecturesamount)
     :m_course{course}
 {
-    m_labs = m_course->delegateLabs(labAmount);
-    m_lectures = m_course->delegateLectures(lecturesamount);
-    m_seminars = m_course->delegateSeminars(seminarAmount);
+    //m_labs = m_course->delegateLabs(labAmount);
+    //m_lectures = m_course->delegateLectures(lecturesamount);
+    //m_seminars = m_course->delegateSeminars(seminarAmount);
 }
 
 void SubCourse::test()

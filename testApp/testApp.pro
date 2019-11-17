@@ -1,4 +1,6 @@
 QT -= gui
+QT += sql
+
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -21,6 +23,15 @@ SOURCES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Repositories/release/ -lRepositories
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Repositories/debug/ -lRepositories
+else:unix: LIBS += -L$$OUT_PWD/../Repositories/ -lRepositories
+
+INCLUDEPATH += $$PWD/../Repositories
+DEPENDPATH += $$PWD/../Repositories
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/release/ -lSubjectLoadBalance
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/debug/ -lSubjectLoadBalance

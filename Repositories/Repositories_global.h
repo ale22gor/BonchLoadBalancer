@@ -1,0 +1,12 @@
+#ifndef REPOSITORIES_GLOBAL_H
+#define REPOSITORIES_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(REPOSITORIES_LIBRARY)
+#  define REPOSITORIES_EXPORT Q_DECL_EXPORT
+#else
+#  define REPOSITORIES_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // REPOSITORIES_GLOBAL_H

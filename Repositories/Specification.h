@@ -1,0 +1,4 @@
+#ifndef SPECIFICATION_H
+#define SPECIFICATION_H
+
+#endif // SPECIFICATION_H

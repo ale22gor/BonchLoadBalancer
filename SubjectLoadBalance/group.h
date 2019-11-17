@@ -6,7 +6,7 @@
 #define GROUP_H
 
 
-class SUBJECTLOADBALANCE_EXPORT Group:public AdministrativeUnit
+class SUBJECTLOADBALANCE_EXPORT Group: public AdministrativeUnit
 {
 public:
     Group(Faculty ,int ,int);

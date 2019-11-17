@@ -2,7 +2,7 @@
 
 
 
-Lesson::Lesson(AdministrativeUnit *administrativeUnit, int hours):
+Lesson::Lesson(std::shared_ptr <AdministrativeUnit> administrativeUnit, int hours):
     m_administrativeUnit{administrativeUnit},
     m_hours{hours}
 {

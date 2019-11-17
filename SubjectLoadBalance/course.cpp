@@ -1,12 +1,16 @@
 #include "course.h"
 
 
+Course::Course(){
 
-Course::Course(std::list<Lab> labs, std::list<Lecture> lectures, std::list<Seminar> seminars):
-    m_labs{labs},
-    m_lectures{lectures},
-    m_seminars{seminars}
+}
+
+Course::Course(std::list<std::shared_ptr<Lab> > labs, std::list<std::shared_ptr<Lecture> > lectures, std::list<std::shared_ptr<Seminar> > seminars):
+    m_labs{labs},m_freeLabs{labs},
+    m_lectures{lectures},m_freeLectures{lectures},
+    m_seminars{seminars},m_freeSeminars{seminars}
 {
+    /*
     for(auto &lab:m_labs){
         m_freeLabs.push_back(&lab);
     }
@@ -18,7 +22,9 @@ Course::Course(std::list<Lab> labs, std::list<Lecture> lectures, std::list<Semin
     for(auto &seminar:m_seminars){
         m_freeSeminars.push_back(&seminar);
     }
+    */
 }
+
 
 bool Course::checkLabs(int amount)
 {
@@ -44,32 +50,53 @@ bool Course::checkSeminars(  int amount)
         return false;
 }
 
-std::list<Lab *> Course::delegateLabs(int amount)
+void Course::addLabs(std::shared_ptr<Group> group, int hours)
+{
+    std::shared_ptr<Lab> tmp{new Lab{group,hours}};
+    m_labs.push_back(tmp);
+    m_freeLabs.push_back(tmp);
+}
+
+void Course::addLecture(std::shared_ptr<Group> group, int hours)
+{
+    std::shared_ptr<Lecture> tmp{new Lecture{group,hours}};
+    m_lectures.push_back(tmp);
+    m_freeLectures.push_back(tmp);
+}
+
+void Course::addSeminar(std::shared_ptr<Group> group, int hours)
+{
+    std::shared_ptr<Seminar> tmp{new Seminar{group,hours}};
+    m_seminars.push_back(tmp);
+    m_freeSeminars.push_back(tmp);
+}
+
+std::list<std::shared_ptr<Lab> > Course::delegateLabs(int amount)
 {
 
 
     auto end =  std::next(m_freeLabs.begin(),amount);
-    std::list<Lab *> labsToDelegate{m_freeLabs.begin(),end};
+    std::list<std::shared_ptr<Lab> > labsToDelegate{m_freeLabs.begin(),end};
 
     m_freeLabs.erase(m_freeLabs.begin(),end);
     return labsToDelegate;
 
 }
 
-std::list<Lecture *> Course::delegateLectures(int amount)
+std::list<std::shared_ptr<Lecture> > Course::delegateLectures(int amount)
 {
     auto end =  std::next(m_freeLectures.begin(),amount);
-    std::list<Lecture *> lecturesToDelegate{m_freeLectures.begin(),end};
+    std::list<std::shared_ptr<Lecture> > lecturesToDelegate{m_freeLectures.begin(),end};
 
     m_freeLectures.erase(m_freeLectures.begin(),end);
     return lecturesToDelegate;
 
 }
 
-std::list<Seminar *> Course::delegateSeminars(int amount)
+std::list<std::shared_ptr<Seminar> > Course::delegateSeminars(int amount)
 {
     auto end =  std::next(m_freeSeminars.begin(),amount);
-    std::list<Seminar *> seminarsToDelegate{m_freeSeminars.begin(),end};
+    std::list<std::shared_ptr<Seminar> > seminarsToDelegate{m_freeSeminars.begin(),end};
 
     m_freeSeminars.erase(m_freeSeminars.begin(),end);
     return seminarsToDelegate;
@@ -79,14 +106,14 @@ std::list<Seminar *> Course::delegateSeminars(int amount)
 void Course::test()
 {
     for(auto lab:m_labs){
-        lab.test();
+        lab->test();
     }
 
     for(auto lecture:m_lectures){
-        lecture.test();
+        lecture->test();
     }
 
     for(auto seminar:m_seminars){
-        seminar.test();
+        seminar->test();
     }
 }

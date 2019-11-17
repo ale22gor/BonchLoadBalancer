@@ -1,8 +1,11 @@
 #include "lab.h"
 #include "lecture.h"
 #include "seminar.h"
+#include "group.h"
 
 #include <list>
+#include <memory>
+#include <string>
 
 #include "SubjectLoadBalance_global.h"
 
@@ -12,24 +15,32 @@
 
 class SUBJECTLOADBALANCE_EXPORT Course
 {
-    std::list<Lab> m_labs;
-    std::list<Lab *> m_freeLabs;
+    std::string m_courseName;
 
-    std::list<Lecture> m_lectures;
-    std::list<Lecture *> m_freeLectures;
+    std::list<std::shared_ptr<Lab> >m_labs;
+    std::list<std::shared_ptr<Lab> > m_freeLabs;
 
-    std::list<Seminar> m_seminars;
-    std::list<Seminar *> m_freeSeminars;
+    std::list<std::shared_ptr<Lecture> > m_lectures;
+    std::list<std::shared_ptr<Lecture> > m_freeLectures;
+
+    std::list<std::shared_ptr<Seminar> > m_seminars;
+    std::list<std::shared_ptr<Seminar> > m_freeSeminars;
 
 public:
-    Course(std::list<Lab>, std::list<Lecture>,std::list<Seminar>);
+    Course(std::list<std::shared_ptr<Lab> >, std::list<std::shared_ptr<Lecture> >,std::list<std::shared_ptr<Seminar> >);
+    Course();
+
     bool checkLabs(int);
     bool checkLectures(int);
     bool checkSeminars(int);
 
-    std::list<Lab *> delegateLabs(int);
-    std::list<Lecture *> delegateLectures(int);
-    std::list<Seminar *> delegateSeminars(int);
+    void addLabs(std::shared_ptr<Group>, int);
+    void addLecture(std::shared_ptr<Group>, int);
+    void addSeminar(std::shared_ptr<Group>, int);
+
+    std::list<std::shared_ptr<Lab> > delegateLabs(int);
+    std::list<std::shared_ptr<Lecture> > delegateLectures(int);
+    std::list<std::shared_ptr<Seminar> > delegateSeminars(int);
 
     void test();
 

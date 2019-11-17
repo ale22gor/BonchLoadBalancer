@@ -1,6 +1,6 @@
 #include "lecture.h"
 
-Lecture::Lecture(AdministrativeUnit* administrativeUnit,int housrs):
+Lecture::Lecture(std::shared_ptr <AdministrativeUnit> administrativeUnit,int housrs):
                  Lesson(administrativeUnit, housrs)
 {
 

@@ -1,6 +1,6 @@
 #include "lab.h"
 
-Lab::Lab(AdministrativeUnit* administrativeUnit,int housrs):
+Lab::Lab(std::shared_ptr <AdministrativeUnit> administrativeUnit,int housrs):
     Lesson(administrativeUnit, housrs)
 {
 
