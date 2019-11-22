@@ -6,9 +6,11 @@
 
 
 
-SubCourse::SubCourse(Course *course, int seminarAmount,int labAmount, int lecturesamount)
+SubCourse::SubCourse(std::shared_ptr<Course> course, int labAmount,int lecturesamount, int  seminarAmount)
     :m_course{course}
 {
+    std::list<std::shared_ptr<AdministrativeUnit> > admUnits{m_course->m_lab->delegate(labAmount)};
+    m_lab = {std::make_shared<Lab>(admUnits, m_course->m_lab->getHours()) };
     //m_labs = m_course->delegateLabs(labAmount);
     //m_lectures = m_course->delegateLectures(lecturesamount);
     //m_seminars = m_course->delegateSeminars(seminarAmount);
@@ -16,15 +18,7 @@ SubCourse::SubCourse(Course *course, int seminarAmount,int labAmount, int lectur
 
 void SubCourse::test()
 {
-    for(auto lab:m_labs){
-        lab->test();
-    }
-
-    for(auto lecture:m_lectures){
-        lecture->test();
-    }
-
-    for(auto seminar:m_seminars){
-        seminar->test();
-    }
+    m_lab->test();
+    m_lecture->test();
+    m_seminar->test();
 }

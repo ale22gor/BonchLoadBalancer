@@ -18,8 +18,10 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    std::shared_ptr <Group> group {new Group{Faculty::ISIT,25,632}};
-    group->test();
+    Group group {Faculty::ISIT,25,632};
+    group.test();
+
+    /*
 
     std::shared_ptr<Lab> a1{new Lab{group,13}};
     //a1->test();
@@ -35,13 +37,23 @@ int main(int argc, char *argv[])
     //a3->test();
     std::list<std::shared_ptr<Seminar> >seminars;
     seminars.push_back(a3);
+    */
 
-    Course myCourse{labs,lectures,seminars};
+    std::list<AdministrativeUnit> units{group};
+    Lab lab{units,15};
+    Lecture lecture{units,15};
+    Seminar seminar{units,15};
+
+
+
+    Course myCourse{lab,lecture,seminar};
     myCourse.test();
 
-    Repositories<int> testR;
+    //Repositories testR;
+    //testR.add(myCourse);
 
-
+    //SubCourse mySubCourse(std::make_shared<Course>(myCourse),1,1,1);
+    //mySubCourse.test();
     //Professor prof{500,600};
     //prof.addSubCourse(&myCourse,1,1,1);
     //prof.test();

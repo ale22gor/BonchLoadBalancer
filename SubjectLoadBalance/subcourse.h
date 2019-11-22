@@ -7,6 +7,7 @@ class Seminar;
 #include <list>
 #include <memory>
 
+
 #include "SubjectLoadBalance_global.h"
 
 #ifndef SUBCOURSE_H
@@ -15,12 +16,13 @@ class Seminar;
 
 class SUBJECTLOADBALANCE_EXPORT SubCourse
 {
-    Course *m_course;
-    std::list<std::shared_ptr<Lab> > m_labs;
-    std::list<std::shared_ptr<Lecture> > m_lectures;
-    std::list<std::shared_ptr<Seminar> > m_seminars;
+    std::shared_ptr<Course> m_course;
+    std::shared_ptr<Lab> m_lab;
+    std::shared_ptr<Lecture> m_lecture;
+    std::shared_ptr<Seminar> m_seminar;
+
 public:
-    SubCourse(Course*,int ,int ,int);
+    SubCourse(std::shared_ptr<Course>,int ,int ,int);
     void test();
 
 };

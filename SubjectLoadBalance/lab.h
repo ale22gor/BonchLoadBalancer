@@ -10,8 +10,12 @@
 class SUBJECTLOADBALANCE_EXPORT Lab:public Lesson
 {
 public:
-    Lab(std::shared_ptr <AdministrativeUnit> ,int);
+    Lab(std::list<AdministrativeUnit>& ,int);
+    Lab(std::list<std::shared_ptr<AdministrativeUnit> > administrativeUnit, int hours);
+
     void test();
+
+
 
 };
 

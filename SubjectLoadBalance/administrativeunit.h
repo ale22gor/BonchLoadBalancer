@@ -15,6 +15,8 @@ public:
 
     AdministrativeUnit(Faculty ,int ,int );
     void test();
+
+    friend class Repositories;
 };
 
 #endif // ADMINISTRATIVEUNIT_H

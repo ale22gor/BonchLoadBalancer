@@ -10,7 +10,7 @@
 class SUBJECTLOADBALANCE_EXPORT Lecture:public Lesson
 {
 public:
-    Lecture(std::shared_ptr <AdministrativeUnit> ,int);
+    Lecture(std::list<AdministrativeUnit>& ,int);
     void test();
 };
 
