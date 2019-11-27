@@ -1,17 +1,12 @@
 #include "lab.h"
+#include <QDebug>
+#include "administrativeunit.h"
 
 Lab::Lab(std::list<AdministrativeUnit>& administrativeUnit,int hours):
     Lesson(administrativeUnit, hours)
 {
 
 }
-
-Lab::Lab(std::list<std::shared_ptr<AdministrativeUnit> > administrativeUnit, int hours):
-    Lesson(administrativeUnit, hours)
-{
-
-}
-
 
 void Lab::test()
 {

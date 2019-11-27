@@ -21,12 +21,17 @@
 class REPOSITORIES_EXPORT Repositories
 {
     QSqlDatabase Database;
+
+    //admUnit buffer search first
+    //
     
 public:
 
     Repositories();
 
     void add(Course &);
+    void add(Course &, int);
+
     void add(Lecture&, int );
     void add(Seminar&, int );
     void add(Lab&, int);
@@ -39,6 +44,7 @@ public:
     void add(SuperGroup&, int);
 
     std::list<Course> getCourse();
+    Course getCourseByID(int );
 
 
 

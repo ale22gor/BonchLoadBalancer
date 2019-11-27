@@ -1,10 +1,10 @@
-class AdministrativeUnit;
 
 #include "SubjectLoadBalance_global.h"
 
-#include <QtDebug>
 #include <memory>
-#include<list>
+#include <list>
+
+class AdministrativeUnit;
 
 #ifndef LESSON_H
 #define LESSON_H
@@ -12,20 +12,20 @@ class AdministrativeUnit;
 
 class SUBJECTLOADBALANCE_EXPORT Lesson
 {
-    std::list<std::shared_ptr <AdministrativeUnit> > m_administrativeUnit;
-    std::list<std::shared_ptr <AdministrativeUnit> > m_freeAdministrativeUnit;
+    std::list<AdministrativeUnit> m_administrativeUnit;
 
     //select * from admunit where pk not in subcourse
 
     int m_hours;
+    int m_amountOfFree;
+
 public:
-    Lesson(std::list<AdministrativeUnit>& ,int );
-    Lesson(std::list<std::shared_ptr <AdministrativeUnit> > ,int );
+    Lesson(std::list<AdministrativeUnit> ,int );
 
     int getHours();
     void test();
 
-    std::list<std::shared_ptr <AdministrativeUnit> > delegate(int amount);
+    std::list<AdministrativeUnit> delegate(int amount);
 
     friend class Repositories;
 };

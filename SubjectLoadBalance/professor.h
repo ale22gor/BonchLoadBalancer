@@ -1,6 +1,5 @@
 class Course;
 #include <list>
-#include "subcourse.h"
 
 #include "SubjectLoadBalance_global.h"
 
@@ -10,7 +9,7 @@ class Course;
 
 class SUBJECTLOADBALANCE_EXPORT Professor
 {
-    std::list <SubCourse>m_subCourses;
+    std::list <Course>m_subCourses;
     int m_averageHours;
     int m_maxHours;
 public:

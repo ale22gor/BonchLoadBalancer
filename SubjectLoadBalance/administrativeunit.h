@@ -11,12 +11,17 @@ class SUBJECTLOADBALANCE_EXPORT AdministrativeUnit
     Faculty m_faculty;
     int m_amountOfPeople;
     int m_number;
+    int m_id;
+
+    bool m_free;
 public:
 
     AdministrativeUnit(Faculty ,int ,int );
     void test();
 
     friend class Repositories;
+    int getId();
+    bool isFree();
 };
 
 #endif // ADMINISTRATIVEUNIT_H

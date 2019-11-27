@@ -1,4 +1,7 @@
 #include "seminar.h"
+#include <QDebug>
+#include "administrativeunit.h"
+
 
 Seminar::Seminar(std::list<AdministrativeUnit>& administrativeUnit,int housrs):
     Lesson(administrativeUnit, housrs)

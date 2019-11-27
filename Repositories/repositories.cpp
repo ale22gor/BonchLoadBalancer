@@ -1,9 +1,7 @@
 #include "repositories.h"
 #include <QSqlQuery>
 #include <QSqlError>
-
-
-
+#include <QDebug>
 
 
 Repositories::Repositories()
@@ -76,10 +74,10 @@ Repositories::Repositories()
 
     //  table lessonid (admUInit + lesson ID) to subcourse
     //Creating table LessonToAdmUnit
-    query.prepare("CREATE TABLE IF NOT EXISTS foobar("
+    query.prepare("CREATE TABLE IF NOT EXISTS lessonToAdmUnit("
                   "lesson_id INTEGER,"
                   "admUnit_id INTEGER,"
-                  //"subcourse_id INTEGER" if not Null add to free
+                  "free BOOLEAN,"
                   "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id) ON DELETE CASCADE,"
                   "FOREIGN KEY(admUnit_id) REFERENCES admUnit(admUnit_id) ON DELETE CASCADE)");
 
@@ -131,16 +129,27 @@ Repositories::Repositories()
         qDebug() << "Table1 Lecture created!";
 
     // Creating table Course
+    query.prepare( "CREATE TABLE IF NOT EXISTS proffesor ("
+                   "proffesor_id INTEGER UNIQUE PRIMARY KEY , "
+                   "proffesor_name VARCHAR(30))");
+    if( !query.exec() )
+        qDebug() << query.lastError();
+    else
+        qDebug() << "Table1 Proffesor created!";
+
+    // Creating table Course
     query.prepare( "CREATE TABLE IF NOT EXISTS course ("
                    "course_id INTEGER UNIQUE PRIMARY KEY , "
-                   "course_name VARCHAR(30))");
+                   "course_name VARCHAR(30),"
+                   "proffesor_id INTEGER DEFAULT NULL, FOREIGN KEY(proffesor_id) REFERENCES proffesor(proffesor_id)"
+                   "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
         qDebug() << query.lastError();
     else
         qDebug() << "Table1 Course created!";
 
 }
-/*
+
 void Repositories::add(Course &entity )
 {
     qDebug()<<entity.getName();
@@ -157,16 +166,34 @@ void Repositories::add(Course &entity )
 
     int lastIndex = query.lastInsertId().toInt();
 
-    for(auto lecture: entity.m_lectures){
-        add(*lecture,lastIndex);
-    }
-    for(auto lab: entity.m_labs){
-        add(*lab,lastIndex);
-    }
-    for(auto seminar: entity.m_seminars){
-        add(*seminar,lastIndex);
-    }
+    add(*(entity.m_lab),lastIndex);
+    add(*(entity.m_lecture),lastIndex);
+    add(*(entity.m_seminar),lastIndex);
 
+
+}
+
+void Repositories::add(Course &entity, int profPk)
+{
+    qDebug()<<entity.getName();
+
+    QSqlQuery query(Database);
+    query.prepare("INSERT INTO course (course_name, proffesor_id) "
+                  "VALUES (:course_name, :proffesor_id)");
+    query.bindValue(":course_name", entity.getName().toStdString().c_str());
+    query.bindValue(":proffesor_id", profPk);
+
+
+    if( !query.exec() )
+        qDebug() << query.lastError();
+    else
+        qDebug() << "inserted  course!";
+
+    int lastIndex = query.lastInsertId().toInt();
+
+    add(*(entity.m_lab),lastIndex);
+    add(*(entity.m_lecture),lastIndex);
+    add(*(entity.m_seminar),lastIndex);
 }
 
 void Repositories::add(Lab &entity, int fk)
@@ -195,13 +222,11 @@ void Repositories::add(Lab &entity, int fk)
 int Repositories::add(Lesson &entity)
 {
     QSqlQuery query(Database);
+    //int admUnitPk = entity.m_administrativeUnit;
 
-    int admUnitPk = add(*entity.m_administrativeUnit);
-
-    query.prepare("INSERT INTO lesson (hours, admUnit_id) "
-                  "VALUES (:hours, :admUnit_id)");
+    query.prepare("INSERT INTO lesson (hours) "
+                  "VALUES (:hours)");
     query.bindValue(":hours", entity.getHours());
-    query.bindValue(":admUnit_id", admUnitPk);
 
 
     if( !query.exec() )
@@ -210,10 +235,20 @@ int Repositories::add(Lesson &entity)
         qDebug() << "inserted  lesson!";
     int lastIndex = query.lastInsertId().toInt();
 
+    for(auto &admUnit:entity.m_administrativeUnit){
+        //refactoring maybe (nultiple prepare statemnet
+        query.prepare("INSERT INTO lessonToAdmUnit (lesson_id, admUnit_id, free) "
+                      "VALUES (:lesson_id, :admUnit_id, :free)");
+        query.bindValue(":lesson_id", lastIndex);
+        query.bindValue(":admUnit_id", admUnit.getId());
+        query.bindValue(":free", admUnit.isFree());
+
+    }
+
     return lastIndex;
 
 }
-
+/*
 int Repositories::add(AdministrativeUnit &entity)
 {
     QSqlQuery query(Database);
@@ -249,9 +284,29 @@ int Repositories::add(AdministrativeUnit &entity)
 
     return lastIndex;
 }
-
+*/
 std::list<Course> Repositories::getCourse()
 {
+
+}
+
+Course Repositories::getCourseByID(int courseID)
+{
+    /*
+    query.prepare("SELECT * FROM admUnit WHERE faculty=:faculty AND number=:number");
+    query.bindValue(":faculty", static_cast<int>(entity.m_faculty));
+    query.bindValue(":number", entity.m_number);
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    */
+    //AdmUnit tmp(Faculty ,int ,int );
+    //Lab tmp(admUnit, hours);
+    //Lecture tmp(admUnit, hours);
+    //Seminar tmp(admUnit, hours);
+
+    //Course tmp(Lab,Lecture,Seminar);
+
 
 }
 
@@ -297,4 +352,4 @@ void Repositories::add(Seminar &entity, int fk)
 
 }
 
-*/
+

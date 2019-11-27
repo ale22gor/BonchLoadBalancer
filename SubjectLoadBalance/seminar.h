@@ -1,8 +1,8 @@
 #include "lesson.h"
+class AdministrativeUnit;
 
 #include "SubjectLoadBalance_global.h"
-#include <memory>
-
+#include <list>
 
 #ifndef SEMINAR_H
 #define SEMINAR_H

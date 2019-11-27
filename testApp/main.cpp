@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     std::list<std::shared_ptr<Seminar> >seminars;
     seminars.push_back(a3);
     */
-
+    /*
     std::list<AdministrativeUnit> units{group};
     Lab lab{units,15};
     Lecture lecture{units,15};
@@ -48,8 +48,9 @@ int main(int argc, char *argv[])
 
     Course myCourse{lab,lecture,seminar};
     myCourse.test();
+    */
 
-    //Repositories testR;
+    Repositories testR;
     //testR.add(myCourse);
 
     //SubCourse mySubCourse(std::make_shared<Course>(myCourse),1,1,1);

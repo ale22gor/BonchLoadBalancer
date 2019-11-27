@@ -1,5 +1,8 @@
 #include "course.h"
 
+#include "lab.h"
+#include "lecture.h"
+#include "seminar.h"
 
 Course::Course(){
 
@@ -29,6 +32,15 @@ Course::Course(Lab lab, Lecture lecture, Seminar seminar)
         m_freeSeminars.push_back(&seminar);
     }
     */
+}
+Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount)
+{
+    //check if course == this -> break
+    std::list<AdministrativeUnit> admUnits{course->m_lab->delegate(labAmount)};
+    m_lab = {std::make_shared<Lab>(admUnits, course->m_lab->getHours()) };
+    //m_labs = m_course->delegateLabs(labAmount);
+    //m_lectures = m_course->delegateLectures(lecturesamount);
+    //m_seminars = m_course->delegateSeminars(seminarAmount);
 }
 
 

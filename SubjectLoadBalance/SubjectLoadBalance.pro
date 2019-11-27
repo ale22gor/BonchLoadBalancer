@@ -27,7 +27,6 @@ SOURCES += \
     professor.cpp \
     realload.cpp \
     seminar.cpp \
-    subcourse.cpp \
     subgroup.cpp \
     subjectloadbalance.cpp \
     supergroup.cpp \
@@ -47,7 +46,6 @@ HEADERS += \
     professor.h \
     realload.h \
     seminar.h \
-    subcourse.h \
     subgroup.h \
     subjectloadbalance.h \
     supergroup.h \

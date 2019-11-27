@@ -1,6 +1,3 @@
-#include "lab.h"
-#include "lecture.h"
-#include "seminar.h"
 #include "group.h"
 
 #include <list>
@@ -9,6 +6,9 @@
 
 #include "SubjectLoadBalance_global.h"
 
+class Lab;
+class Lecture;
+class Seminar;
 #ifndef COURSE_H
 #define COURSE_H
 
@@ -25,6 +25,7 @@ class SUBJECTLOADBALANCE_EXPORT Course
 
 public:
     Course(Lab, Lecture, Seminar );
+    Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount);
     Course();
 
     QString getName();

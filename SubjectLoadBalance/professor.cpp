@@ -18,8 +18,6 @@ void Professor::addSubCourse(Course *course,int seminarAmount,int labAmount,int 
         m_subCourses.push_back(SubCourse(course,seminarAmount,labAmount,lecturesamount));
     }
     */
-
-
 }
 
 void Professor::test()
