@@ -12,6 +12,7 @@
 #include "repositories.h"
 
 #include <memory>
+#include <QDebug>
 
 
 int main(int argc, char *argv[])
@@ -50,7 +51,11 @@ int main(int argc, char *argv[])
     myCourse.test();
     */
 
+
     Repositories testR;
+    Professor testProf{100,200};
+    testR.add(testProf);
+    qDebug()<<"name:"<<testProf.getName();
     //testR.add(myCourse);
 
     //SubCourse mySubCourse(std::make_shared<Course>(myCourse),1,1,1);

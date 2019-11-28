@@ -16,7 +16,7 @@ class SUBJECTLOADBALANCE_EXPORT AdministrativeUnit
     bool m_free;
 public:
 
-    AdministrativeUnit(Faculty ,int ,int );
+    AdministrativeUnit(Faculty ,int ,int, int, bool = false);
     void test();
 
     friend class Repositories;

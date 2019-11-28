@@ -13,6 +13,15 @@ Lesson::Lesson(std::list<AdministrativeUnit> administrativeUnit, int hours):
     //m_hours = hours;
 }
 
+Lesson::Lesson(std::list<AdministrativeUnit> &&administrativeUnit, int &&hours):
+    m_administrativeUnit{administrativeUnit},
+    m_hours{hours},
+    m_amountOfFree{static_cast<int>(m_administrativeUnit.size())}
+
+{
+
+}
+
 int Lesson::getHours()
 {
     return m_hours;

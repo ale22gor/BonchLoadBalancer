@@ -13,6 +13,9 @@ class SUBJECTLOADBALANCE_EXPORT Lab:public Lesson
 public:
     Lab(std::list<AdministrativeUnit>& ,int);
 
+    Lab(std::list<AdministrativeUnit>&& ,int&&);
+
+
     void test();
 
 

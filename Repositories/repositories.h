@@ -17,6 +17,7 @@
 #include "group.h"
 #include "subgroup.h"
 #include "supergroup.h"
+#include "professor.h"
 
 class REPOSITORIES_EXPORT Repositories
 {
@@ -29,12 +30,15 @@ public:
 
     Repositories();
 
+    void add(Professor &);
+
+
     void add(Course &);
     void add(Course &, int);
 
-    void add(Lecture&, int );
-    void add(Seminar&, int );
-    void add(Lab&, int);
+    int add(Lecture&);
+    int add(Seminar&);
+    int add(Lab&);
 
     int add(Lesson&);
     int add(AdministrativeUnit&);
@@ -45,6 +49,14 @@ public:
 
     std::list<Course> getCourse();
     Course getCourseByID(int );
+
+    Lab getLabByID(int );
+    Lecture getLectureByID(int );
+    Seminar getSeminarByID(int );
+
+    //Lesson getLessonByID(int );
+    std::list<AdministrativeUnit> getAdmUnitsByID(int );
+
 
 
 

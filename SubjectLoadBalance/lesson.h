@@ -21,6 +21,8 @@ class SUBJECTLOADBALANCE_EXPORT Lesson
 
 public:
     Lesson(std::list<AdministrativeUnit> ,int );
+    Lesson(std::list<AdministrativeUnit> &&,int && );
+
 
     int getHours();
     void test();

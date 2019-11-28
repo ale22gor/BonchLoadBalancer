@@ -22,50 +22,51 @@ Repositories::Repositories()
 
     // Creating table Administrative Unit
     query.prepare( "CREATE TABLE IF NOT EXISTS admUnit ("
-                   "admUnit_id INTEGER UNIQUE PRIMARY KEY ,"
+                   "admUnit_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,"
+                   "amountOfPeople INTEGER,"
                    "number INTEGER,"
                    "faculty VARCHAR(30))" );
     if( !query.exec() )
         qDebug() << query.lastError();
     else
         qDebug() << "Table1 Administrative Unit created!";
-{
+    {
 
-    // Creating table Group
-    query.prepare( "CREATE TABLE IF NOT EXISTS normalGroup ("
-                   "normalGroup_id INTEGER UNIQUE PRIMARY KEY , "
-                   "FOREIGN KEY(normalGroup_id) REFERENCES admUnit(admUnit_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE)" );
-    if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Group created!";
+        // Creating table Group
+        query.prepare( "CREATE TABLE IF NOT EXISTS normalGroup ("
+                       "normalGroup_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
+                       "FOREIGN KEY(normalGroup_id) REFERENCES admUnit(admUnit_id)"
+                       "ON DELETE CASCADE ON UPDATE CASCADE)" );
+        if( !query.exec() )
+            qDebug() << query.lastError();
+        else
+            qDebug() << "Table1 Group created!";
 
-    // Creating table SubGroup
-    query.prepare( "CREATE TABLE IF NOT EXISTS subGroup ("
-                   "subGroup_id INTEGER UNIQUE PRIMARY KEY , "
-                   "FOREIGN KEY(subGroup_id) REFERENCES admUnit(admUnit_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE)" );
-    if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 SubGroup created!";
+        // Creating table SubGroup
+        query.prepare( "CREATE TABLE IF NOT EXISTS subGroup ("
+                       "subGroup_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
+                       "FOREIGN KEY(subGroup_id) REFERENCES admUnit(admUnit_id)"
+                       "ON DELETE CASCADE ON UPDATE CASCADE)" );
+        if( !query.exec() )
+            qDebug() << query.lastError();
+        else
+            qDebug() << "Table1 SubGroup created!";
 
-    // Creating table SuperGroup
-    query.prepare( "CREATE TABLE IF NOT EXISTS superGroup ("
-                   "superGroup_id INTEGER UNIQUE PRIMARY KEY , "
-                   "FOREIGN KEY(superGroup_id) REFERENCES admUnit(admUnit_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE)" );
-    if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 SuperGroup created!";
-}
+        // Creating table SuperGroup
+        query.prepare( "CREATE TABLE IF NOT EXISTS superGroup ("
+                       "superGroup_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
+                       "FOREIGN KEY(superGroup_id) REFERENCES admUnit(admUnit_id)"
+                       "ON DELETE CASCADE ON UPDATE CASCADE)" );
+        if( !query.exec() )
+            qDebug() << query.lastError();
+        else
+            qDebug() << "Table1 SuperGroup created!";
+    }
 
 
     // Creating table Lesson
     query.prepare( "CREATE TABLE IF NOT EXISTS lesson ("
-                   "lesson_id INTEGER UNIQUE PRIMARY KEY , "
+                   "lesson_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "hours INTEGER)");
     if( !query.exec() )
         qDebug() << query.lastError();
@@ -88,11 +89,8 @@ Repositories::Repositories()
 
     // Creating table Lab
     query.prepare( "CREATE TABLE IF NOT EXISTS lab ("
-                   "lab_id INTEGER UNIQUE PRIMARY KEY ,"
-                   "free BOOLEAN DEFAULT(TRUE),"
+                   "lab_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,"
                    "lesson_id INTEGER,"
-                   "course_id INTEGER, FOREIGN KEY(course_id) REFERENCES course(course_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE,"
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
@@ -102,11 +100,8 @@ Repositories::Repositories()
 
     // Creating table Seminar
     query.prepare( "CREATE TABLE IF NOT EXISTS seminar ("
-                   "seminar_id INTEGER UNIQUE PRIMARY KEY , "
-                   "free BOOLEAN DEFAULT(TRUE),"
+                   "seminar_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "lesson_id INTEGER,"
-                   "course_id INTEGER, FOREIGN KEY(course_id) REFERENCES course(course_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE,"
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
@@ -116,11 +111,8 @@ Repositories::Repositories()
 
     // Creating table Lecture
     query.prepare( "CREATE TABLE IF NOT EXISTS lecture ("
-                   "lecture_id INTEGER UNIQUE PRIMARY KEY , "
-                   "free BOOLEAN DEFAULT(TRUE),"
+                   "lecture_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "lesson_id INTEGER,"
-                   "course_id INTEGER, FOREIGN KEY(course_id) REFERENCES course(course_id)"
-                   "ON DELETE CASCADE ON UPDATE CASCADE,"
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
@@ -128,9 +120,9 @@ Repositories::Repositories()
     else
         qDebug() << "Table1 Lecture created!";
 
-    // Creating table Course
+    // Creating table Proffessor
     query.prepare( "CREATE TABLE IF NOT EXISTS proffesor ("
-                   "proffesor_id INTEGER UNIQUE PRIMARY KEY , "
+                   "proffesor_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "proffesor_name VARCHAR(30))");
     if( !query.exec() )
         qDebug() << query.lastError();
@@ -139,9 +131,18 @@ Repositories::Repositories()
 
     // Creating table Course
     query.prepare( "CREATE TABLE IF NOT EXISTS course ("
-                   "course_id INTEGER UNIQUE PRIMARY KEY , "
+                   "course_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "course_name VARCHAR(30),"
+                   "lab_id INTEGER"
+                   "seminar_id INTEGER"
+                   "lecture_id INTEGER"
                    "proffesor_id INTEGER DEFAULT NULL, FOREIGN KEY(proffesor_id) REFERENCES proffesor(proffesor_id)"
+                   "ON DELETE CASCADE ON UPDATE CASCADE,"
+                   "FOREIGN KEY(lab_id) REFERENCES lab(lab_id)"
+                   "ON DELETE CASCADE ON UPDATE CASCADE,"
+                   "FOREIGN KEY(seminar_id) REFERENCES seminar(seminar_id)"
+                   "ON DELETE CASCADE ON UPDATE CASCADE,"
+                   "FOREIGN KEY(lecture_id) REFERENCES lecture(lecture_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
         qDebug() << query.lastError();
@@ -150,25 +151,49 @@ Repositories::Repositories()
 
 }
 
-void Repositories::add(Course &entity )
+void Repositories::add(Professor &entity)
 {
     qDebug()<<entity.getName();
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name) "
-                  "VALUES (:course_name)");
+    query.prepare("INSERT INTO proffesor (proffesor_name) "
+                  "VALUES (:proffesor_name)");
+    query.bindValue(":proffesor_name", entity.getName().toStdString().c_str());
+
+    if( !query.exec() )
+        qDebug() << query.lastError();
+    else
+        qDebug() << "inserted  prof!";
+
+    int lastIndex = query.lastInsertId().toInt();
+    for(auto &course:entity.m_subCourses)
+        add(course,lastIndex);
+
+
+}
+
+void Repositories::add(Course &entity )
+{
+    qDebug()<<entity.getName();
+
+    int labFK = add(*(entity.m_lab));
+    int lectureFK = add(*(entity.m_lecture));
+    int seminarFK = add(*(entity.m_seminar));
+
+    QSqlQuery query(Database);
+    query.prepare("INSERT INTO course (course_name, lab_id, seminar_id, lecture_id) "
+                  "VALUES (:course_name, :lab_id, :seminar_id, :lecture_id)");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
+    query.bindValue(":lab_id", labFK);
+    query.bindValue(":seminar_id", lectureFK);
+    query.bindValue(":lecture_id", seminarFK);
 
     if( !query.exec() )
         qDebug() << query.lastError();
     else
         qDebug() << "inserted  course!";
 
-    int lastIndex = query.lastInsertId().toInt();
 
-    add(*(entity.m_lab),lastIndex);
-    add(*(entity.m_lecture),lastIndex);
-    add(*(entity.m_seminar),lastIndex);
 
 
 }
@@ -189,14 +214,13 @@ void Repositories::add(Course &entity, int profPk)
     else
         qDebug() << "inserted  course!";
 
-    int lastIndex = query.lastInsertId().toInt();
 
-    add(*(entity.m_lab),lastIndex);
-    add(*(entity.m_lecture),lastIndex);
-    add(*(entity.m_seminar),lastIndex);
+    add(*(entity.m_lab));
+    add(*(entity.m_lecture));
+    add(*(entity.m_seminar));
 }
 
-void Repositories::add(Lab &entity, int fk)
+int Repositories::add(Lab &entity)
 {
     QSqlQuery query(Database);
 
@@ -204,9 +228,8 @@ void Repositories::add(Lab &entity, int fk)
     int lessonFk = add(tmp);
 
 
-    query.prepare("INSERT INTO lab (course_id, lesson_id) "
-                  "VALUES (:course_id, :lesson_id)");
-    query.bindValue(":course_id", fk);
+    query.prepare("INSERT INTO lab (lesson_id) "
+                  "VALUES (:lesson_id)");
     query.bindValue(":lesson_id", lessonFk);
 
 
@@ -215,7 +238,9 @@ void Repositories::add(Lab &entity, int fk)
     else
         qDebug() << "inserted  lab!";
 
+    int lastIndex = query.lastInsertId().toInt();
 
+    return lastIndex;
 
 }
 
@@ -242,7 +267,6 @@ int Repositories::add(Lesson &entity)
         query.bindValue(":lesson_id", lastIndex);
         query.bindValue(":admUnit_id", admUnit.getId());
         query.bindValue(":free", admUnit.isFree());
-
     }
 
     return lastIndex;
@@ -292,14 +316,19 @@ std::list<Course> Repositories::getCourse()
 
 Course Repositories::getCourseByID(int courseID)
 {
-    /*
-    query.prepare("SELECT * FROM admUnit WHERE faculty=:faculty AND number=:number");
-    query.bindValue(":faculty", static_cast<int>(entity.m_faculty));
-    query.bindValue(":number", entity.m_number);
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT * FROM course WHERE course_id=:course_id");
+    query.bindValue(":course_id", courseID);
     if(!query.exec()){
         qDebug() << query.lastError();
     }
-    */
+    if (query.next()) {
+        int labId = query.value(2).toInt();
+        //add lecture and seminar arg then test
+        Course tmpCourse{getLabByID(labId),Lecture{},Seminar{});
+    }
+
     //AdmUnit tmp(Faculty ,int ,int );
     //Lab tmp(admUnit, hours);
     //Lecture tmp(admUnit, hours);
@@ -310,7 +339,79 @@ Course Repositories::getCourseByID(int courseID)
 
 }
 
-void Repositories::add(Lecture &entity, int fk)
+Lab Repositories::getLabByID(int labPk)
+{
+
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT * FROM lab WHERE lab_id=:lab_id");
+    query.bindValue(":lab_id", labPk);
+    if(!query.exec()){
+        qDebug() << query.lastError();
+        //return invalid value or exception
+    }
+
+    if (query.next()) {
+        int lessonId = query.value(1).toInt();
+
+        QSqlQuery lessonQuery(Database);
+        lessonQuery.prepare("SELECT * FROM lesson WHERE lesson_id=:lesson_id");
+        lessonQuery.bindValue(":lesson_id", lessonId);
+
+        if(!lessonQuery.exec()){
+            qDebug() << lessonQuery.lastError();
+            //return invalid value or exception
+        }
+        if (lessonQuery.next()){
+            Lab{getAdmUnitsByID(lessonId),
+                        lessonQuery.value(1).toInt()};
+        }
+    }
+
+}
+
+
+
+std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT * FROM admUnit as a"
+                  "INNER JOIN lessonToAdmUnit as al"
+                         "ON a.admUnit_id = al.admUnit_id"
+                  "INNER JOIN  lesson as l"
+                         "ON l.lesson_id = al.lesson_id"
+                  "WHERE lesson_id=:lesson_id");
+    query.bindValue(":lesson_id", lessonPK);
+    if(!query.exec()){
+        qDebug() << query.lastError();
+        //return invalid value or exception
+    }
+
+    std::list<AdministrativeUnit> tmpList;
+
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        int amountOfPeople = query.value(1).toInt();
+        int number = query.value(2).toInt();
+        QString strFaculty = query.value(3).toString();
+        Faculty faculty;
+        if(strFaculty.compare("ISIT"))
+            faculty = Faculty::ISIT;
+        else if(strFaculty.compare("RTS"))
+            faculty = Faculty::RTS;
+        else if(strFaculty.compare("IKSS"))
+            faculty = Faculty::IKSS;
+        else
+            //default value
+            faculty = Faculty::ISIT;
+        tmpList.push_back(AdministrativeUnit{faculty,amountOfPeople,number,id});
+    }
+    return tmpList;
+
+}
+
+int Repositories::add(Lecture &entity)
 {
     QSqlQuery query(Database);
 
@@ -318,9 +419,8 @@ void Repositories::add(Lecture &entity, int fk)
     int lessonFk = add(tmp);
 
 
-    query.prepare("INSERT INTO lecture (course_id, lesson_id) "
-                  "VALUES (:course_id, :lesson_id)");
-    query.bindValue(":course_id", fk);
+    query.prepare("INSERT INTO lecture (lesson_id) "
+                  "VALUES (:lesson_id)");
     query.bindValue(":lesson_id", lessonFk);
 
 
@@ -328,10 +428,13 @@ void Repositories::add(Lecture &entity, int fk)
         qDebug() << query.lastError();
     else
         qDebug() << "inserted  lecture!";
+    int lastIndex = query.lastInsertId().toInt();
+
+    return lastIndex;
 
 }
 
-void Repositories::add(Seminar &entity, int fk)
+int Repositories::add(Seminar &entity)
 {
     QSqlQuery query(Database);
 
@@ -339,9 +442,8 @@ void Repositories::add(Seminar &entity, int fk)
     int lessonFk = add(tmp);
 
 
-    query.prepare("INSERT INTO seminar (course_id, lesson_id) "
-                  "VALUES (:course_id, :lesson_id)");
-    query.bindValue(":course_id", fk);
+    query.prepare("INSERT INTO seminar (lesson_id) "
+                  "VALUES (:lesson_id)");
     query.bindValue(":lesson_id", lessonFk);
 
 
@@ -349,6 +451,10 @@ void Repositories::add(Seminar &entity, int fk)
         qDebug() << query.lastError();
     else
         qDebug() << "inserted  seminar!";
+
+    int lastIndex = query.lastInsertId().toInt();
+
+    return lastIndex;
 
 }
 

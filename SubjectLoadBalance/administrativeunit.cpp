@@ -3,11 +3,12 @@
 
 
 
-AdministrativeUnit::AdministrativeUnit(Faculty faculty, int amountOfPeople, int number):
+AdministrativeUnit::AdministrativeUnit(Faculty faculty, int amountOfPeople, int number, int id, bool free):
     m_faculty{faculty},
     m_amountOfPeople{amountOfPeople},
     m_number{number},
-    m_free{true}
+    m_id{id},
+    m_free{free}
 {
 
 }

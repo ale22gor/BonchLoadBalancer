@@ -4,7 +4,8 @@
 
 Professor::Professor(int maxHours, int averageHours):
     m_averageHours{averageHours},
-    m_maxHours{maxHours}
+    m_maxHours{maxHours},
+    m_name{"loh"}
 {}
 
 void Professor::addSubCourse(Course *course,int seminarAmount,int labAmount,int lecturesamount)
@@ -28,4 +29,9 @@ void Professor::test()
     }
 
 
+}
+
+QString Professor::getName()
+{
+    return  m_name;
 }
