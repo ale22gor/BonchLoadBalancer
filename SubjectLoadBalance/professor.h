@@ -10,7 +10,7 @@ class Course;
 
 class SUBJECTLOADBALANCE_EXPORT Professor
 {
-    std::list <Course>m_subCourses;
+    std::list <Course> m_subCourses;
 
     int m_averageHours;
     int m_maxHours;

@@ -1,7 +1,6 @@
 #include "lesson.h"
-#include "administrativeunit.h"
 #include <QtDebug>
-
+#include <algorithm>
 
 Lesson::Lesson(std::list<AdministrativeUnit> administrativeUnit, int hours):
     m_administrativeUnit{administrativeUnit},
@@ -29,7 +28,7 @@ int Lesson::getHours()
 
 void Lesson::test()
 {
-    qDebug()  <<"lesson";
+    qDebug()  <<"lesson" << getHours();
     for(auto &admUnit:m_administrativeUnit){
         admUnit.test();
     }
@@ -38,15 +37,14 @@ void Lesson::test()
 
 std::list<AdministrativeUnit> Lesson::delegate(int amount)
 {
-    if(m_amountOfFree >= amount){
+    if(m_amountOfFree >= amount && amount > 0){
         m_amountOfFree -=amount;
-        //copy_if admUnit if free (m_administrativeUnit)
-        //return copy_if result
-        auto end =  std::next(m_administrativeUnit.begin(),amount);
-        std::list<AdministrativeUnit> admUinitToDelegate{m_administrativeUnit.begin(),end};
+        std::list<AdministrativeUnit> admUinitToDelegate;
+
+        std::copy_if(m_administrativeUnit.begin(), m_administrativeUnit.end(), std::back_inserter(admUinitToDelegate),
+                     [](AdministrativeUnit admUnit){return admUnit.isFree() ;});
 
         return admUinitToDelegate;
     }
-    //return std::list<std::shared_ptr<AdministrativeUnit> >;
 
 }

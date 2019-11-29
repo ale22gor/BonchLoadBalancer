@@ -12,6 +12,8 @@ class SUBJECTLOADBALANCE_EXPORT Lecture:public Lesson
 {
 public:
     Lecture(std::list<AdministrativeUnit>& ,int);
+    Lecture(std::list<AdministrativeUnit>&& ,int&&);
+
     void test();
 };
 

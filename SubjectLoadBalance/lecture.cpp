@@ -9,8 +9,15 @@ Lecture::Lecture(std::list<AdministrativeUnit>& administrativeUnit,int housrs):
 
 }
 
+Lecture::Lecture(std::list<AdministrativeUnit>&& administrativeUnit, int&& housrs):
+    Lesson(administrativeUnit, housrs)
+
+{
+
+}
+
 void Lecture::test()
 {
-    qDebug() << "lecture:"<<getHours();
-
+    qDebug() << "lecture:";
+    Lesson::test();
 }

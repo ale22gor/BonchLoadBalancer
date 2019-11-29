@@ -19,7 +19,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     administrativeunit.cpp \
     course.cpp \
-    group.cpp \
     lab.cpp \
     lecture.cpp \
     lesson.cpp \
@@ -27,9 +26,7 @@ SOURCES += \
     professor.cpp \
     realload.cpp \
     seminar.cpp \
-    subgroup.cpp \
     subjectloadbalance.cpp \
-    supergroup.cpp \
     teoreticalload.cpp \
     yearload.cpp
 
@@ -38,7 +35,6 @@ HEADERS += \
     SubjectLoadBalance_global.h \
     administrativeunit.h \
     course.h \
-    group.h \
     lab.h \
     lecture.h \
     lesson.h \
@@ -46,9 +42,7 @@ HEADERS += \
     professor.h \
     realload.h \
     seminar.h \
-    subgroup.h \
     subjectloadbalance.h \
-    supergroup.h \
     teoreticalload.h \
     yearload.h
 

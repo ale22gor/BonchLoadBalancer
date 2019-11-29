@@ -16,5 +16,6 @@ Lab::Lab(std::list<AdministrativeUnit> && administrativeUnit, int && hours):
 
 void Lab::test()
 {
-    qDebug() << "lab :"<<getHours();
+    qDebug() << "lab :";
+    Lesson::test();
 }

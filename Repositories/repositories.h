@@ -14,9 +14,6 @@
 #include "seminar.h"
 #include "lesson.h"
 #include "administrativeunit.h"
-#include "group.h"
-#include "subgroup.h"
-#include "supergroup.h"
 #include "professor.h"
 
 class REPOSITORIES_EXPORT Repositories
@@ -43,9 +40,6 @@ public:
     int add(Lesson&);
     int add(AdministrativeUnit&);
 
-    void add(Group&, int);
-    void add(SubGroup&, int);
-    void add(SuperGroup&, int);
 
     std::list<Course> getCourse();
     Course getCourseByID(int );

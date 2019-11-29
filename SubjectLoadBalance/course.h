@@ -1,4 +1,3 @@
-#include "group.h"
 
 #include <list>
 #include <memory>
@@ -24,7 +23,7 @@ class SUBJECTLOADBALANCE_EXPORT Course
     std::shared_ptr<Seminar> m_seminar;
 
 public:
-    Course(Lab, Lecture, Seminar );
+    Course(Lab, Lecture, Seminar);
     Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount);
     Course();
 

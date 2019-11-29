@@ -13,6 +13,8 @@ class SUBJECTLOADBALANCE_EXPORT Seminar:public Lesson
 
 public:
     Seminar(std::list<AdministrativeUnit>& ,int);
+    Seminar(std::list<AdministrativeUnit>&& ,int&&);
+
     void test();
 
 };

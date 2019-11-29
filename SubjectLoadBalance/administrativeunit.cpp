@@ -15,7 +15,7 @@ AdministrativeUnit::AdministrativeUnit(Faculty faculty, int amountOfPeople, int 
 
 void AdministrativeUnit::test()
 {
-    qDebug()<<m_faculty<<m_amountOfPeople<<m_number;
+    qDebug()<<"faculty:"<<m_faculty<<"amount OF people:"<<m_amountOfPeople<<"number:"<<m_number<<"free:"<<isFree();
 
 }
 

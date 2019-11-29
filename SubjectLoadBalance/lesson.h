@@ -4,7 +4,7 @@
 #include <memory>
 #include <list>
 
-class AdministrativeUnit;
+#include "administrativeunit.h"
 
 #ifndef LESSON_H
 #define LESSON_H
