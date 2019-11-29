@@ -2,6 +2,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <QString>
 
 
 Repositories::Repositories()
@@ -146,23 +147,37 @@ void Repositories::add(Course &entity )
     qDebug()<<entity.getName();
 
     int labFK{-1};
+    QString labId;
     int lectureFK{-1};
+    QString lectureId;
     int seminarFK{-1};
+    QString seminarId;
 
-    if(entity.m_lab != nullptr)
+
+    if(entity.m_lab != nullptr){
         labFK = add(*(entity.m_lab));
-    if(entity.m_lecture != nullptr)
+        labId = "lab_id";
+    }
+    if(entity.m_lecture != nullptr){
         lectureFK = add(*(entity.m_lecture));
-    if(entity.m_seminar != nullptr)
+        lectureId = "lecture_id";
+    }
+    if(entity.m_seminar != nullptr){
         seminarFK = add(*(entity.m_seminar));
+        seminarId = "seminar_id";
+
+    }
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, lab_id, seminar_id, lecture_id) "
-                  "VALUES (:course_name, :lab_id, :seminar_id, :lecture_id)");
+    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+") "
+                  "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
-    query.bindValue(":lab_id", labFK);
-    query.bindValue(":seminar_id", seminarFK);
-    query.bindValue(":lecture_id", lectureFK);
+    if(entity.m_lab != nullptr)
+        query.bindValue(":lab_id", labFK);
+    if(entity.m_seminar != nullptr)
+        query.bindValue(":seminar_id", seminarFK);
+    if(entity.m_lecture != nullptr)
+        query.bindValue(":lecture_id", lectureFK);
 
     if( !query.exec() )
         qDebug() << query.lastError();
@@ -178,24 +193,41 @@ void Repositories::add(Course &entity, int profPk)
 {
     qDebug()<<entity.getName();
 
-    int labFK = add(*(entity.m_lab));
-    int lectureFK = add(*(entity.m_lecture));
-    int seminarFK = add(*(entity.m_seminar));
+    int labFK{-1};
+    QString labId;
+    int lectureFK{-1};
+    QString lectureId;
+    int seminarFK{-1};
+    QString seminarId;
+
+
+    if(entity.m_lab != nullptr){
+        labFK = add(*(entity.m_lab));
+        labId = "lab_id";
+    }
+    if(entity.m_lecture != nullptr){
+        lectureFK = add(*(entity.m_lecture));
+        lectureId = "lecture_id";
+    }
+    if(entity.m_seminar != nullptr){
+        seminarFK = add(*(entity.m_seminar));
+        seminarId = "seminar_id";
+
+    }
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, lab_id, seminar_id, lecture_id, proffesor_id) "
-                  "VALUES (:course_name, :lab_id, :seminar_id, :lecture_id, :proffesor_id)");
+    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+", :proffesor_id)"
+                 "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
-    query.bindValue(":lab_id", labFK);
-    query.bindValue(":seminar_id", seminarFK);
-    query.bindValue(":lecture_id", lectureFK);
+    if(entity.m_lab != nullptr)
+        query.bindValue(":lab_id", labFK);
+    if(entity.m_seminar != nullptr)
+        query.bindValue(":seminar_id", seminarFK);
+    if(entity.m_lecture != nullptr)
+        query.bindValue(":lecture_id", lectureFK);
     query.bindValue(":proffesor_id", profPk);
 
 
-    if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "inserted  course!";
 }
 
 int Repositories::add(Lab &entity)
@@ -390,11 +422,11 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
     QSqlQuery query(Database);
 
     query.prepare(R"#(SELECT a.admUnit_id, a.amountOfPeople, a.number, a.faculty, al.free
-                    FROM admUnit as a
-                    INNER JOIN lessonToAdmUnit as al
-                         ON a.admUnit_id = al.admUnit_id
+                  FROM admUnit as a
+                  INNER JOIN lessonToAdmUnit as al
+                  ON a.admUnit_id = al.admUnit_id
                   INNER JOIN  lesson as l
-                         ON l.lesson_id = al.lesson_id
+                  ON l.lesson_id = al.lesson_id
                   WHERE l.lesson_id=:lesson_id)#");
     query.bindValue(":lesson_id", lessonPK);
     if(!query.exec()){
