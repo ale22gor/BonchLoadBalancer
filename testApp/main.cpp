@@ -30,17 +30,18 @@ int main(int argc, char *argv[])
     Lecture testLess{testList,14};
     Seminar  testLec{testList,14};
 
-    Course tmpCourse1{testL,testLess,testLec};
+    //Course tmpCourse1{testL,testLess,testLec};
 
-    testR.add(tmpCourse1);
+    //testR.add(tmpCourse1);
 
     Course tmpCourse{testR.getCourseByID(1)};//{testL,testLess,testLec};
     tmpCourse.test();
 
-    Professor testProf{100,200};
-    testProf.addSubCourse(&tmpCourse,1,1,1);
+    Professor testProf{testR.getProfessorByID(1)};
+    //testProf.addSubCourse(&tmpCourse,1,1,1);
     testProf.test();
-    testR.add(testProf);
+    //testR.add(testProf);
+
 
 
 

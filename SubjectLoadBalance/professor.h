@@ -18,6 +18,8 @@ class SUBJECTLOADBALANCE_EXPORT Professor
     QString m_name;
 public:
     Professor(int , int );
+    Professor(std::list <Course>, int , int );
+
     void addSubCourse(Course*,int ,int ,int);
     void test();
 

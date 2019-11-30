@@ -314,6 +314,27 @@ Course Repositories::getCourseByID(int courseID)
     }
 }
 
+Professor Repositories::getProfessorByID(int proffesorId)
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT * FROM proffesor WHERE proffesor_id=:proffesor_id");
+    query.bindValue(":proffesor_id", proffesorId);
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    else
+        qDebug() << "proffesor selected";
+    if (query.next()) {
+        int proffesorID = query.value(0).toInt();
+        //Qstring maxHour = query.value(1).toString();
+        //int maxHour = query.value(2).toInt();
+        //int averageHour = query.value(3).toInt();
+
+        return Professor{getProffesorCourseList(proffesorID),100,200};
+    }
+}
+
 Lab Repositories::getLabByID(int labPk)
 {
 
@@ -458,6 +479,31 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
         tmpList.push_back(AdministrativeUnit{faculty,amountOfPeople,number,id,free});
     }
     return tmpList;
+
+}
+
+std::list<Course> Repositories::getProffesorCourseList(int proffesorID)
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT * FROM course WHERE proffesor_id=:proffesor_id");
+    query.bindValue(":proffesor_id", proffesorID);
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    else
+        qDebug() << "Professor courses selected";
+
+    std::list<Course> courseList;
+    while (query.next()) {
+        int labId = query.value(2).toInt();
+        int lectureId = query.value(3).toInt();
+        int seminarId = query.value(4).toInt();
+
+        //N+1 PROBLEM OPTIMIZATION NEEDED
+        courseList.push_back(Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId)});
+    }
+    return courseList;
 
 }
 

@@ -43,6 +43,8 @@ public:
 
     std::list<Course> getCourse();
     Course getCourseByID(int );
+    Professor getProfessorByID(int );
+
 
     Lab getLabByID(int );
     Lecture getLectureByID(int );
@@ -51,7 +53,7 @@ public:
     //Lesson getLessonByID(int );
     std::list<AdministrativeUnit> getAdmUnitsByID(int );
 
-
+    std::list<Course> getProffesorCourseList(int );
 
 
 
