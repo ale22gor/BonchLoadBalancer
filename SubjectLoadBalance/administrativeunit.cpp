@@ -28,3 +28,8 @@ bool AdministrativeUnit::isFree()
 {
     return m_free;
 }
+
+void AdministrativeUnit::setFree(bool value)
+{
+    m_free = value;
+}

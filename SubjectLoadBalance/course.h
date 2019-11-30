@@ -22,12 +22,14 @@ class SUBJECTLOADBALANCE_EXPORT Course
 
     std::shared_ptr<Seminar> m_seminar;
 
+    const int m_id;
 public:
-    Course(Lab, Lecture, Seminar);
-    Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount);
+    Course(Lab, Lecture, Seminar, QString, int =-1);
+    Course(Course* , int ,int , int  , int = -1);
     Course();
 
     QString getName();
+    int getID();
 
     void test();
 

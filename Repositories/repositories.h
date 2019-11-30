@@ -28,8 +28,6 @@ public:
     Repositories();
 
     void add(Professor &);
-
-
     void add(Course &);
     void add(Course &, int);
 
@@ -39,6 +37,18 @@ public:
 
     int add(Lesson&);
     int add(AdministrativeUnit&);
+
+    void Update(Professor &);
+
+    void Update(Course &);
+    void UpdateLessonsStatus(Course &);
+
+
+    int Update(Lecture&);
+    int Update(Seminar&);
+    int Update(Lab&);
+
+    int Update(Lesson&);
 
 
     std::list<Course> getCourse();
@@ -54,6 +64,11 @@ public:
     std::list<AdministrativeUnit> getAdmUnitsByID(int );
 
     std::list<Course> getProffesorCourseList(int );
+
+    std::list<QString> getProffessorsNames();
+    std::list<QString> getCoursesNames();
+
+
 
 
 

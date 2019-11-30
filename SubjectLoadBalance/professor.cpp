@@ -2,17 +2,19 @@
 #include "course.h"
 #include <QDebug>
 
-Professor::Professor(int maxHours, int averageHours):
+Professor::Professor(int maxHours, int averageHours, QString name, int id):
     m_averageHours{averageHours},
     m_maxHours{maxHours},
-    m_name{"loh"}
+    m_name{name},
+    m_id{id}
 {}
 
-Professor::Professor(std::list<Course> subCourses, int maxHours, int averageHours):
+Professor::Professor(std::list<Course> subCourses, int maxHours, int averageHours, QString name, int id):
     m_subCourses{subCourses},
     m_averageHours{averageHours},
     m_maxHours{maxHours},
-    m_name{"loh"}
+    m_name{name},
+    m_id{id}
 {
 
 }

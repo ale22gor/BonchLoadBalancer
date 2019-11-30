@@ -13,18 +13,22 @@
 class SUBJECTLOADBALANCE_EXPORT Lesson
 {
     std::list<AdministrativeUnit> m_administrativeUnit;
+    std::list<int> m_idToUpdate;
 
     //select * from admunit where pk not in subcourse
 
     int m_hours;
     int m_amountOfFree;
 
+    const int m_id;
+
 public:
-    Lesson(std::list<AdministrativeUnit> ,int );
-    Lesson(std::list<AdministrativeUnit> &&,int && );
+    Lesson(std::list<AdministrativeUnit> ,int ,int);
+    Lesson(std::list<AdministrativeUnit> &&,int && ,int);
 
 
     int getHours();
+    int getID();
     void test();
 
     std::list<AdministrativeUnit> delegate(int amount);

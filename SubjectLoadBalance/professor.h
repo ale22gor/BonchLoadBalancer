@@ -16,14 +16,16 @@ class SUBJECTLOADBALANCE_EXPORT Professor
     int m_maxHours;
 
     QString m_name;
+    const int m_id;
 public:
-    Professor(int , int );
-    Professor(std::list <Course>, int , int );
+    Professor(int, int, QString, int = -1);
+    Professor(std::list <Course>, int , int, QString, int = -1);
 
     void addSubCourse(Course*,int ,int ,int);
     void test();
 
     QString getName();
+    int getInt();
 
     friend class Repositories;
 };

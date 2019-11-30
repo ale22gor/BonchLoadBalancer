@@ -11,8 +11,8 @@ class AdministrativeUnit;
 class SUBJECTLOADBALANCE_EXPORT Lecture:public Lesson
 {
 public:
-    Lecture(std::list<AdministrativeUnit>& ,int);
-    Lecture(std::list<AdministrativeUnit>&& ,int&&);
+    Lecture(std::list<AdministrativeUnit>& ,int, int = -1);
+    Lecture(std::list<AdministrativeUnit>&& ,int&&, int = -1);
 
     void test();
 };

@@ -2,14 +2,14 @@
 #include <QDebug>
 #include "administrativeunit.h"
 
-Lab::Lab(std::list<AdministrativeUnit>& administrativeUnit,int hours):
-    Lesson(administrativeUnit, hours)
+Lab::Lab(std::list<AdministrativeUnit>& administrativeUnit,int hours, int id):
+    Lesson(administrativeUnit, hours,id)
 {
 
 }
 
-Lab::Lab(std::list<AdministrativeUnit> && administrativeUnit, int && hours):
-    Lesson(administrativeUnit, hours)
+Lab::Lab(std::list<AdministrativeUnit> && administrativeUnit, int && hours,int id):
+    Lesson(administrativeUnit, hours,id)
 {
 
 }

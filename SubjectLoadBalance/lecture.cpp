@@ -3,14 +3,14 @@
 #include "administrativeunit.h"
 
 
-Lecture::Lecture(std::list<AdministrativeUnit>& administrativeUnit,int housrs):
-                 Lesson(administrativeUnit, housrs)
+Lecture::Lecture(std::list<AdministrativeUnit>& administrativeUnit,int housrs,int id):
+                 Lesson(administrativeUnit, housrs,id)
 {
 
 }
 
-Lecture::Lecture(std::list<AdministrativeUnit>&& administrativeUnit, int&& housrs):
-    Lesson(administrativeUnit, housrs)
+Lecture::Lecture(std::list<AdministrativeUnit>&& administrativeUnit, int&& housrs,int id):
+    Lesson(administrativeUnit, housrs,id)
 
 {
 

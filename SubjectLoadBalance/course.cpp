@@ -4,23 +4,22 @@
 #include "lecture.h"
 #include "seminar.h"
 
-Course::Course(){
-
-}
-
 QString Course::getName()
 {
     return m_courseName;
 }
 
-Course::Course(Lab lab, Lecture lecture, Seminar seminar)
+Course::Course(Lab lab, Lecture lecture, Seminar seminar, QString name, int id)
+    :m_courseName{name},
+      m_id{id}
 {
     m_lab =  std::make_shared<Lab>(lab);
     m_lecture =  std::make_shared<Lecture>(lecture);
     m_seminar =  std::make_shared<Seminar>(seminar);
 
 }
-Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount)
+Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount, int id):
+    m_id{id}
 {
     //check if course == this -> break
     std::list<AdministrativeUnit> admUnits{course->m_lab->delegate(labAmount)};
@@ -34,6 +33,7 @@ Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmo
     admUnits = course->m_seminar->delegate(seminarAmount);
     if(admUnits.size()>0)
             m_seminar =  std::make_shared<Seminar>(admUnits, course->m_seminar->getHours());
+    m_courseName = course->getName();
 
 }
 

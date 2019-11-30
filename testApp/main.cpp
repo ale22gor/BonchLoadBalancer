@@ -30,20 +30,39 @@ int main(int argc, char *argv[])
     Lecture testLess{testList,14};
     Seminar  testLec{testList,14};
 
-    //Course tmpCourse1{testL,testLess,testLec};
 
-    //testR.add(tmpCourse1);
+    Course tmpCourse1{testL,testLess,testLec,"mycourseS"};
+    qDebug() << "course to save";
+    tmpCourse1.test();
+    qDebug() << "course to save";
+
+    testR.add(tmpCourse1);
+
 
     Course tmpCourse{testR.getCourseByID(1)};//{testL,testLess,testLec};
+
+    qDebug() << "course to load";
     tmpCourse.test();
+    qDebug() << "course to load";
 
-    Professor testProf{testR.getProfessorByID(1)};
-    //testProf.addSubCourse(&tmpCourse,1,1,1);
+
+    Professor testProf{100,200,"antipin"};//{testR.getProfessorByID(1)};
+    //error if 0 below
+    testProf.addSubCourse(&tmpCourse,1,1,1);
+
+    qDebug() << "proff to save";
     testProf.test();
-    //testR.add(testProf);
+    qDebug() << "proff to save";
+    testR.UpdateLessonsStatus(tmpCourse);
+    testR.add(testProf);
+
+    Professor testProf1{testR.getProfessorByID(1)};//{testR.getProfessorByID(1)};
+    qDebug() << "proff to load";
+    testProf1.test();
+    qDebug() << "proff to load";
 
 
-
+    qDebug()<<testR.getProffessorsNames().front();
 
     return a.exec();
 }

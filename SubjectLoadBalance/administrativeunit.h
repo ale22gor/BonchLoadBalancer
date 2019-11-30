@@ -22,6 +22,7 @@ public:
     friend class Repositories;
     int getId();
     bool isFree();
+    void setFree(bool);
 };
 
 #endif // ADMINISTRATIVEUNIT_H

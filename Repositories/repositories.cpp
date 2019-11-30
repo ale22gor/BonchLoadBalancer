@@ -216,8 +216,8 @@ void Repositories::add(Course &entity, int profPk)
     }
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+", :proffesor_id)"
-                 "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+")");
+    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+", proffesor_id)"
+                 "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+", :proffesor_id)");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
     if(entity.m_lab != nullptr)
         query.bindValue(":lab_id", labFK);
@@ -226,6 +226,11 @@ void Repositories::add(Course &entity, int profPk)
     if(entity.m_lecture != nullptr)
         query.bindValue(":lecture_id", lectureFK);
     query.bindValue(":proffesor_id", profPk);
+
+    if( !query.exec() )
+        qDebug() << query.lastError();
+    else
+        qDebug() << "inserted  course!";
 
 
 }
@@ -289,6 +294,43 @@ int Repositories::add(Lesson &entity)
 
 }
 
+void Repositories::UpdateLessonsStatus(Course &course)
+{
+    QString lessonIdInterval;
+    lessonIdInterval += QString::number(course.m_lab->getID());
+    lessonIdInterval += ',';
+    lessonIdInterval += QString::number(course.m_lecture->getID());
+    lessonIdInterval += ',';
+    lessonIdInterval += QString::number(course.m_seminar->getID());
+
+    QString admUnitIdInterval;
+
+    for(auto &id:course.m_lab->m_idToUpdate){
+        admUnitIdInterval += QString::number(id);
+        admUnitIdInterval += ',';
+    }
+    for(auto &id:course.m_lecture->m_idToUpdate){
+        admUnitIdInterval += QString::number(id);
+        admUnitIdInterval += ',';
+    }
+    for(auto &id:course.m_seminar->m_idToUpdate){
+        admUnitIdInterval += QString::number(id);
+    }
+    qDebug()<<lessonIdInterval<<admUnitIdInterval<<"!!!!!!!!!!!!!!!!!!!!!";
+    QSqlQuery query(Database);
+    query.prepare("UPDATE lessonToAdmUnit "
+                  "SET free=0 "
+                  "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ");
+    //query.bindValue(":free", lesson.);
+
+
+    if( !query.exec() )
+        qDebug() << query.lastError();
+    else
+        qDebug() << "updated something!";
+}
+
+
 std::list<Course> Repositories::getCourse()
 {
 
@@ -306,11 +348,13 @@ Course Repositories::getCourseByID(int courseID)
     else
         qDebug() << "course selected";
     if (query.next()) {
-        int labId = query.value(2).toInt();
-        int lectureId = query.value(3).toInt();
-        int seminarId = query.value(4).toInt();
+        int id {query.value(0).toInt()};
+        QString courseName {query.value(1).toString()};
+        int labId {query.value(2).toInt()};
+        int lectureId  {query.value(3).toInt()};
+        int seminarId  {query.value(4).toInt()};
 
-        return Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId)};
+        return Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id};
     }
 }
 
@@ -327,11 +371,11 @@ Professor Repositories::getProfessorByID(int proffesorId)
         qDebug() << "proffesor selected";
     if (query.next()) {
         int proffesorID = query.value(0).toInt();
-        //Qstring maxHour = query.value(1).toString();
+        QString profName = query.value(1).toString();
         //int maxHour = query.value(2).toInt();
         //int averageHour = query.value(3).toInt();
 
-        return Professor{getProffesorCourseList(proffesorID),100,200};
+        return Professor{getProffesorCourseList(proffesorID),100,200,profName,proffesorID};
     }
 }
 
@@ -350,6 +394,7 @@ Lab Repositories::getLabByID(int labPk)
         qDebug() << "lab selected";
 
     if (query.next()) {
+        //int id = query.value(0).toInt();
         int lessonId = query.value(1).toInt();
 
         QSqlQuery lessonQuery(Database);
@@ -364,7 +409,7 @@ Lab Repositories::getLabByID(int labPk)
 
         if (lessonQuery.next()){
             return  Lab{getAdmUnitsByID(lessonId),
-                        lessonQuery.value(1).toInt()};
+                        lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
 
@@ -383,6 +428,7 @@ Lecture Repositories::getLectureByID(int lecturePk)
         qDebug() << "lecture selected";
 
     if (query.next()) {
+        //int id {query.value(0).toInt()};
         int lessonId = query.value(1).toInt();
 
         QSqlQuery lessonQuery(Database);
@@ -397,7 +443,7 @@ Lecture Repositories::getLectureByID(int lecturePk)
 
         if (lessonQuery.next()){
             return  Lecture{getAdmUnitsByID(lessonId),
-                        lessonQuery.value(1).toInt()};
+                        lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
 
@@ -416,7 +462,8 @@ Seminar Repositories::getSeminarByID(int seminarPK)
         qDebug() << "seminar selected";
 
     if (query.next()) {
-        int lessonId = query.value(1).toInt();
+        //int id {query.value(0).toInt()};
+        int lessonId {query.value(1).toInt()};
 
         QSqlQuery lessonQuery(Database);
         lessonQuery.prepare("SELECT * FROM lesson WHERE lesson_id=:lesson_id");
@@ -430,7 +477,7 @@ Seminar Repositories::getSeminarByID(int seminarPK)
 
         if (lessonQuery.next()){
             return Seminar{getAdmUnitsByID(lessonId),
-                        lessonQuery.value(1).toInt()};
+                        lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
 
@@ -459,12 +506,12 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
     std::list<AdministrativeUnit> tmpList;
 
     while (query.next()) {
-        int id = query.value(0).toInt();
-        int amountOfPeople = query.value(1).toInt();
+        int id {query.value(0).toInt()};
+        int amountOfPeople {query.value(1).toInt()};
 
-        int number = query.value(2).toInt();
-        QString strFaculty = query.value(3).toString();
-        bool free = query.value(4).toBool();
+        int number {query.value(2).toInt()};
+        QString strFaculty {query.value(3).toString()};
+        bool free {query.value(4).toBool()};
         Faculty faculty;
         if(strFaculty.compare("ISIT"))
             faculty = Faculty::ISIT;
@@ -496,15 +543,54 @@ std::list<Course> Repositories::getProffesorCourseList(int proffesorID)
 
     std::list<Course> courseList;
     while (query.next()) {
-        int labId = query.value(2).toInt();
-        int lectureId = query.value(3).toInt();
-        int seminarId = query.value(4).toInt();
+        int id {query.value(0).toInt()};
+        QString courseName{query.value(1).toString()};
+        int labId {query.value(2).toInt()};
+        int lectureId {query.value(3).toInt()};
+        int seminarId {query.value(4).toInt()};
 
         //N+1 PROBLEM OPTIMIZATION NEEDED
-        courseList.push_back(Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId)});
+        courseList.push_back(Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id});
     }
     return courseList;
 
+}
+
+std::list<QString> Repositories::getProffessorsNames()
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT proffesor_name FROM proffesor");
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    else
+        qDebug() << "Professors names selected";
+
+    std::list<QString> professorsNames;
+    while (query.next()) {
+       professorsNames.push_back(QString{query.value(1).toString()});
+    }
+    return professorsNames;
+
+}
+
+std::list<QString> Repositories::getCoursesNames()
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT course_name FROM course");
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    else
+        qDebug() << "Courses names selected";
+
+    std::list<QString> coursesNames;
+    while (query.next()) {
+       coursesNames.push_back(QString{query.value(1).toString()});
+    }
+    return coursesNames;
 }
 
 int Repositories::add(Lecture &entity)
