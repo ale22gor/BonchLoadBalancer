@@ -33,3 +33,27 @@ void AdministrativeUnit::setFree(bool value)
 {
     m_free = value;
 }
+
+int AdministrativeUnit::getNumber() const
+{
+    return  m_number;
+}
+
+int AdministrativeUnit::getamountOfPeople() const
+{
+    return  m_amountOfPeople;
+}
+
+QString AdministrativeUnit::getFaculty() const
+{
+    switch (m_faculty) {
+    case Faculty::RTS:
+        return QString("RTS");
+    case Faculty::ISIT:
+        return QString("ISIT");
+    case Faculty::IKSS:
+        return QString("IKSS");
+    default:
+        return QString("ISIT");
+    }
+}

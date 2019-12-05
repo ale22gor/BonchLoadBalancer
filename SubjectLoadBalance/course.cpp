@@ -4,7 +4,7 @@
 #include "lecture.h"
 #include "seminar.h"
 
-QString Course::getName()
+QString Course::getName() const
 {
     return m_courseName;
 }
@@ -37,10 +37,25 @@ Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmo
 
 }
 
+std::shared_ptr<Lab> Course::getLab() const
+{
+    return m_lab;
+}
+
+std::shared_ptr<Lecture> Course::getLecture() const
+{
+    return m_lecture;
+}
+
+std::shared_ptr<Seminar> Course::getSeminar() const
+{
+    return m_seminar;
+}
 
 
 
-void Course::test()
+
+void Course::test() const
 {
     if(m_lab != nullptr)
         m_lab->test();

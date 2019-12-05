@@ -1,5 +1,5 @@
 class Course;
-#include <list>
+#include <vector>
 #include <QString>
 
 #include "SubjectLoadBalance_global.h"
@@ -10,7 +10,7 @@ class Course;
 
 class SUBJECTLOADBALANCE_EXPORT Professor
 {
-    std::list <Course> m_subCourses;
+    std::vector <Course> m_subCourses;
 
     int m_averageHours;
     int m_maxHours;
@@ -19,7 +19,7 @@ class SUBJECTLOADBALANCE_EXPORT Professor
     const int m_id;
 public:
     Professor(int, int, QString, int = -1);
-    Professor(std::list <Course>, int , int, QString, int = -1);
+    Professor(std::vector <Course>, int , int, QString, int = -1);
 
     void addSubCourse(Course*,int ,int ,int);
     void test();
@@ -28,6 +28,8 @@ public:
     int getInt();
 
     friend class Repositories;
+    friend class ProfessorDetail;
+
 };
 
 #endif // PROFESSOR_H

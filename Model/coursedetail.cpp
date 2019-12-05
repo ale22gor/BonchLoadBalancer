@@ -1,0 +1,2 @@
+#include "coursedetail.h"
+

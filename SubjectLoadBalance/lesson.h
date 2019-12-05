@@ -29,6 +29,8 @@ public:
 
     int getHours();
     int getID();
+    std::list<AdministrativeUnit> getAdmUnit() const;
+
     void test();
 
     std::list<AdministrativeUnit> delegate(int amount);

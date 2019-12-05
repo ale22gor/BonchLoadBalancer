@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>ProffesorsNamesList.qml</file>
+        <file>CoursesNamesList.qml</file>
+        <file>ProffWindow.qml</file>
+        <file>CourseWindow.qml</file>
+        <file>ProffDetailWindow.qml</file>
+        <file>SubCourseDetail.qml</file>
+        <file>SubCourseAdmUnitsList.qml</file>
     </qresource>
 </RCC>

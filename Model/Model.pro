@@ -1,4 +1,6 @@
 QT -= gui
+QT += sql
+
 
 TEMPLATE = lib
 DEFINES += MODEL_LIBRARY
@@ -17,14 +19,36 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    model.cpp
+    coursedetail.cpp \
+    coursesnamesmodel.cpp \
+    model.cpp \
+    professordetail.cpp \
+    proffesorsnamesmodel.cpp
 
 HEADERS += \
     Model_global.h \
-    model.h
+    coursedetail.h \
+    coursesnamesmodel.h \
+    model.h \
+    professordetail.h \
+    proffesorsnamesmodel.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Repositories/release/ -lRepositories
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Repositories/debug/ -lRepositories
+else:unix: LIBS += -L$$OUT_PWD/../Repositories/ -lRepositories
+
+INCLUDEPATH += $$PWD/../Repositories
+DEPENDPATH += $$PWD/../Repositories
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/release/ -lSubjectLoadBalance
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/debug/ -lSubjectLoadBalance
+else:unix: LIBS += -L$$OUT_PWD/../SubjectLoadBalance/ -lSubjectLoadBalance
+
+INCLUDEPATH += $$PWD/../SubjectLoadBalance
+DEPENDPATH += $$PWD/../SubjectLoadBalance

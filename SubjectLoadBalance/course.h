@@ -28,12 +28,15 @@ public:
     Course(Course* , int ,int , int  , int = -1);
     Course();
 
-    QString getName();
+    QString getName() const;
     int getID();
 
-    void test();
+    std::shared_ptr<Lab> getLab() const;
+    std::shared_ptr<Lecture> getLecture() const;
+    std::shared_ptr<Seminar> getSeminar() const;
 
-    friend class SubCourse;
+    void test() const;
+
     friend class Repositories;
 
 };

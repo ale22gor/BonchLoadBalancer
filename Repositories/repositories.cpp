@@ -529,7 +529,7 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
 
 }
 
-std::list<Course> Repositories::getProffesorCourseList(int proffesorID)
+std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
 {
     QSqlQuery query(Database);
 
@@ -541,7 +541,7 @@ std::list<Course> Repositories::getProffesorCourseList(int proffesorID)
     else
         qDebug() << "Professor courses selected";
 
-    std::list<Course> courseList;
+    std::vector<Course> courseList;
     while (query.next()) {
         int id {query.value(0).toInt()};
         QString courseName{query.value(1).toString()};
@@ -556,7 +556,7 @@ std::list<Course> Repositories::getProffesorCourseList(int proffesorID)
 
 }
 
-std::list<QString> Repositories::getProffessorsNames()
+std::vector<QString> Repositories::getProffessorsNames()
 {
     QSqlQuery query(Database);
 
@@ -567,15 +567,16 @@ std::list<QString> Repositories::getProffessorsNames()
     else
         qDebug() << "Professors names selected";
 
-    std::list<QString> professorsNames;
+    std::vector<QString> professorsNames;
+    //resize vector
     while (query.next()) {
-       professorsNames.push_back(QString{query.value(1).toString()});
+       professorsNames.push_back(QString{query.value(0).toString()});
     }
     return professorsNames;
 
 }
 
-std::list<QString> Repositories::getCoursesNames()
+std::vector<QString> Repositories::getCoursesNames()
 {
     QSqlQuery query(Database);
 
@@ -586,9 +587,9 @@ std::list<QString> Repositories::getCoursesNames()
     else
         qDebug() << "Courses names selected";
 
-    std::list<QString> coursesNames;
+    std::vector<QString> coursesNames;
     while (query.next()) {
-       coursesNames.push_back(QString{query.value(1).toString()});
+       coursesNames.push_back(QString{query.value(0).toString()});
     }
     return coursesNames;
 }

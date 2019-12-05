@@ -1,4 +1,6 @@
 QT += quick
+QT += sql
+
 
 CONFIG += c++11
 
@@ -28,3 +30,28 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
+
+HEADERS += \
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/release/ -lSubjectLoadBalance
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SubjectLoadBalance/debug/ -lSubjectLoadBalance
+else:unix: LIBS += -L$$OUT_PWD/../SubjectLoadBalance/ -lSubjectLoadBalance
+
+INCLUDEPATH += $$PWD/../SubjectLoadBalance
+DEPENDPATH += $$PWD/../SubjectLoadBalance
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Repositories/release/ -lRepositories
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Repositories/debug/ -lRepositories
+else:unix: LIBS += -L$$OUT_PWD/../Repositories/ -lRepositories
+
+INCLUDEPATH += $$PWD/../Repositories
+DEPENDPATH += $$PWD/../Repositories
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Model/release/ -lModel
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Model/debug/ -lModel
+else:unix: LIBS += -L$$OUT_PWD/../Model/ -lModel
+
+INCLUDEPATH += $$PWD/../Model
+DEPENDPATH += $$PWD/../Model

@@ -9,7 +9,7 @@ Professor::Professor(int maxHours, int averageHours, QString name, int id):
     m_id{id}
 {}
 
-Professor::Professor(std::list<Course> subCourses, int maxHours, int averageHours, QString name, int id):
+Professor::Professor(std::vector<Course> subCourses, int maxHours, int averageHours, QString name, int id):
     m_subCourses{subCourses},
     m_averageHours{averageHours},
     m_maxHours{maxHours},

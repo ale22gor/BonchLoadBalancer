@@ -23,6 +23,10 @@ public:
     int getId();
     bool isFree();
     void setFree(bool);
+
+    int getNumber() const;
+    int getamountOfPeople() const;
+    QString getFaculty() const;
 };
 
 #endif // ADMINISTRATIVEUNIT_H

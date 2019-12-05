@@ -32,6 +32,11 @@ int Lesson::getID()
     return m_id;
 }
 
+std::list<AdministrativeUnit> Lesson::getAdmUnit() const
+{
+    return m_administrativeUnit;
+}
+
 void Lesson::test()
 {
     qDebug()  <<"lesson" << getHours();

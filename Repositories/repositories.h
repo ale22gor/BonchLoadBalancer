@@ -4,6 +4,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <list>
+#include <vector>
 
 #include "Repositories_global.h"
 
@@ -63,10 +65,10 @@ public:
     //Lesson getLessonByID(int );
     std::list<AdministrativeUnit> getAdmUnitsByID(int );
 
-    std::list<Course> getProffesorCourseList(int );
+    std::vector<Course> getProffesorCourseList(int );
 
-    std::list<QString> getProffessorsNames();
-    std::list<QString> getCoursesNames();
+    std::vector<QString> getProffessorsNames();
+    std::vector<QString> getCoursesNames();
 
 
 

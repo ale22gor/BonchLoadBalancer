@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 
     Repositories testR;
-
+    /*
     Lab testL{testList,14};
     Lecture testLess{testList,14};
     Seminar  testLec{testList,14};
@@ -61,8 +61,13 @@ int main(int argc, char *argv[])
     testProf1.test();
     qDebug() << "proff to load";
 
+    */
 
-    qDebug()<<testR.getProffessorsNames().front();
+    std::vector<QString> m_coursesNames{testR.getCoursesNames()};
+
+    for(auto &proffesorName:m_coursesNames){
+        qDebug()<<proffesorName;
+    }
 
     return a.exec();
 }
