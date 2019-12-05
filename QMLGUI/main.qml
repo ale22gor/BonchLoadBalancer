@@ -4,6 +4,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
 
 ApplicationWindow {
+    id: root
     visible: true
     width: 640
     height: 480
@@ -30,7 +31,6 @@ ApplicationWindow {
                 else if(view.currentItem.title === "Proffesors"){
                     view.currentIndex = 0
                 }
-
             }
         }
 
@@ -51,11 +51,7 @@ ApplicationWindow {
         interactive: false
 
         Page{
-            title: qsTr("Courses")
-            ProffDetailWindow{
-            }
-        }
-        Page{
+
             title: qsTr("Courses")
             CourseWindow{
             }
@@ -65,6 +61,6 @@ ApplicationWindow {
             ProffWindow{
             }
         }
-    }
 
+    }
 }

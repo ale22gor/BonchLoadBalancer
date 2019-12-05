@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
     QQmlContext *ctxt = engine.rootContext();
     Model myModel;
 
+    ctxt->setContextProperty("myModel", &myModel);
+
+
+
     ctxt->setContextProperty("CoursesNamesListModel", QVariant::fromValue(myModel.getCoursesNamesModel()));
     ctxt->setContextProperty("ProffesorsNamesListModel", QVariant::fromValue(myModel.getProffesorsNamesModel()));
 

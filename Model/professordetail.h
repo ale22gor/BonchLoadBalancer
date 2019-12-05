@@ -3,6 +3,7 @@
 
 
 #include <QAbstractListModel>
+#include <memory>
 
 #include "professor.h"
 
@@ -11,15 +12,18 @@
 
 class MODEL_EXPORT ProfessorDetail:public QAbstractListModel
 {
-    Professor m_prof;
+
+    std::unique_ptr<Professor> m_prof;
     enum CourseNameRole {
         NameRole = Qt::UserRole + 1,
         Lab,
         Lecture,
         Seminar
     };
+
 public:
-    ProfessorDetail(Professor, QObject *parent = nullptr);
+    ProfessorDetail(QObject *parent = nullptr);
+    void setProf(Professor);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QHash<int, QByteArray> roleNames() const;

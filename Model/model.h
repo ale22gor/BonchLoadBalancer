@@ -23,6 +23,8 @@ class MODEL_EXPORT Model: public QObject
        CoursesNamesModel * getCoursesNamesModel();
        ProffesorsNamesModel * getProffesorsNamesModel();
        ProfessorDetail * getProffesorsDetailModel();
+    public slots:
+       void getProf(int id);
 
 };
 

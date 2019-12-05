@@ -13,15 +13,25 @@ ListView {
         Rectangle {
             width: parent.width
             height: courseName.height
-            color: "lightgreen"
-            Label {
-                anchors.centerIn: parent
-                id:courseName
-                text: name
-                font.pixelSize: 30
+            color: "steelblue"
+            border.color: "black"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    header.visible = !header.visible
+                    body.visible = !body.visible
+                }
+                Label {
+                    anchors.centerIn: parent
+                    id:courseName
+                    text: name
+                    font.pixelSize: 30
+                }
             }
         }
         RowLayout{
+            id:header
+            visible: false
             width: parent.width
 
             Rectangle{
@@ -31,6 +41,7 @@ ListView {
                 color: "lightBlue"
 
                 Label {
+                    anchors.centerIn: parent
                     id: labHeader
                     text: "Lab"
                     font.pixelSize: 30
@@ -43,6 +54,7 @@ ListView {
                 color: "lightBlue"
 
                 Label {
+                    anchors.centerIn: parent
                     id: seminarHeader
                     text: "Seminar"
                     font.pixelSize: 30
@@ -55,6 +67,7 @@ ListView {
                 color: "lightBlue"
 
                 Label {
+                    anchors.centerIn: parent
                     id: lectureHeader
                     text: "Lecture"
                     font.pixelSize: 30
@@ -63,16 +76,17 @@ ListView {
         }
 
         RowLayout{
+            id:body
+            visible: false
             width: parent.width
 
             ListView {
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignLeft
                 //Layout.preferredWidth: 200
                 Layout.minimumHeight: 40
-
                 model: Lab //the internal QVariantList
                 orientation: ListView.Horizontal
+                spacing:10
 
                 delegate:Label {
                     id: labDATA
@@ -80,16 +94,18 @@ ListView {
                     font.pixelSize: 30
                 }
 
+
             }
 
             ListView {
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
                 Layout.minimumHeight: 40
-                Layout.alignment: Qt.AlignHCenter
 
                 model: Seminar //the internal QVariantList
                 orientation: ListView.Horizontal
+                spacing:10
+
                 delegate:Label {
                     id: seminarData
                     text: modelData
@@ -101,10 +117,10 @@ ListView {
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
                 Layout.minimumHeight: 40
-                Layout.alignment: Qt.AlignRight
-
                 model: Lecture //the internal QVariantList
                 orientation: ListView.Horizontal
+                spacing:10
+
                 delegate:Label {
                     id: lectureData
                     text: modelData

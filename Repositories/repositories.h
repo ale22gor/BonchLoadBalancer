@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <list>
 #include <vector>
+#include <utility>
 
 #include "Repositories_global.h"
 
@@ -67,7 +68,7 @@ public:
 
     std::vector<Course> getProffesorCourseList(int );
 
-    std::vector<QString> getProffessorsNames();
+    std::vector<std::pair<int,QString> > getProffessorsNames();
     std::vector<QString> getCoursesNames();
 
 

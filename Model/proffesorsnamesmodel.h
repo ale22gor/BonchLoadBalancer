@@ -12,15 +12,17 @@
 class MODEL_EXPORT ProffesorsNamesModel:public QAbstractListModel
 {    Q_OBJECT
 
-     std::vector<QString> m_professorNames;
+
+     std::vector<std::pair<int,QString> > m_professorNames;
      enum NameRole {
          NameRole = Qt::UserRole + 1,
+         IdRole
      };
  public slots:
-     void add(QString);
+     //void add(QString) = delete;
 
  public:
-     ProffesorsNamesModel(std::vector<QString>, QObject *parent = nullptr);
+     ProffesorsNamesModel(std::vector<std::pair<int,QString> > , QObject *parent = nullptr);
      QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
      int rowCount(const QModelIndex & parent = QModelIndex()) const;
      QHash<int, QByteArray> roleNames() const;

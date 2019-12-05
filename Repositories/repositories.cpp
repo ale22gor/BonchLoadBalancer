@@ -556,21 +556,21 @@ std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
 
 }
 
-std::vector<QString> Repositories::getProffessorsNames()
+std::vector<std::pair<int,QString> >  Repositories::getProffessorsNames()
 {
     QSqlQuery query(Database);
 
-    query.prepare("SELECT proffesor_name FROM proffesor");
+    query.prepare("SELECT proffesor_id, proffesor_name FROM proffesor");
     if(!query.exec()){
         qDebug() << query.lastError();
     }
     else
         qDebug() << "Professors names selected";
 
-    std::vector<QString> professorsNames;
+    std::vector<std::pair<int,QString> >  professorsNames;
     //resize vector
     while (query.next()) {
-       professorsNames.push_back(QString{query.value(0).toString()});
+       professorsNames.push_back(std::make_pair(query.value(0).toInt(),QString{query.value(1).toString()}));
     }
     return professorsNames;
 
