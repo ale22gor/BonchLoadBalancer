@@ -8,5 +8,7 @@
         <file>ProffDetailWindow.qml</file>
         <file>SubCourseDetail.qml</file>
         <file>SubCourseAdmUnitsList.qml</file>
+        <file>AddProfWindow.qml</file>
+        <file>AddProfForm.qml</file>
     </qresource>
 </RCC>

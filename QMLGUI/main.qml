@@ -43,6 +43,27 @@ ApplicationWindow {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
+        ToolButton {
+            visible: {
+                if(view.currentItem.title === "Proffesors"){
+                    return true
+                }
+                return false
+            }
+            text:{
+                if(view.currentItem.title === "Proffesors"){
+                    return "Add"
+                }
+            }
+            anchors.right:  parent.right
+            anchors.rightMargin:  10
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: {
+                var popupComponent = Qt.createComponent("AddProfWindow.qml")
+                var popup2 = popupComponent.createObject(view, {"parent" : view});
+                popup2.open()
+            }
+        }
     }
     SwipeView {
         id: view

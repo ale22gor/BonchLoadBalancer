@@ -21,10 +21,10 @@ ListView {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        myModel.getProf(1)
+                        myModel.getProf(id.text)
                         var popupComponent = Qt.createComponent("ProffDetailWindow.qml")
-                        var popup2 = popupComponent.createObject(view, {"parent" : view});
-                        popup2.open()
+                        var popup = popupComponent.createObject(view, {"parent" : view});
+                        popup.open()
                     }
 
                     Label {
