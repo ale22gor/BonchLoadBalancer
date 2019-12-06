@@ -13,18 +13,21 @@ class MODEL_EXPORT CoursesNamesModel:public QAbstractListModel
 {
     Q_OBJECT
 
-    std::vector<QString> m_coursesNames;
+    std::vector<std::pair<int,QString> > m_coursesNames;
     enum CourseNameRole {
         NameRole = Qt::UserRole + 1,
+        Id
     };
 public slots:
     void add(QString);
 
 public:
-    CoursesNamesModel(std::vector<QString>, QObject *parent = nullptr);
+    CoursesNamesModel(std::vector<std::pair<int,QString> >, QObject *parent = nullptr);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QHash<int, QByteArray> roleNames() const;
+
+    friend class Model;
 };
 
 #endif // COURSESNAMESMODEL_H

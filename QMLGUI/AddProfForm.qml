@@ -62,25 +62,23 @@ ColumnLayout {
 
     }
     ComboBox {
-      id: courseCombo
-      editable: true
+        id: courseCombo
+        //editable: true
 
-      Layout.fillWidth: true
-      Layout.fillHeight: true
-      model: CoursesNamesListModel
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        model: CoursesNamesListModel
+        textRole:"name"
+        onAccepted: {
 
-     onAccepted: {
-      if (courseCombo.find(currentText) === -1) {
-         model.append({text: editText})
-         courseCombo = combo.find(editText)
-       }
-     }
+        }
     }
     Button {
         Layout.fillWidth: true
         Layout.fillHeight: true
-        text: "Add"
+        text:"add"
         onClicked:{
+            myModel.addProf(name.text, labAmount.text, lectureAmount.text, seminarAmount.text,courseCombo.currentText)
             //onClicked: model.setupConnection(name.text,localPort.text,serverPort.text,serverIp.text)
             //accepted()
         }

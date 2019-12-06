@@ -69,7 +69,7 @@ public:
     std::vector<Course> getProffesorCourseList(int );
 
     std::vector<std::pair<int,QString> > getProffessorsNames();
-    std::vector<QString> getCoursesNames();
+    std::vector<std::pair<int,QString> > getCoursesNames();
 
 
 

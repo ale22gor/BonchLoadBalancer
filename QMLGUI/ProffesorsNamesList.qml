@@ -6,13 +6,13 @@ ListView {
     id: proffesorsNamesList
     objectName: "proffesorsNamesList"
     model: ProffesorsNamesListModel
-    spacing: 20
+    spacing: 1
     delegate:Row{
-
+        width: parent.width
         Rectangle {
-            color: "lightgreen"
-            width: proffesorName.width+10
+            width: parent.width
             height: proffesorName.height + 5
+            border.color: "black"
             Label {
                 id: proffesorName
                 anchors.centerIn: parent
@@ -27,11 +27,12 @@ ListView {
                         popup.open()
                     }
 
-                    Label {
-                        id: id
-                        text: profId
-                        visible: false
-                    }
+
+                }
+                Label {
+                    id: id
+                    text: profId
+                    visible: false
                 }
 
             }

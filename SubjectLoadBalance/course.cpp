@@ -22,18 +22,28 @@ Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmo
     m_id{id}
 {
     //check if course == this -> break
-    std::list<AdministrativeUnit> admUnits{course->m_lab->delegate(labAmount)};
-    if(admUnits.size()>0)
-        m_lab = std::make_shared<Lab>(admUnits, course->m_lab->getHours());
+    if(this == course)
+        return;
 
-    admUnits = course->m_lecture->delegate(lecturesamount);
-    if(admUnits.size()>0)
+    std::list<AdministrativeUnit> admUnits;
+    //add move to
+    if(labAmount > 0){
+        admUnits = course->m_lab->delegate(labAmount);
+        if(admUnits.size()>0)
+            m_lab = std::make_shared<Lab>(admUnits, course->m_lab->getHours());
+    }
+    if(lecturesamount > 0){
+        admUnits = course->m_lecture->delegate(lecturesamount);
+        if(admUnits.size()>0)
             m_lecture =  std::make_shared<Lecture>(admUnits, course->m_lecture->getHours());
-
-    admUnits = course->m_seminar->delegate(seminarAmount);
-    if(admUnits.size()>0)
+    }
+    if(seminarAmount > 0){
+        admUnits = course->m_seminar->delegate(seminarAmount);
+        if(admUnits.size()>0)
             m_seminar =  std::make_shared<Seminar>(admUnits, course->m_seminar->getHours());
+    }
     m_courseName = course->getName();
+
 
 }
 

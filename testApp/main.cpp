@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 
     Repositories testR;
-    /*
+
     Lab testL{testList,14};
     Lecture testLess{testList,14};
     Seminar  testLec{testList,14};
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     testR.add(tmpCourse1);
 
-
+      /*
     Course tmpCourse{testR.getCourseByID(1)};//{testL,testLess,testLec};
 
     qDebug() << "course to load";
@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
 
     */
 
-    std::vector<QString> m_coursesNames{testR.getCoursesNames()};
+    //std::vector<QString> m_coursesNames{testR.getCoursesNames()};
 
-    for(auto &proffesorName:m_coursesNames){
-        qDebug()<<proffesorName;
-    }
+    //for(auto &proffesorName:m_coursesNames){
+    //    qDebug()<<proffesorName;
+    //}
 
     return a.exec();
 }

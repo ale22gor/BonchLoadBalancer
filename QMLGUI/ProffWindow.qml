@@ -9,5 +9,7 @@ RowLayout{
         Layout.fillWidth: true
         Layout.leftMargin: 24
         Layout.topMargin: 24
+        Layout.rightMargin: 24
+
     }
 }

@@ -8,13 +8,13 @@ ListView {
     id: coursesNamesList
     objectName: "coursesNamesList"
     model: CoursesNamesListModel
-    spacing: 20
+    spacing: 1
     delegate:Row{
-
+        width: parent.width
         Rectangle {
-            color: "lightgreen"
-            width: courseName.width+10
+            width: parent.width
             height: courseName.height + 5
+            border.color: "black"
 
             Label {
 
@@ -23,6 +23,11 @@ ListView {
                 text: name
                 font.pixelSize: 30
 
+            }
+            Label {
+                id: id
+                text: courseId
+                visible: false
             }
 
         }

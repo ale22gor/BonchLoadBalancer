@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include<QString>
 
 #include "coursesnamesmodel.h"
 #include "proffesorsnamesmodel.h"
@@ -18,6 +19,7 @@ class MODEL_EXPORT Model: public QObject
        ProffesorsNamesModel* m_professorsNames;
        ProfessorDetail * m_professorDetail;
 
+
    public:
        explicit Model(QObject *parent = nullptr);
        CoursesNamesModel * getCoursesNamesModel();
@@ -25,6 +27,8 @@ class MODEL_EXPORT Model: public QObject
        ProfessorDetail * getProffesorsDetailModel();
     public slots:
        void getProf(int id);
+       void addProf(QString, int, int, int, QString);
+
 
 };
 

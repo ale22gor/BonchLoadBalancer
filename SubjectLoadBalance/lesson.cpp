@@ -48,10 +48,10 @@ void Lesson::test()
 
 std::list<AdministrativeUnit> Lesson::delegate(int amount)
 {
+
+    std::list<AdministrativeUnit> admUinitToDelegate;
     if(m_amountOfFree >= amount && amount > 0){
         m_amountOfFree -=amount;
-        std::list<AdministrativeUnit> admUinitToDelegate;
-
         std::copy_if(m_administrativeUnit.begin(), m_administrativeUnit.end(), std::back_inserter(admUinitToDelegate),
                      [this](AdministrativeUnit& admUnit)
         {
@@ -64,7 +64,6 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
             return wasFree;
         });
 
-        return admUinitToDelegate;
     }
-
+    return admUinitToDelegate;
 }

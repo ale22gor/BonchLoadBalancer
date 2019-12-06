@@ -148,30 +148,44 @@ void Repositories::add(Course &entity )
 
     int labFK{-1};
     QString labId;
+    QString labId2;
     int lectureFK{-1};
     QString lectureId;
+    QString lectureId2;
     int seminarFK{-1};
     QString seminarId;
+    QString seminarId2;
 
 
     if(entity.m_lab != nullptr){
         labFK = add(*(entity.m_lab));
-        labId = "lab_id";
+        if(entity.m_seminar == nullptr)
+            seminarId = "lab_id";
+        else
+            seminarId = "lab_id, ";
+        labId = "lab_id, ";
+        labId2 = ":"+labId;
     }
     if(entity.m_lecture != nullptr){
         lectureFK = add(*(entity.m_lecture));
-        lectureId = "lecture_id";
+        lectureId = "lecture_id ";
+        lectureId2 = ":"+lectureId;
+        qDebug()<<lectureId2;
     }
     if(entity.m_seminar != nullptr){
         seminarFK = add(*(entity.m_seminar));
-        seminarId = "seminar_id";
-
+        if(entity.m_lecture == nullptr)
+            seminarId = "seminar_id";
+        else
+            seminarId = "seminar_id, ";
+        seminarId2 = ":"+seminarId;
     }
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+") "
-                  "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+")");
+    query.prepare("INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
+    QString loh{"INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")"};
+    qDebug() << loh;
     if(entity.m_lab != nullptr)
         query.bindValue(":lab_id", labFK);
     if(entity.m_seminar != nullptr)
@@ -179,12 +193,11 @@ void Repositories::add(Course &entity )
     if(entity.m_lecture != nullptr)
         query.bindValue(":lecture_id", lectureFK);
 
+
     if( !query.exec() )
-        qDebug() << query.lastError();
+        qDebug() << query.lastError() <<" course";
     else
         qDebug() << "inserted  course!";
-
-
 
 
 }
@@ -195,29 +208,43 @@ void Repositories::add(Course &entity, int profPk)
 
     int labFK{-1};
     QString labId;
+    QString labId2;
     int lectureFK{-1};
     QString lectureId;
+    QString lectureId2;
     int seminarFK{-1};
     QString seminarId;
+    QString seminarId2;
 
 
     if(entity.m_lab != nullptr){
         labFK = add(*(entity.m_lab));
-        labId = "lab_id";
+        if(entity.m_seminar == nullptr)
+            seminarId = "lab_id";
+        else
+            seminarId = "lab_id, ";
+        labId = "lab_id, ";
+        labId2 = ":"+labId;
     }
     if(entity.m_lecture != nullptr){
         lectureFK = add(*(entity.m_lecture));
-        lectureId = "lecture_id";
+        lectureId = "lecture_id ";
+        lectureId2 = ":"+lectureId;
+        qDebug()<<lectureId2;
     }
     if(entity.m_seminar != nullptr){
         seminarFK = add(*(entity.m_seminar));
-        seminarId = "seminar_id";
-
+        if(entity.m_lecture == nullptr)
+            seminarId = "seminar_id";
+        else
+            seminarId = "seminar_id, ";
+        seminarId2 = ":"+seminarId;
     }
 
+
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, "+labId+", "+seminarId+", "+lectureId+", proffesor_id)"
-                 "VALUES (:course_name, :"+labId+", :"+seminarId+", :"+lectureId+", :proffesor_id)");
+    query.prepare("INSERT INTO course (course_name, proffesor_id, " + labId + seminarId + lectureId + ")"
+                                                                                        "VALUES (:course_name, :proffesor_id, " + labId2 + seminarId2 + lectureId2 + ")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
     if(entity.m_lab != nullptr)
         query.bindValue(":lab_id", labFK);
@@ -228,7 +255,7 @@ void Repositories::add(Course &entity, int profPk)
     query.bindValue(":proffesor_id", profPk);
 
     if( !query.exec() )
-        qDebug() << query.lastError();
+        qDebug() << query.lastError() <<" course";
     else
         qDebug() << "inserted  course!";
 
@@ -249,7 +276,7 @@ int Repositories::add(Lab &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError();
+        qDebug() << query.lastError() <<" lab";
     else
         qDebug() << "inserted  lab!";
 
@@ -270,7 +297,7 @@ int Repositories::add(Lesson &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError();
+        qDebug() << query.lastError() << " lesson";
     else
         qDebug() << "inserted  lesson!";
     int lastIndex = query.lastInsertId().toInt();
@@ -570,26 +597,26 @@ std::vector<std::pair<int,QString> >  Repositories::getProffessorsNames()
     std::vector<std::pair<int,QString> >  professorsNames;
     //resize vector
     while (query.next()) {
-       professorsNames.push_back(std::make_pair(query.value(0).toInt(),QString{query.value(1).toString()}));
+        professorsNames.push_back(std::make_pair(query.value(0).toInt(),QString{query.value(1).toString()}));
     }
     return professorsNames;
 
 }
 
-std::vector<QString> Repositories::getCoursesNames()
+std::vector<std::pair<int,QString> > Repositories::getCoursesNames()
 {
     QSqlQuery query(Database);
 
-    query.prepare("SELECT course_name FROM course");
+    query.prepare("SELECT course_id, course_name FROM course");
     if(!query.exec()){
         qDebug() << query.lastError();
     }
     else
         qDebug() << "Courses names selected";
 
-    std::vector<QString> coursesNames;
+    std::vector<std::pair<int,QString> > coursesNames;
     while (query.next()) {
-       coursesNames.push_back(QString{query.value(0).toString()});
+        coursesNames.push_back(std::make_pair(query.value(0).toInt(),QString{query.value(1).toString()}));
     }
     return coursesNames;
 }
