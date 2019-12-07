@@ -13,14 +13,7 @@ ApplicationWindow {
 
     header:ToolBar {
         ToolButton {
-            text:{
-                if(view.currentItem.title === "Courses"){
-                    return "Proffesors"
-                }
-                if(view.currentItem.title === "Proffesors"){
-                    return "Courses"
-                }
-            }
+            text:"Back"
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
@@ -45,23 +38,27 @@ ApplicationWindow {
         }
         ToolButton {
             visible: {
+                /*
                 if(view.currentItem.title === "Proffesors"){
                     return true
                 }
-                return false
+                */
+                return true
             }
-            text:{
-                if(view.currentItem.title === "Proffesors"){
-                    return "Add"
-                }
-            }
+            text:"Add"
             anchors.right:  parent.right
             anchors.rightMargin:  10
             anchors.verticalCenter: parent.verticalCenter
             onClicked: {
-                var popupComponent = Qt.createComponent("AddProfWindow.qml")
-                var popup2 = popupComponent.createObject(view, {"parent" : view});
-                popup2.open()
+                var popupComponent
+                if(view.currentItem.title === "Proffesors"){
+                    popupComponent = Qt.createComponent("AddProfWindow.qml")
+                }else if(view.currentItem.title === "Courses"){
+                    popupComponent = Qt.createComponent("AddCourseWindow.qml")//add course
+
+                }
+                var popup = popupComponent.createObject(view, {"parent" : view});
+                popup.open()
             }
         }
     }
@@ -69,7 +66,6 @@ ApplicationWindow {
         id: view
         currentIndex: 0
         anchors.fill: parent
-        interactive: false
 
         Page{
 

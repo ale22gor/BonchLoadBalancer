@@ -556,6 +556,42 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
 
 }
 
+std::vector<AdministrativeUnit> Repositories::getAdmUnits()
+{
+    QSqlQuery query(Database);
+
+    query.prepare(R"#(SELECT *
+                  FROM admUnit)#");
+    if(!query.exec()){
+        qDebug() << query.lastError();
+        //return invalid value or exception
+    }else
+        qDebug() << "admunit selected";
+
+    std::vector<AdministrativeUnit> tmpList;
+
+    while (query.next()) {
+        int id {query.value(0).toInt()};
+        int amountOfPeople {query.value(1).toInt()};
+        int number {query.value(2).toInt()};
+        QString strFaculty {query.value(3).toString()};
+
+        Faculty faculty;
+        if(strFaculty.compare("ISIT"))
+            faculty = Faculty::ISIT;
+        else if(strFaculty.compare("RTS"))
+            faculty = Faculty::RTS;
+        else if(strFaculty.compare("IKSS"))
+            faculty = Faculty::IKSS;
+        else
+            //default value
+            faculty = Faculty::ISIT;
+
+        tmpList.push_back(AdministrativeUnit{faculty,amountOfPeople,number,id});
+    }
+    return tmpList;
+}
+
 std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
 {
     QSqlQuery query(Database);

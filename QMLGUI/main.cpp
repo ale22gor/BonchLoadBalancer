@@ -18,10 +18,9 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("myModel", &myModel);
 
 
-
+    ctxt->setContextProperty("AdmUnitsModel", QVariant::fromValue(myModel.getAdmUnitsModel()));
     ctxt->setContextProperty("CoursesNamesListModel", QVariant::fromValue(myModel.getCoursesNamesModel()));
     ctxt->setContextProperty("ProffesorsNamesListModel", QVariant::fromValue(myModel.getProffesorsNamesModel()));
-
     ctxt->setContextProperty("ProffesorsSubCoursesList", QVariant::fromValue(myModel.getProffesorsDetailModel()));
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

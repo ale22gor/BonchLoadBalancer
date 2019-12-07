@@ -65,6 +65,7 @@ public:
 
     //Lesson getLessonByID(int );
     std::list<AdministrativeUnit> getAdmUnitsByID(int );
+    std::vector<AdministrativeUnit> getAdmUnits();
 
     std::vector<Course> getProffesorCourseList(int );
 

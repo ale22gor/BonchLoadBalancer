@@ -10,5 +10,9 @@
         <file>SubCourseAdmUnitsList.qml</file>
         <file>AddProfWindow.qml</file>
         <file>AddProfForm.qml</file>
+        <file>AddCourseWindow.qml</file>
+        <file>AddCourseForm.qml</file>
+        <file>ChooseAdmUnitWindow.qml</file>
+        <file>ChooseAdmUnitList.qml</file>
     </qresource>
 </RCC>
