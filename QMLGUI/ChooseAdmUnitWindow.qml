@@ -4,16 +4,27 @@ import QtQuick.Controls 2.5
 Popup{
     width: parent.width
     height: parent.height
-    RowLayout{
+    ColumnLayout{
         anchors.fill: parent
 
-        ChooseAdmUnitList{
-            Layout.fillHeight: true
+        RowLayout{
             Layout.fillWidth: true
-            Layout.leftMargin: 24
-            Layout.topMargin: 24
-            Layout.rightMargin: 24
+
+            ChooseAdmUnitList{
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.leftMargin: 24
+                Layout.topMargin: 24
+                Layout.rightMargin: 24
+
+            }
+
+        }
+        Button{
+            text: "Add"
+            Layout.fillWidth: true
 
         }
     }
+
 }

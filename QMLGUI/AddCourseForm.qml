@@ -26,7 +26,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(view, {"parent" : view});
+                var popup = popupComponent.createObject(root, {"parent" : root});
                 popup.open()
             }
         }
@@ -59,7 +59,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(view, {"parent" : view});
+                var popup = popupComponent.createObject(root, {"parent" : root});
                 popup.open()
             }
         }
@@ -90,7 +90,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(view, {"parent" : view});
+                var popup = popupComponent.createObject(root, {"parent" : root});
                 popup.open()
             }
         }

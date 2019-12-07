@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
 
 
 
@@ -9,45 +10,40 @@ ListView {
     objectName: "admUnitsModel"
     model: AdmUnitsModel
     spacing: 1
-    delegate:Row{
-        width: parent.width
-        Rectangle {
+    delegate:Rectangle {
+        //fix width
+        width: admUnitsLayoute.width
+        height: admUnitsLayoute.height
+        border.color: "black"
+        RowLayout{
+            id: admUnitsLayoute
             height: facultyLabel.height + 5
-            border.color: "black"
+            CheckBox{
+                id:admUnitsCheckBox
+
+            }
 
             Label {
-
                 id:facultyLabel
-                anchors.centerIn: parent
                 text: faculty
                 font.pixelSize: 30
-
             }
-        }
-        Rectangle {
-            height: groupLabel.height + 5
-            border.color: "black"
-
             Label {
-
                 id:groupLabel
-                anchors.centerIn: parent
                 text: group
                 font.pixelSize: 30
-
             }
-        }
-        Rectangle {
-            height: amountLabel.height + 5
-            border.color: "black"
             Label {
                 id: amountLabel
                 text: amount
-                visible: false
+                font.pixelSize: 30
             }
         }
 
+
+
     }
 }
+
 
 
