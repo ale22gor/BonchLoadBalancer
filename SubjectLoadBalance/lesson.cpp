@@ -37,6 +37,11 @@ std::list<AdministrativeUnit> Lesson::getAdmUnit() const
     return m_administrativeUnit;
 }
 
+int Lesson::getAdmUnitsAmount() const
+{
+    return static_cast<int>(m_administrativeUnit.size());
+}
+
 void Lesson::test()
 {
     qDebug()  <<"lesson" << getHours();

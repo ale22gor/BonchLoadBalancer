@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <vector>
+
 #include <QAbstractListModel>
 
 
@@ -23,9 +24,9 @@ class MODEL_EXPORT ProffesorsNamesModel:public QAbstractListModel
 
  public:
      ProffesorsNamesModel(std::vector<std::pair<int,QString> > , QObject *parent = nullptr);
-     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-     int rowCount(const QModelIndex & parent = QModelIndex()) const;
-     QHash<int, QByteArray> roleNames() const;
+     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+     int rowCount(const QModelIndex & parent = QModelIndex()) const override;
+     QHash<int, QByteArray> roleNames() const override;
 };
 
 #endif // PROFFESORSNAMESMODEL_H

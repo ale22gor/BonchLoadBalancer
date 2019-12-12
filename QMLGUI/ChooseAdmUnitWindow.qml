@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.5
 Popup{
+    id:selectPopup
     width: parent.width
     height: parent.height
     ColumnLayout{
@@ -21,8 +22,12 @@ Popup{
 
         }
         Button{
+            id:addAdmUnitsButton
             text: "Add"
             Layout.fillWidth: true
+            onClicked: {
+
+            }
 
         }
     }

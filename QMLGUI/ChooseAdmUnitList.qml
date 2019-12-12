@@ -20,6 +20,26 @@ ListView {
             height: facultyLabel.height + 5
             CheckBox{
                 id:admUnitsCheckBox
+                Component.onCompleted: {
+                    if(selectPopup.objectName === "lab")
+                        checked = labCheckStatus
+                    else if(selectPopup.objectName === "lecture")
+                        checked = lectureCheckStatus
+                    else if(selectPopup.objectName === "seminar")
+                        checked = seminarCheckStatus
+                    else
+                        checked = false
+                }
+                onCheckedChanged: {
+                    if(selectPopup.objectName == "lab")
+                        labCheckStatus = checked
+                    else if(selectPopup.objectName == "lecture")
+                        lectureCheckStatus = checked
+                    else if(selectPopup.objectName == "seminar")
+                        seminarCheckStatus = checked
+                }
+
+                //text: selectPopup.objectName
 
             }
 

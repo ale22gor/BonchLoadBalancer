@@ -30,6 +30,7 @@ public:
     int getHours();
     int getID();
     std::list<AdministrativeUnit> getAdmUnit() const;
+    int getAdmUnitsAmount() const;
 
     void test();
 

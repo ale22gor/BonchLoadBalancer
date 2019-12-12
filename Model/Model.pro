@@ -28,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     Model_global.h \
+    admUnitToSelect.h \
     admunitsmodel.h \
     coursedetail.h \
     coursesnamesmodel.h \

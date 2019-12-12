@@ -24,9 +24,9 @@ class MODEL_EXPORT ProfessorDetail:public QAbstractListModel
 public:
     ProfessorDetail(QObject *parent = nullptr);
     void setProf(Professor);
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QHash<int, QByteArray> roleNames() const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
+    QHash<int, QByteArray> roleNames() const override;
 };
 
 #endif // PROFESSORDETAIL_H

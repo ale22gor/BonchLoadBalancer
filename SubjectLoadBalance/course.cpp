@@ -13,9 +13,12 @@ Course::Course(Lab lab, Lecture lecture, Seminar seminar, QString name, int id)
     :m_courseName{name},
       m_id{id}
 {
-    m_lab =  std::make_shared<Lab>(lab);
-    m_lecture =  std::make_shared<Lecture>(lecture);
-    m_seminar =  std::make_shared<Seminar>(seminar);
+    if(lab.getAdmUnitsAmount() > 0 && lab.getHours() > 0)
+        m_lab =  std::make_shared<Lab>(lab);
+    if(lecture.getAdmUnitsAmount() > 0 && lecture.getHours() > 0)
+        m_lecture =  std::make_shared<Lecture>(lecture);
+    if(seminar.getAdmUnitsAmount() > 0 && seminar.getHours() > 0)
+        m_seminar =  std::make_shared<Seminar>(seminar);
 
 }
 Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount, int id):

@@ -145,6 +145,10 @@ void Repositories::add(Professor &entity)
 void Repositories::add(Course &entity )
 {
     qDebug()<<entity.getName();
+    if(entity.m_lab == nullptr && entity.m_seminar == nullptr && entity.m_lecture == nullptr
+            && entity.getName() == "")
+        //throw exeption notify user
+        return;
 
     int labFK{-1};
     QString labId;
@@ -159,18 +163,11 @@ void Repositories::add(Course &entity )
 
     if(entity.m_lab != nullptr){
         labFK = add(*(entity.m_lab));
-        if(entity.m_seminar == nullptr)
-            seminarId = "lab_id";
+        if(entity.m_seminar == nullptr && entity.m_lecture == nullptr)
+            labId = "lab_id";
         else
-            seminarId = "lab_id, ";
-        labId = "lab_id, ";
+            labId = "lab_id, ";
         labId2 = ":"+labId;
-    }
-    if(entity.m_lecture != nullptr){
-        lectureFK = add(*(entity.m_lecture));
-        lectureId = "lecture_id ";
-        lectureId2 = ":"+lectureId;
-        qDebug()<<lectureId2;
     }
     if(entity.m_seminar != nullptr){
         seminarFK = add(*(entity.m_seminar));
@@ -180,6 +177,13 @@ void Repositories::add(Course &entity )
             seminarId = "seminar_id, ";
         seminarId2 = ":"+seminarId;
     }
+    if(entity.m_lecture != nullptr){
+        lectureFK = add(*(entity.m_lecture));
+        lectureId = "lecture_id ";
+        lectureId2 = ":"+lectureId;
+        qDebug()<<lectureId2;
+    }
+
 
     QSqlQuery query(Database);
     query.prepare("INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")");

@@ -43,6 +43,30 @@ void Model::addProf(QString profName, int labAmount, int lectureAmount, int semi
     //m_repository.add(tmpProf);
 }
 
+void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHour)
+{
+    std::list<AdministrativeUnit> labAdmUnits;
+    std::list<AdministrativeUnit> lectureAmount;
+    std::list<AdministrativeUnit> seminarAmount;
+
+    for(auto admUnitsSelected:m_admUnitModel->m_admUnitsToSelect){
+        if(admUnitsSelected.m_LabSelected)
+            labAdmUnits.push_back(admUnitsSelected.m_admUnits);
+        if(admUnitsSelected.m_lectureSelected)
+            lectureAmount.push_back(admUnitsSelected.m_admUnits);
+        if(admUnitsSelected.m_seminarSelected)
+            seminarAmount.push_back(admUnitsSelected.m_admUnits);
+    }
+    Lab lab{labAdmUnits,labHour};
+    Lecture lecture{lectureAmount,lectureHour};
+    Seminar  seminar{seminarAmount,seminarHour};
+
+    Course tmpCourse1{lab,lecture,seminar,name};
+
+    m_repository.add(tmpCourse1);
+
+}
+
 void Model::getProf(int id)
 {
     m_professorDetail->setProf(m_repository.getProfessorByID(id));

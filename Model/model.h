@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include<QString>
+#include<list>
 
 #include "coursesnamesmodel.h"
 #include "proffesorsnamesmodel.h"
@@ -21,6 +22,7 @@ class MODEL_EXPORT Model: public QObject
        ProfessorDetail *m_professorDetail;
        AdmUnitsModel *m_admUnitModel;
 
+       std::list<int> m_selecttedUnitsId;
 
    public:
        explicit Model(QObject *parent = nullptr);
@@ -32,6 +34,7 @@ class MODEL_EXPORT Model: public QObject
     public slots:
        void getProf(int id);
        void addProf(QString, int, int, int, QString);
+       void addCourse(QString, int, int, int);
 
 
 };

@@ -26,7 +26,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(root, {"parent" : root});
+                var popup = popupComponent.createObject(root, {"parent" : root, "objectName":"lab"});
                 popup.open()
             }
         }
@@ -59,7 +59,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(root, {"parent" : root});
+                var popup = popupComponent.createObject(root, {"parent" : root, "objectName":"lecture"});
                 popup.open()
             }
         }
@@ -90,7 +90,7 @@ ColumnLayout {
             onClicked:{
                 var popupComponent
                 popupComponent = Qt.createComponent("ChooseAdmUnitWindow.qml")
-                var popup = popupComponent.createObject(root, {"parent" : root});
+                var popup = popupComponent.createObject(root, {"parent" : root, "objectName":"seminar"});
                 popup.open()
             }
         }
@@ -115,7 +115,7 @@ ColumnLayout {
         Layout.fillHeight: true
         text:"add"
         onClicked:{
-            myModel.addProf(name.text, labAmount.text, lectureAmount.text, seminarAmount.text,courseCombo.currentText)
+            myModel.addCourse(name.text, labHourAmount.text, lectureHourAmount.text, seminarHourAmount.text)
             //onClicked: model.setupConnection(name.text,localPort.text,serverPort.text,serverIp.text)
             //accepted()
         }
