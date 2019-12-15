@@ -24,7 +24,15 @@ class SUBJECTLOADBALANCE_EXPORT Course
 
     const int m_id;
 public:
-    Course(Lab, Lecture, Seminar, QString, int =-1);
+    Course(Lab, Lecture, Seminar, QString = "defaultName", int =-1);
+    Course(Lab, Lecture, QString = "defaultName", int =-1);
+    Course(Lab, Seminar, QString = "defaultName", int =-1);
+    Course(Lecture, Seminar, QString = "defaultName", int =-1);
+    Course(Lab, QString = "defaultName", int =-1);
+    Course(Lecture, QString = "defaultName", int =-1);
+    Course(Seminar, QString = "defaultName", int =-1);
+
+
     Course(Course* , int ,int , int  , int = -1);
     Course();
 

@@ -14,5 +14,7 @@
         <file>AddCourseForm.qml</file>
         <file>ChooseAdmUnitWindow.qml</file>
         <file>ChooseAdmUnitList.qml</file>
+        <file>CourseDetailWindow.qml</file>
+        <file>CourseDetailList.qml</file>
     </qresource>
 </RCC>

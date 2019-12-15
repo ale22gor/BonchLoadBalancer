@@ -8,6 +8,7 @@ Model::Model(QObject *parent) : QObject{parent}
     m_professorsNames = new ProffesorsNamesModel{m_repository.getProffessorsNames(),this};
     m_professorDetail = new ProfessorDetail{this};
     m_admUnitModel = new AdmUnitsModel{m_repository.getAdmUnits(),this};
+    m_courseDetail = new CourseDetail{this};
 }
 CoursesNamesModel * Model::getCoursesNamesModel(){return m_coursesNames;}
 
@@ -16,6 +17,10 @@ ProffesorsNamesModel *Model::getProffesorsNamesModel(){return m_professorsNames;
 ProfessorDetail *Model::getProffesorsDetailModel()
 {
     return  m_professorDetail;
+}
+CourseDetail *Model::getCourseDetail()
+{
+    return  m_courseDetail;
 }
 
 AdmUnitsModel *Model::getAdmUnitsModel()
@@ -67,7 +72,17 @@ void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHou
 
 }
 
+void Model::resetSelectedAdmUnits()
+{
+    m_admUnitModel->resetData();
+}
+
 void Model::getProf(int id)
 {
     m_professorDetail->setProf(m_repository.getProfessorByID(id));
+}
+
+void Model::getCourse(int id)
+{
+    m_courseDetail->setCourse(m_repository.getCourseByID(id));
 }

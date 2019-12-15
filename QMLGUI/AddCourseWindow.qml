@@ -7,4 +7,5 @@ Popup{
     AddCourseForm{
 
     }
+    onClosed: myModel.resetSelectedAdmUnits()
 }

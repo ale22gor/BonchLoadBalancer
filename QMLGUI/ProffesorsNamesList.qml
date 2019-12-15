@@ -10,6 +10,17 @@ ListView {
     delegate:Row{
         width: parent.width
         Rectangle {
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    myModel.getProf(id.text)
+                    var popupComponent = Qt.createComponent("ProffDetailWindow.qml")
+                    var popup = popupComponent.createObject(view, {"parent" : view});
+                    popup.open()
+                }
+
+
+            }
             width: parent.width
             height: proffesorName.height + 5
             border.color: "black"
@@ -18,17 +29,7 @@ ListView {
                 anchors.centerIn: parent
                 text: name
                 font.pixelSize: 30
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        myModel.getProf(id.text)
-                        var popupComponent = Qt.createComponent("ProffDetailWindow.qml")
-                        var popup = popupComponent.createObject(view, {"parent" : view});
-                        popup.open()
-                    }
 
-
-                }
                 Label {
                     id: id
                     text: profId

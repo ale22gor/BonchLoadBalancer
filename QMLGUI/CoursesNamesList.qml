@@ -16,6 +16,16 @@ ListView {
             height: courseName.height + 5
             border.color: "black"
 
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    myModel.getCourse(id.text)
+                    var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
+                    var popup = popupComponent.createObject(view, {"parent" : view});
+                    popup.open()
+                }
+            }
+
             Label {
 
                 id:courseName

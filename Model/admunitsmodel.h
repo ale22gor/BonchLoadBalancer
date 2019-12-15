@@ -27,6 +27,7 @@ public:
     int rowCount(const QModelIndex & parent = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    void resetData();
 
     friend class Model;
 };

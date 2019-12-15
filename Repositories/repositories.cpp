@@ -248,7 +248,7 @@ void Repositories::add(Course &entity, int profPk)
 
     QSqlQuery query(Database);
     query.prepare("INSERT INTO course (course_name, proffesor_id, " + labId + seminarId + lectureId + ")"
-                                                                                        "VALUES (:course_name, :proffesor_id, " + labId2 + seminarId2 + lectureId2 + ")");
+                                                                                                      "VALUES (:course_name, :proffesor_id, " + labId2 + seminarId2 + lectureId2 + ")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
     if(entity.m_lab != nullptr)
         query.bindValue(":lab_id", labFK);
@@ -384,9 +384,40 @@ Course Repositories::getCourseByID(int courseID)
         int labId {query.value(2).toInt()};
         int lectureId  {query.value(3).toInt()};
         int seminarId  {query.value(4).toInt()};
+        qDebug() << lectureId;
 
-        return Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id};
+        if(labId == 0 && lectureId == 0 && seminarId == 0){
+            //throw exeption
+        }
+
+        if(labId == 0){
+            if(lectureId == 0)
+                return Course{getSeminarByID(seminarId),courseName,id};
+
+            else if(seminarId == 0)
+                return Course{getLectureByID(lectureId),courseName,id};
+
+            else
+                return Course{getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id};
+        }
+        else if(lectureId == 0){
+
+            if(seminarId == 0)
+                return Course{getLabByID(labId),courseName,id};
+
+            else
+                return Course{getLabByID(labId),getSeminarByID(seminarId),courseName,id};
+        }
+        else if(seminarId == 0){
+            return Course{getLabByID(labId),getLectureByID(lectureId),courseName,id};
+
+        }
+        else
+            return Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id};
+
     }
+    qDebug() << "course not selected";
+
 }
 
 Professor Repositories::getProfessorByID(int proffesorId)
@@ -617,9 +648,41 @@ std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
         int seminarId {query.value(4).toInt()};
 
         //N+1 PROBLEM OPTIMIZATION NEEDED
-        courseList.push_back(Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id});
+
+        if(labId == 0 && lectureId == 0 && seminarId == 0){
+            //throw exeption
+        }
+
+        if(labId == 0){
+            if(lectureId == 0)
+                courseList.push_back( Course{getSeminarByID(seminarId),courseName,id});
+
+            else if(seminarId == 0)
+                courseList.push_back( Course{getLectureByID(lectureId),courseName,id});
+
+            else
+                courseList.push_back( Course{getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id});
+        }
+        else if(lectureId == 0){
+
+            if(seminarId == 0)
+                courseList.push_back( Course{getLabByID(labId),courseName,id});
+
+            else
+                courseList.push_back( Course{getLabByID(labId),getSeminarByID(seminarId),courseName,id});
+        }
+        else if(seminarId == 0){
+            courseList.push_back( Course{getLabByID(labId),getLectureByID(lectureId),courseName,id});
+
+        }
+        else
+            courseList.push_back( Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id});
+
     }
+
+
     return courseList;
+
 
 }
 

@@ -25,7 +25,9 @@ int main(int argc, char *argv[])
 
 
     Repositories testR;
+    Course tmpCourse{testR.getCourseByID(8)};//{testL,testLess,testLec};
 
+    /*
     Lab testL{testList,14};
     Lecture testLess{testList,14};
     Seminar  testLec{testList,14};
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
 
     testR.add(tmpCourse1);
 
-      /*
+
     Course tmpCourse{testR.getCourseByID(1)};//{testL,testLess,testLec};
 
     qDebug() << "course to load";

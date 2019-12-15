@@ -16,6 +16,7 @@ class SUBJECTLOADBALANCE_EXPORT AdministrativeUnit
     bool m_free;
 public:
 
+    AdministrativeUnit();
     AdministrativeUnit(Faculty ,int ,int, int, bool = true);
     void test();
 

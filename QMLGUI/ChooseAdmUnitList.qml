@@ -31,11 +31,11 @@ ListView {
                         checked = false
                 }
                 onCheckedChanged: {
-                    if(selectPopup.objectName == "lab")
+                    if(selectPopup.objectName === "lab")
                         labCheckStatus = checked
-                    else if(selectPopup.objectName == "lecture")
+                    else if(selectPopup.objectName === "lecture")
                         lectureCheckStatus = checked
-                    else if(selectPopup.objectName == "seminar")
+                    else if(selectPopup.objectName === "seminar")
                         seminarCheckStatus = checked
                 }
 

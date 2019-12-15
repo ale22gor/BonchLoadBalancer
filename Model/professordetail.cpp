@@ -15,7 +15,10 @@ ProfessorDetail::ProfessorDetail( QObject *parent):
 
 void ProfessorDetail::setProf(Professor proff)
 {
-    m_prof = std::unique_ptr<Professor>{new Professor(proff)};//cant call make unique !!!!!!WTF make_shared works
+    if(m_prof == nullptr)
+        m_prof = std::unique_ptr<Professor>{new Professor(proff)};//cant call make unique !!!!!!WTF make_shared works
+    else
+        m_prof.reset(new Professor(proff));
 }
 
 QVariant ProfessorDetail::data(const QModelIndex &index, int role) const

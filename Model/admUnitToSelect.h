@@ -12,7 +12,13 @@ struct admUnitToSelect{
 
     admUnitToSelect(AdministrativeUnit admUnits):m_LabSelected{false},m_lectureSelected{false},m_seminarSelected{false},m_admUnits{admUnits}
     {}
-
+    void resetSelected(){
+        m_LabSelected = false;
+        m_lectureSelected = false;
+        m_seminarSelected = false;
+    }
 };
 
 #endif // ADMUNITTOSELECT_H
+
+

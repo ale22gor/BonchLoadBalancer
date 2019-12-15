@@ -82,3 +82,10 @@ bool AdmUnitsModel::setData(const QModelIndex &index, const QVariant &value, int
 
     return true ;
 }
+
+void AdmUnitsModel::resetData()
+{
+    for(auto &unit:m_admUnitsToSelect){
+        unit.resetSelected();
+    }
+}
