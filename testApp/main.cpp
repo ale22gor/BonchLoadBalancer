@@ -25,8 +25,9 @@ int main(int argc, char *argv[])
 
 
     Repositories testR;
+    //testR.getCourseByID(8);
     Course tmpCourse{testR.getCourseByID(8)};//{testL,testLess,testLec};
-
+tmpCourse.test();
     /*
     Lab testL{testList,14};
     Lecture testLess{testList,14};

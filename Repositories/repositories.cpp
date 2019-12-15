@@ -382,12 +382,14 @@ Course Repositories::getCourseByID(int courseID)
         int id {query.value(0).toInt()};
         QString courseName {query.value(1).toString()};
         int labId {query.value(2).toInt()};
-        int lectureId  {query.value(3).toInt()};
-        int seminarId  {query.value(4).toInt()};
+        int seminarId {query.value(3).toInt()};
+        int lectureId  {query.value(4).toInt()};
+        qDebug() << labId;
         qDebug() << lectureId;
+        qDebug() << seminarId;
 
         if(labId == 0 && lectureId == 0 && seminarId == 0){
-            //throw exeption
+            exit(1);//throw exeption
         }
 
         if(labId == 0){
@@ -644,8 +646,8 @@ std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
         int id {query.value(0).toInt()};
         QString courseName{query.value(1).toString()};
         int labId {query.value(2).toInt()};
-        int lectureId {query.value(3).toInt()};
-        int seminarId {query.value(4).toInt()};
+        int seminarId {query.value(3).toInt()};
+        int lectureId  {query.value(4).toInt()};
 
         //N+1 PROBLEM OPTIMIZATION NEEDED
 

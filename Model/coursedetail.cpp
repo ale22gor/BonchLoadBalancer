@@ -24,43 +24,58 @@ QVariant CourseDetail::data(const QModelIndex &index, int role) const
     if(m_course == nullptr)
         return QVariant();
 
-    //subCourse.test();
-    /*
     if(role == Lab)
     {
-        QVariantList list;
-        for(auto admUnit:m_course->getLab()->getAdmUnit()){
-            admUnit.test();
-            list.append(admUnit.getFaculty());
-            list.append(admUnit.getNumber());
-            list.append(admUnit.getamountOfPeople());
+        if(m_course->getLab() != nullptr){
+            QVariantList list;
+            for(auto admUnit:m_course->getLab()->getAdmUnit()){
+                admUnit.test();
+                list.append(admUnit.getFaculty());
+                list.append(admUnit.getNumber());
+                list.append(admUnit.getamountOfPeople());
+            }
+            return list;
         }
-        return list;
+        return   QVariantList();
+
     }
+
     if(role == Seminar)
     {
-        QVariantList list;
-        for(auto admUnit:m_course->getSeminar()->getAdmUnit()){
-            list.append(admUnit.getFaculty());
-            list.append(admUnit.getNumber());
-            list.append(admUnit.getamountOfPeople());
-        }
-        return list;
+        if(m_course->getSeminar() != nullptr){
+            QVariantList list;
+
+            for(auto admUnit:m_course->getSeminar()->getAdmUnit()){
+                list.append(admUnit.getFaculty());
+                list.append(admUnit.getNumber());
+                list.append(admUnit.getamountOfPeople());
+            }
+
+            return list;
+        }else
+            return   QVariantList();
+
     }
+
     if(role == Lecture)
     {
-        QVariantList list;
-        for(auto admUnit:m_course->getLecture()->getAdmUnit()){
-            list.append(admUnit.getFaculty());
-            list.append(admUnit.getNumber());
-            list.append(admUnit.getamountOfPeople());
+        if(m_course->getLecture() != nullptr){
+
+            QVariantList list;
+            for(auto admUnit:m_course->getLecture()->getAdmUnit()){
+                list.append(admUnit.getFaculty());
+                list.append(admUnit.getNumber());
+                list.append(admUnit.getamountOfPeople());
+            }
+            return list;
         }
-        return list;
+        return QVariant();
+
     }
 
     else if (role == NameRole)
         return QVariant{m_course->getName()};
-        */
+
     else
         return QVariant();
 
