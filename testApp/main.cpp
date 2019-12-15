@@ -26,8 +26,23 @@ int main(int argc, char *argv[])
 
     Repositories testR;
     //testR.getCourseByID(8);
-    Course tmpCourse{testR.getCourseByID(8)};//{testL,testLess,testLec};
-tmpCourse.test();
+    Course tmpCourse{testR.getCourseByID(1)};//{testL,testLess,testLec};
+//tmpCourse.test();
+Course tmpCourse2{&tmpCourse,1,0,1};
+//tmpCourse2.test();
+//tmpCourse.test();
+
+Course tmpCourse3{&tmpCourse,0,1,0};
+//tmpCourse.test();
+
+tmpCourse3.test();
+//Professor testProf{100,200,"antipin"};//{testR.getProfessorByID(1)};
+//error if 0 below
+//testProf.addSubCourse(&tmpCourse,1,1,1);
+//testProf.test();
+//testProf.addSubCourse(&tmpCourse,1,1,1);
+//testProf.test();
+
     /*
     Lab testL{testList,14};
     Lecture testLess{testList,14};

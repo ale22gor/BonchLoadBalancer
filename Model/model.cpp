@@ -41,11 +41,12 @@ void Model::addProf(QString profName, int labAmount, int lectureAmount, int semi
 
     Professor tmpProf(100,200,profName);
     tmpProf.test();
-    qDebug()<<it->first;
 
     Course tmpCourse = m_repository.getCourseByID(it->first);
+    //tmpCourse.test();
+
     tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
-    //m_repository.add(tmpProf);
+    m_repository.add(tmpProf);
 }
 
 void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHour)

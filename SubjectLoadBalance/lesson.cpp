@@ -5,9 +5,12 @@
 Lesson::Lesson(std::list<AdministrativeUnit> administrativeUnit, int hours, int id):
     m_administrativeUnit{administrativeUnit},
     m_hours{hours},
-    m_amountOfFree{static_cast<int>(administrativeUnit.size())},
     m_id{id}
 {
+    m_amountOfFree = std::count_if(m_administrativeUnit.begin(), m_administrativeUnit.end(),[](AdministrativeUnit& admUnit)
+    {
+            return admUnit.isFree();
+    });
     //change order and move to :
     //m_freeAdministrativeUnit = m_administrativeUnit;
     //m_hours = hours;
@@ -16,10 +19,12 @@ Lesson::Lesson(std::list<AdministrativeUnit> administrativeUnit, int hours, int 
 Lesson::Lesson(std::list<AdministrativeUnit> &&administrativeUnit, int &&hours, int id):
     m_administrativeUnit{administrativeUnit},
     m_hours{hours},
-    m_amountOfFree{static_cast<int>(m_administrativeUnit.size())},
     m_id{id}
 {
-
+    m_amountOfFree = std::count_if(m_administrativeUnit.begin(), m_administrativeUnit.end(),[](AdministrativeUnit& admUnit)
+    {
+            return admUnit.isFree();
+    });
 }
 
 int Lesson::getHours()
@@ -48,6 +53,7 @@ void Lesson::test()
     for(auto &admUnit:m_administrativeUnit){
         admUnit.test();
     }
+    qDebug()<<"m_amountOfFree"<<m_amountOfFree;
 
 }
 
@@ -55,20 +61,29 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
 {
 
     std::list<AdministrativeUnit> admUinitToDelegate;
+    //qDebug()<<"m_amountOfFree"<<m_amountOfFree;
+    qDebug()<<"amount"<<amount;
+
     if(m_amountOfFree >= amount && amount > 0){
         m_amountOfFree -=amount;
+
+        //rewrite to stop check after n(custom copy_if_n kinda function)
+        int amountOffound{0};
+
         std::copy_if(m_administrativeUnit.begin(), m_administrativeUnit.end(), std::back_inserter(admUinitToDelegate),
-                     [this](AdministrativeUnit& admUnit)
+                     [this,&amount,amountOffound] (AdministrativeUnit& admUnit) mutable
         {
             bool wasFree{false};
             if(admUnit.isFree()){
+                amountOffound++;
                 wasFree = true;
                 admUnit.setFree(false);
                 this->m_idToUpdate.push_back(admUnit.getId());
             }
-            return wasFree;
+            return wasFree && (amountOffound <= amount);
         });
-
     }
+    //qDebug()<<"m_amountOfFree"<<m_amountOfFree;
+
     return admUinitToDelegate;
 }

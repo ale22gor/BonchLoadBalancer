@@ -88,9 +88,10 @@ Course::Course(Seminar seminar, QString name, int id)
 Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount, int id):
     m_id{id}
 {
+
     //check if course == this -> break
-    if(this == course)
-        return;
+    //if(this == course)
+        //return;
 
     std::list<AdministrativeUnit> admUnits;
     //add move to
