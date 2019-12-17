@@ -1,4 +1,4 @@
-
+import QtQuick.Layouts 1.12
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
@@ -17,14 +17,8 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            onClicked: {
-                if(view.currentItem.title === "Courses"){
-                    view.currentIndex = 1
-                }
-                else if(view.currentItem.title === "Proffesors"){
-                    view.currentIndex = 0
-                }
-            }
+            enabled: view.depth > 1
+            onClicked: view.pop()
         }
 
         Label {
@@ -37,14 +31,8 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
         ToolButton {
-            visible: {
-                /*
-                if(view.currentItem.title === "Proffesors"){
-                    return true
-                }
-                */
-                return true
-            }
+            enabled: view.depth > 1
+
             text:"Add"
             anchors.right:  parent.right
             anchors.rightMargin:  10
@@ -62,22 +50,57 @@ ApplicationWindow {
             }
         }
     }
-    SwipeView {
+
+    StackView {
         id: view
-        currentIndex: 0
         anchors.fill: parent
+        initialItem: Page {
+            title: qsTr("Main window")
+
+            RowLayout {
+                anchors.fill: parent
+
+
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 24
+                    Layout.topMargin: 24
+                    Layout.bottomMargin: 24
+
+                    text: "Course"
+                    onClicked: view.push(courseWindow)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.rightMargin: 24
+                    Layout.topMargin: 24
+                    Layout.bottomMargin: 24
+
+                    text: "Proff"
+                    onClicked: view.push(proffWindow)
+                }
+
+            }
+        }
 
         Page{
-
+            id:courseWindow
             title: qsTr("Courses")
             CourseWindow{
             }
         }
+
         Page{
+            id:proffWindow
             title: qsTr("Proffesors")
             ProffWindow{
             }
         }
 
+
     }
+
+
 }

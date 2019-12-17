@@ -62,11 +62,13 @@ ListView {
         RowLayout{
             id:body
             width: parent.width
-
-            ListView {
+            Column{
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
                 Layout.minimumHeight: 40
+
+                ListView {
+
                 model: Lab //the internal QVariantList
                 orientation: ListView.Horizontal
                 spacing:10
@@ -78,6 +80,7 @@ ListView {
                 }
 
 
+            }
             }
 
             ListView {

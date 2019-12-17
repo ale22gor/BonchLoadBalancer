@@ -46,6 +46,7 @@ void Model::addProf(QString profName, int labAmount, int lectureAmount, int semi
     //tmpCourse.test();
 
     tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
+    m_repository.UpdateLessonsStatus(tmpCourse);
     m_repository.add(tmpProf);
 }
 

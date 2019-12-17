@@ -718,7 +718,7 @@ std::vector<std::pair<int,QString> > Repositories::getCoursesNames()
 {
     QSqlQuery query(Database);
 
-    query.prepare("SELECT course_id, course_name FROM course");
+    query.prepare("SELECT course_id, course_name FROM course WHERE proffesor_id IS NULL");
     if(!query.exec()){
         qDebug() << query.lastError();
     }
