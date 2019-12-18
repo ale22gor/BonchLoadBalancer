@@ -7,11 +7,11 @@ ListView {
     id: proffesorsSubCoursesList
     objectName: "proffesorsSubCoursesList"
     model: ProffesorsSubCoursesList
-    delegate: Column {
+    delegate: ColumnLayout {
         width: parent.width
         spacing: 2
         Rectangle {
-            width: parent.width
+            Layout.fillWidth: true
             height: courseName.height
             color: "steelblue"
             border.color: "black"
@@ -32,7 +32,7 @@ ListView {
         RowLayout{
             id:header
             visible: false
-            width: parent.width
+            Layout.fillWidth: true
 
             Rectangle{
                 Layout.fillWidth: true
@@ -78,17 +78,18 @@ ListView {
         RowLayout{
             id:body
             visible: false
-            width: parent.width
+            Layout.fillWidth: true
 
             ListView {
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
-                Layout.minimumHeight: 40
+                Layout.minimumHeight: 200
                 model: Lab //the internal QVariantList
-                orientation: ListView.Horizontal
+                orientation: ListView.Vertical
                 spacing:10
 
                 delegate:Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
                     id: labDATA
                     text: modelData
                     font.pixelSize: 30
@@ -100,13 +101,14 @@ ListView {
             ListView {
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
-                Layout.minimumHeight: 40
+                Layout.minimumHeight: 200
 
                 model: Seminar //the internal QVariantList
-                orientation: ListView.Horizontal
+                orientation: ListView.Vertical
                 spacing:10
 
                 delegate:Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
                     id: seminarData
                     text: modelData
                     font.pixelSize: 30
@@ -116,12 +118,13 @@ ListView {
             ListView {
                 Layout.fillWidth: true
                 //Layout.preferredWidth: 200
-                Layout.minimumHeight: 40
+                Layout.minimumHeight: 200
                 model: Lecture //the internal QVariantList
-                orientation: ListView.Horizontal
+                orientation: ListView.Vertical
                 spacing:10
 
                 delegate:Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
                     id: lectureData
                     text: modelData
                     font.pixelSize: 30

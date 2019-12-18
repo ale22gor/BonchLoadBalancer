@@ -29,10 +29,12 @@ QVariant CourseDetail::data(const QModelIndex &index, int role) const
         if(m_course->getLab() != nullptr){
             QVariantList list;
             for(auto admUnit:m_course->getLab()->getAdmUnit()){
-                admUnit.test();
-                list.append(admUnit.getFaculty());
-                list.append(admUnit.getNumber());
-                list.append(admUnit.getamountOfPeople());
+                //admUnit.test();
+                list.append(QString{admUnit.getFaculty()}
+                            +QString{" "}
+                            +QString::number(admUnit.getNumber())
+                            +QString{" "}
+                            +QString::number(admUnit.getamountOfPeople()));
             }
             return list;
         }
@@ -46,9 +48,11 @@ QVariant CourseDetail::data(const QModelIndex &index, int role) const
             QVariantList list;
 
             for(auto admUnit:m_course->getSeminar()->getAdmUnit()){
-                list.append(admUnit.getFaculty());
-                list.append(admUnit.getNumber());
-                list.append(admUnit.getamountOfPeople());
+                list.append(QString{admUnit.getFaculty()}
+                            +QString{" "}
+                            +QString::number(admUnit.getNumber())
+                            +QString{" "}
+                            +QString::number(admUnit.getamountOfPeople()));
             }
 
             return list;
@@ -63,9 +67,11 @@ QVariant CourseDetail::data(const QModelIndex &index, int role) const
 
             QVariantList list;
             for(auto admUnit:m_course->getLecture()->getAdmUnit()){
-                list.append(admUnit.getFaculty());
-                list.append(admUnit.getNumber());
-                list.append(admUnit.getamountOfPeople());
+                list.append(QString{admUnit.getFaculty()}
+                            +QString{" "}
+                            +QString::number(admUnit.getNumber())
+                            +QString{" "}
+                            +QString::number(admUnit.getamountOfPeople()));
             }
             return list;
         }

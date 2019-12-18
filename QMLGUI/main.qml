@@ -74,12 +74,21 @@ ApplicationWindow {
                 Button {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Layout.rightMargin: 24
                     Layout.topMargin: 24
                     Layout.bottomMargin: 24
 
                     text: "Proff"
                     onClicked: view.push(proffWindow)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.rightMargin: 24
+                    Layout.topMargin: 24
+                    Layout.bottomMargin: 24
+
+                    text: "Check"
+                    //onClicked: view.push(proffWindow)
                 }
 
             }
