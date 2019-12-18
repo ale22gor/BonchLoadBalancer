@@ -85,27 +85,34 @@ Course::Course(Seminar seminar, QString name, int id)
         m_seminar =  std::make_shared<Seminar>(seminar);
 
 }
+
+Course::Course(QString name, int id):
+    m_courseName{name},
+    m_id{id}
+{
+
+}
 Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmount, int id):
     m_id{id}
 {
 
-    //check if course == this -> break
-    //if(this == course)
-        //return;
+    if(course == nullptr)
+        return;
+        //throw exception
 
     std::list<AdministrativeUnit> admUnits;
     //add move to
-    if(labAmount > 0){
+    if(labAmount > 0 && course->m_lab != nullptr){
         admUnits = course->m_lab->delegate(labAmount);
         if(admUnits.size()>0)
             m_lab = std::make_shared<Lab>(admUnits, course->m_lab->getHours());
     }
-    if(lecturesamount > 0){
+    if(lecturesamount > 0 && course->m_lecture != nullptr){
         admUnits = course->m_lecture->delegate(lecturesamount);
         if(admUnits.size()>0)
             m_lecture =  std::make_shared<Lecture>(admUnits, course->m_lecture->getHours());
     }
-    if(seminarAmount > 0){
+    if(seminarAmount > 0 && course->m_seminar != nullptr){
         admUnits = course->m_seminar->delegate(seminarAmount);
         if(admUnits.size()>0)
             m_seminar =  std::make_shared<Seminar>(admUnits, course->m_seminar->getHours());

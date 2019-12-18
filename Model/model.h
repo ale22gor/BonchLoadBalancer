@@ -12,6 +12,8 @@
 #include "admunitsmodel.h"
 #include "coursedetail.h"
 
+#include"repositoryexception.h"
+
 
 class MODEL_EXPORT Model: public QObject
 {

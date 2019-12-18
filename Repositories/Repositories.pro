@@ -20,11 +20,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     repositories.cpp \
+    repositoryexception.cpp \
     specification.cpp
 
 HEADERS += \
     Repositories_global.h \
     repositories.h \
+    repositoryexception.h \
     specification.h
 
 # Default rules for deployment.

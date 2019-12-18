@@ -1,9 +1,8 @@
 #include "repositories.h"
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QDebug>
 #include <QString>
-
+#include <QVariant>
 
 Repositories::Repositories()
 {
@@ -11,11 +10,10 @@ Repositories::Repositories()
     Database.setDatabaseName("/home/dmitry/WorkSpace/BonchLoadBalance/myDb.db");
     if (!Database.open())
     {
-        qDebug() << Database.lastError().text();
+        throw RepositoryException("repository Exception","Database","create",Database.lastError().text().toStdString());
     }else{
         QSqlQuery query(Database);
         query.exec("PRAGMA foreign_keys = ON;");
-        qDebug() << "Database connected" ;
     }
 
     QSqlQuery query;
@@ -28,22 +26,16 @@ Repositories::Repositories()
                    "number INTEGER,"
                    "faculty VARCHAR(30))" );
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Administrative Unit created!";
-
-
+        throw RepositoryException("repository Exception","admUnit","create",query.lastError().text().toStdString());
 
     // Creating table Lesson
     query.prepare( "CREATE TABLE IF NOT EXISTS lesson ("
                    "lesson_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "hours INTEGER)");
-    if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Lesson created!";
 
-    //  table lessonid (admUInit + lesson ID) to subcourse
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","lesson","create",query.lastError().text().toStdString());
+
     //Creating table LessonToAdmUnit
     query.prepare("CREATE TABLE IF NOT EXISTS lessonToAdmUnit("
                   "lesson_id INTEGER,"
@@ -53,9 +45,7 @@ Repositories::Repositories()
                   "FOREIGN KEY(admUnit_id) REFERENCES admUnit(admUnit_id) ON DELETE CASCADE)");
 
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 LessonToAdmUnit created!";
+        throw RepositoryException("repository Exception","lessonToAdmUnit","create",query.lastError().text().toStdString());
 
     // Creating table Lab
     query.prepare( "CREATE TABLE IF NOT EXISTS lab ("
@@ -64,9 +54,7 @@ Repositories::Repositories()
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Lab created!";
+        throw RepositoryException("repository Exception","lab","create",query.lastError().text().toStdString());
 
     // Creating table Seminar
     query.prepare( "CREATE TABLE IF NOT EXISTS seminar ("
@@ -74,10 +62,9 @@ Repositories::Repositories()
                    "lesson_id INTEGER,"
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
+
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Seminar created!";
+        throw RepositoryException("repository Exception","seminar","create",query.lastError().text().toStdString());
 
     // Creating table Lecture
     query.prepare( "CREATE TABLE IF NOT EXISTS lecture ("
@@ -85,19 +72,17 @@ Repositories::Repositories()
                    "lesson_id INTEGER,"
                    "FOREIGN KEY(lesson_id) REFERENCES lesson(lesson_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
+
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Lecture created!";
+        throw RepositoryException("repository Exception","lecture","create",query.lastError().text().toStdString());
 
     // Creating table Proffessor
     query.prepare( "CREATE TABLE IF NOT EXISTS proffesor ("
                    "proffesor_id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
                    "proffesor_name VARCHAR(30))");
+
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Proffesor created!";
+        throw RepositoryException("repository Exception","proffesor","create",query.lastError().text().toStdString());
 
     // Creating table Course
     query.prepare( "CREATE TABLE IF NOT EXISTS course ("
@@ -114,16 +99,15 @@ Repositories::Repositories()
                    "ON DELETE CASCADE ON UPDATE CASCADE,"
                    "FOREIGN KEY(lecture_id) REFERENCES lecture(lecture_id)"
                    "ON DELETE CASCADE ON UPDATE CASCADE)");
+
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "Table1 Course created!";
+        throw RepositoryException("repository Exception","course","create",query.lastError().text().toStdString());
 
 }
 
 void Repositories::add(Professor &entity)
 {
-    qDebug()<<entity.getName();
+
 
     QSqlQuery query(Database);
     query.prepare("INSERT INTO proffesor (proffesor_name) "
@@ -131,20 +115,18 @@ void Repositories::add(Professor &entity)
     query.bindValue(":proffesor_name", entity.getName().toStdString().c_str());
 
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "inserted  prof!";
+        throw RepositoryException("repository Exception","proffesor","insert",query.lastError().text().toStdString());
 
     int lastIndex = query.lastInsertId().toInt();
     for(auto &course:entity.m_subCourses)
         add(course,lastIndex);
 
 
+
 }
 
 void Repositories::add(Course &entity )
 {
-    qDebug()<<entity.getName();
     if(entity.m_lab == nullptr && entity.m_seminar == nullptr && entity.m_lecture == nullptr)
         //throw exeption notify user
         return;
@@ -180,34 +162,27 @@ void Repositories::add(Course &entity )
         lectureFK = add(*(entity.m_lecture));
         lectureId = "lecture_id ";
         lectureId2 = ":"+lectureId;
-        qDebug()<<lectureId2;
     }
-
 
     QSqlQuery query(Database);
     query.prepare("INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")");
-    query.bindValue(":course_name", entity.getName().toStdString().c_str());
-    QString loh{"INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")"};
-    qDebug() << loh;
+    query.bindValue(":course_name", entity.getName());
+
     if(entity.m_lab != nullptr)
-        query.bindValue(labId2, labFK);
+        query.bindValue(":lab_id", labFK);
     if(entity.m_seminar != nullptr)
-        query.bindValue(seminarId2, seminarFK);
+        query.bindValue(":seminar_id", seminarFK);
     if(entity.m_lecture != nullptr)
-        query.bindValue(lectureId2, lectureFK);
+        query.bindValue(":lecture_id", lectureFK);
 
 
     if( !query.exec() )
-        qDebug() << query.lastError() <<" course";
-    else
-        qDebug() << "inserted  course!";
-
+        throw RepositoryException("repository Exception","course","insert",query.lastError().text().toStdString());
 
 }
 
 void Repositories::add(Course &entity, int profPk)
 {
-    qDebug()<<entity.getName();
 
     int labFK{-1};
     QString labId;
@@ -253,20 +228,18 @@ void Repositories::add(Course &entity, int profPk)
 
     QSqlQuery query(Database);
     query.prepare("INSERT INTO course (course_name,"+ profId + labId + seminarId + lectureId + ")"
-                 "VALUES (:course_name," + profId2 + labId2 + seminarId2 + lectureId2 + ")");
-    query.bindValue(":course_name", entity.getName().toStdString().c_str());
+                                                                                               "VALUES (:course_name," + profId2 + labId2 + seminarId2 + lectureId2 + ")");
+    query.bindValue(":course_name", entity.getName());
     if(entity.m_lab != nullptr)
-        query.bindValue(labId2, labFK);
+        query.bindValue(":lab_id", labFK);
     if(entity.m_seminar != nullptr)
-        query.bindValue(seminarId2, seminarFK);
+        query.bindValue(":seminar_id", seminarFK);
     if(entity.m_lecture != nullptr)
-        query.bindValue(lectureId2, lectureFK);
+        query.bindValue(":lecture_id", lectureFK);
     query.bindValue(profId2, profPk);
 
     if( !query.exec() )
-        qDebug() << query.lastError() <<" course";
-    else
-        qDebug() << "inserted  course!";
+        throw RepositoryException("repository Exception","course","insert",query.lastError().text().toStdString());
 
 
 }
@@ -285,9 +258,7 @@ int Repositories::add(Lab &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError() <<" lab";
-    else
-        qDebug() << "inserted  lab!";
+        throw RepositoryException("repository Exception","lab","insert",query.lastError().text().toStdString());
 
     int lastIndex = query.lastInsertId().toInt();
 
@@ -306,9 +277,8 @@ int Repositories::add(Lesson &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError() << " lesson";
-    else
-        qDebug() << "inserted  lesson!";
+        throw RepositoryException("repository Exception","lesson","insert",query.lastError().text().toStdString());
+
     int lastIndex = query.lastInsertId().toInt();
 
     for(auto &admUnit:entity.m_administrativeUnit){
@@ -320,9 +290,7 @@ int Repositories::add(Lesson &entity)
         query.bindValue(":free", admUnit.isFree());
 
         if( !query.exec() )
-            qDebug() << query.lastError();
-        else
-            qDebug() << "inserted  admToLesson!";
+            throw RepositoryException("repository Exception","lessonToAdmUnit","insert",query.lastError().text().toStdString());
 
     }
 
@@ -359,28 +327,18 @@ void Repositories::UpdateLessonsStatus(Course &course)
     for(auto &id:course.m_seminar->m_idToUpdate){
         admUnitIdInterval += QString::number(id);
     }
-    qDebug()<<lessonIdInterval<<admUnitIdInterval<<"!!!!!!!!!!!!!!!!!!!!!";
     QSqlQuery query(Database);
     query.prepare("UPDATE lessonToAdmUnit "
                   "SET free=0 "
                   "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ");
     //query.bindValue(":free", lesson.);
-    qDebug() << "UPDATE lessonToAdmUnit "
-                "SET free=0 "
-                "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ";
-
 
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "updated something!";
+        throw RepositoryException("repository Exception","lessonToAdmUnit","update",query.lastError().text().toStdString());
 }
 
 
-std::list<Course> Repositories::getCourse()
-{
 
-}
 
 Course Repositories::getCourseByID(int courseID)
 {
@@ -388,23 +346,18 @@ Course Repositories::getCourseByID(int courseID)
 
     query.prepare("SELECT * FROM course WHERE course_id=:course_id");
     query.bindValue(":course_id", courseID);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "course selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","course","select",query.lastError().text().toStdString());
+
     if (query.next()) {
         int id {query.value(0).toInt()};
         QString courseName {query.value(1).toString()};
         int labId {query.value(2).toInt()};
         int seminarId {query.value(3).toInt()};
         int lectureId  {query.value(4).toInt()};
-        qDebug() << labId;
-        qDebug() << lectureId;
-        qDebug() << seminarId;
 
         if(labId == 0 && lectureId == 0 && seminarId == 0){
-            exit(1);//throw exeption
+            return Course{courseName,id};
         }
 
         if(labId == 0){
@@ -433,7 +386,7 @@ Course Repositories::getCourseByID(int courseID)
             return Course{getLabByID(labId),getLectureByID(lectureId),getSeminarByID(seminarId),courseName,id};
 
     }
-    qDebug() << "course not selected";
+    throw RepositoryException("repository Exception","course","select","course not selected");
 
 }
 
@@ -443,11 +396,9 @@ Professor Repositories::getProfessorByID(int proffesorId)
 
     query.prepare("SELECT * FROM proffesor WHERE proffesor_id=:proffesor_id");
     query.bindValue(":proffesor_id", proffesorId);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "proffesor selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","proffesor","select",query.lastError().text().toStdString());
+
     if (query.next()) {
         int proffesorID = query.value(0).toInt();
         QString profName = query.value(1).toString();
@@ -456,6 +407,7 @@ Professor Repositories::getProfessorByID(int proffesorId)
 
         return Professor{getProffesorCourseList(proffesorID),100,200,profName,proffesorID};
     }
+    throw RepositoryException("repository Exception","proffesor","select","proffesor not selected");
 }
 
 Lab Repositories::getLabByID(int labPk)
@@ -465,12 +417,8 @@ Lab Repositories::getLabByID(int labPk)
 
     query.prepare("SELECT * FROM lab WHERE lab_id=:lab_id");
     query.bindValue(":lab_id", labPk);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-        //return invalid value or exception
-    }
-    else
-        qDebug() << "lab selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","lab","select",query.lastError().text().toStdString());
 
     if (query.next()) {
         //int id = query.value(0).toInt();
@@ -480,18 +428,16 @@ Lab Repositories::getLabByID(int labPk)
         lessonQuery.prepare("SELECT * FROM lesson WHERE lesson_id=:lesson_id");
         lessonQuery.bindValue(":lesson_id", lessonId);
 
-        if(!lessonQuery.exec()){
-            qDebug() << lessonQuery.lastError();
-            //return invalid value or exception
-        }else
-            qDebug() << "lesson selected";
+        if(!lessonQuery.exec())
+            throw RepositoryException("repository Exception","lesson","select",lessonQuery.lastError().text().toStdString());
+
 
         if (lessonQuery.next()){
             return  Lab{getAdmUnitsByID(lessonId),
                         lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
-
+    throw RepositoryException("repository Exception","lab","select","lab not selected");
 }
 
 Lecture Repositories::getLectureByID(int lecturePk)
@@ -500,11 +446,8 @@ Lecture Repositories::getLectureByID(int lecturePk)
 
     query.prepare("SELECT * FROM lecture WHERE lecture_id=:lecture_id");
     query.bindValue(":lecture_id", lecturePk);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-        //return invalid value or exception
-    }else
-        qDebug() << "lecture selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","lecture","select",query.lastError().text().toStdString());
 
     if (query.next()) {
         //int id {query.value(0).toInt()};
@@ -514,18 +457,15 @@ Lecture Repositories::getLectureByID(int lecturePk)
         lessonQuery.prepare("SELECT * FROM lesson WHERE lesson_id=:lesson_id");
         lessonQuery.bindValue(":lesson_id", lessonId);
 
-        if(!lessonQuery.exec()){
-            qDebug() << lessonQuery.lastError();
-            //return invalid value or exception
-        }else
-            qDebug() << "lesson selected";
+        if(!lessonQuery.exec())
+            throw RepositoryException("repository Exception","lesson","select",lessonQuery.lastError().text().toStdString());
 
         if (lessonQuery.next()){
             return  Lecture{getAdmUnitsByID(lessonId),
                         lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
-
+    throw RepositoryException("repository Exception","lecture","select","lecture not selected");
 }
 
 Seminar Repositories::getSeminarByID(int seminarPK)
@@ -534,11 +474,8 @@ Seminar Repositories::getSeminarByID(int seminarPK)
 
     query.prepare("SELECT * FROM seminar WHERE seminar_id=:seminar_id");
     query.bindValue(":seminar_id", seminarPK);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-        //return invalid value or exception
-    }else
-        qDebug() << "seminar selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","seminar","select",query.lastError().text().toStdString());
 
     if (query.next()) {
         //int id {query.value(0).toInt()};
@@ -548,18 +485,15 @@ Seminar Repositories::getSeminarByID(int seminarPK)
         lessonQuery.prepare("SELECT * FROM lesson WHERE lesson_id=:lesson_id");
         lessonQuery.bindValue(":lesson_id", lessonId);
 
-        if(!lessonQuery.exec()){
-            qDebug() << lessonQuery.lastError();
-            //return invalid value or exception
-        }else
-            qDebug() << "lesson selected";
+        if(!lessonQuery.exec())
+            throw RepositoryException("repository Exception","lesson","select",lessonQuery.lastError().text().toStdString());
 
         if (lessonQuery.next()){
             return Seminar{getAdmUnitsByID(lessonId),
                         lessonQuery.value(1).toInt(),lessonQuery.value(0).toInt()};
         }
     }
-
+    throw RepositoryException("repository Exception","seminar","select","seminar not selected");
 }
 
 
@@ -576,11 +510,8 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
                   ON l.lesson_id = al.lesson_id
                   WHERE l.lesson_id=:lesson_id)#");
     query.bindValue(":lesson_id", lessonPK);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-        //return invalid value or exception
-    }else
-        qDebug() << "admunit selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","admUnit","select",query.lastError().text().toStdString());
 
     std::list<AdministrativeUnit> tmpList;
 
@@ -614,11 +545,9 @@ std::vector<AdministrativeUnit> Repositories::getAdmUnits()
 
     query.prepare(R"#(SELECT *
                   FROM admUnit)#");
-    if(!query.exec()){
-        qDebug() << query.lastError();
-        //return invalid value or exception
-    }else
-        qDebug() << "admunit selected";
+
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","admunit","select",query.lastError().text().toStdString());
 
     std::vector<AdministrativeUnit> tmpList;
 
@@ -650,11 +579,9 @@ std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
 
     query.prepare("SELECT * FROM course WHERE proffesor_id=:proffesor_id");
     query.bindValue(":proffesor_id", proffesorID);
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "Professor courses selected";
+
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","course","select",query.lastError().text().toStdString());
 
     std::vector<Course> courseList;
     while (query.next()) {
@@ -708,11 +635,8 @@ std::vector<std::pair<int,QString> >  Repositories::getProffessorsNames()
     QSqlQuery query(Database);
 
     query.prepare("SELECT proffesor_id, proffesor_name FROM proffesor");
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "Professors names selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","proffesor","select",query.lastError().text().toStdString());
 
     std::vector<std::pair<int,QString> >  professorsNames;
     //resize vector
@@ -728,11 +652,8 @@ std::vector<std::pair<int,QString> > Repositories::getCoursesNames()
     QSqlQuery query(Database);
 
     query.prepare("SELECT course_id, course_name FROM course WHERE proffesor_id IS NULL");
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "Courses names selected";
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","course","select",query.lastError().text().toStdString());
 
     std::vector<std::pair<int,QString> > coursesNames;
     while (query.next()) {
@@ -746,14 +667,15 @@ int Repositories::getFreeLessons()
     QSqlQuery query(Database);
 
     query.prepare("SELECT COUNT(lesson_id) FROM lessonToAdmUnit WHERE free=1");
-    if(!query.exec()){
-        qDebug() << query.lastError();
-    }
-    else
-        qDebug() << "getFreeLessons selected";
+
+    if( !query.exec() )
+        throw RepositoryException("repository Exception","lessonToAdmUnit","select",query.lastError().text().toStdString());
+
     if (query.next()) {
         return  query.value(0).toInt();
     }
+
+    throw RepositoryException("repository Exception","lesson","select","lesson not selected");
 
 }
 
@@ -771,9 +693,8 @@ int Repositories::add(Lecture &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "inserted  lecture!";
+        throw RepositoryException("repository Exception","lecture","insert",query.lastError().text().toStdString());
+
     int lastIndex = query.lastInsertId().toInt();
 
     return lastIndex;
@@ -794,9 +715,7 @@ int Repositories::add(Seminar &entity)
 
 
     if( !query.exec() )
-        qDebug() << query.lastError();
-    else
-        qDebug() << "inserted  seminar!";
+        throw RepositoryException("repository Exception","seminar","insert",query.lastError().text().toStdString());
 
     int lastIndex = query.lastInsertId().toInt();
 

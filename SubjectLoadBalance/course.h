@@ -31,7 +31,7 @@ public:
     Course(Lab, QString = "defaultName", int =-1);
     Course(Lecture, QString = "defaultName", int =-1);
     Course(Seminar, QString = "defaultName", int =-1);
-
+    Course(QString = "defaultName", int =-1);
 
     Course(Course* , int ,int , int  , int = -1);
     Course();

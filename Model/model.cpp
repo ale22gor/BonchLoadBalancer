@@ -4,11 +4,19 @@
 Model::Model(QObject *parent) : QObject{parent}
 
 {
-    m_coursesNames = new CoursesNamesModel{m_repository.getCoursesNames(),this};
-    m_professorsNames = new ProffesorsNamesModel{m_repository.getProffessorsNames(),this};
+    try {
+        m_coursesNames = new CoursesNamesModel{m_repository.getCoursesNames(),this};
+        m_professorsNames = new ProffesorsNamesModel{m_repository.getProffessorsNames(),this};
+        m_admUnitModel = new AdmUnitsModel{m_repository.getAdmUnits(),this};
+    }catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+    }
     m_professorDetail = new ProfessorDetail{this};
-    m_admUnitModel = new AdmUnitsModel{m_repository.getAdmUnits(),this};
     m_courseDetail = new CourseDetail{this};
+
+
 }
 CoursesNamesModel * Model::getCoursesNamesModel(){return m_coursesNames;}
 
@@ -30,24 +38,29 @@ AdmUnitsModel *Model::getAdmUnitsModel()
 
 void Model::addProf(QString profName, int labAmount, int lectureAmount, int seminarAmount, QString courseName)
 {
-    qDebug()<<profName;
 
     //find way to return int -> remove friend from model classes names + remove find if
     auto it = std::find_if(m_coursesNames->m_coursesNames.begin(),m_coursesNames->m_coursesNames.end(),
-                 [courseName](std::pair<int,QString> tmpPair){
-        return tmpPair.second == courseName;
-    }
-    );
+                           [courseName](std::pair<int,QString> tmpPair){
+            return tmpPair.second == courseName;
+}
+            );
 
     Professor tmpProf(100,200,profName);
     tmpProf.test();
+    try {
 
-    Course tmpCourse = m_repository.getCourseByID(it->first);
-    //tmpCourse.test();
+        Course tmpCourse = m_repository.getCourseByID(it->first);
+        //tmpCourse.test();
 
-    tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
-    m_repository.UpdateLessonsStatus(tmpCourse);
-    m_repository.add(tmpProf);
+        tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
+        m_repository.UpdateLessonsStatus(tmpCourse);
+        m_repository.add(tmpProf);
+    }catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+    }
 }
 
 void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHour)
@@ -64,13 +77,21 @@ void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHou
         if(admUnitsSelected.m_seminarSelected)
             seminarAmount.push_back(admUnitsSelected.m_admUnits);
     }
+
     Lab lab{labAdmUnits,labHour};
     Lecture lecture{lectureAmount,lectureHour};
     Seminar  seminar{seminarAmount,seminarHour};
 
-    Course tmpCourse1{lab,lecture,seminar,name};
 
-    m_repository.add(tmpCourse1);
+
+    Course tmpCourse1{lab,lecture,seminar,name};
+    try {
+        m_repository.add(tmpCourse1);
+    } catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+    }
 
 }
 
@@ -81,15 +102,36 @@ void Model::resetSelectedAdmUnits()
 
 int Model::getFreeLessons()
 {
-    return m_repository.getFreeLessons();
+    try {
+        return m_repository.getFreeLessons();
+    } catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+        return 0;
+    }
 }
 
 void Model::getProf(int id)
 {
-    m_professorDetail->setProf(m_repository.getProfessorByID(id));
+    try {
+        m_professorDetail->setProf(m_repository.getProfessorByID(id));
+
+    } catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+    }
 }
 
 void Model::getCourse(int id)
 {
-    m_courseDetail->setCourse(m_repository.getCourseByID(id));
+    try {
+        m_courseDetail->setCourse(m_repository.getCourseByID(id));
+
+    } catch (RepositoryException& myException) {
+        qDebug() << myException.getTable();
+        qDebug() << myException.getOperation();
+        qDebug() << QString::fromStdString(myException.getInfo());
+    }
 }

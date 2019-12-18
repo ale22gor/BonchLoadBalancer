@@ -2,14 +2,12 @@
 #define REPOSITORIES_H
 
 #include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
 #include <list>
 #include <vector>
-#include <utility>
 
 #include "Repositories_global.h"
 
+#include"repositoryexception.h"
 
 #include "course.h"
 #include "lab.h"
@@ -52,7 +50,7 @@ public:
     int Update(Lesson&);
 
 
-    std::list<Course> getCourse();
+    //std::list<Course> getCourse();
     Course getCourseByID(int );
     Professor getProfessorByID(int );
 
