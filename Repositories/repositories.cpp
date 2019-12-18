@@ -303,10 +303,7 @@ void Repositories::UpdateLessonsStatus(Course &course)
 {
     qDebug()<<"a1";
 
-    if(course.m_lab != nullptr &&
-            course.m_lecture != nullptr &&
-            course.m_seminar != nullptr)
-        return;
+
 
 
     QString lessonIdInterval;
@@ -614,7 +611,8 @@ std::vector<Course> Repositories::getProffesorCourseList(int proffesorID)
         //N+1 PROBLEM OPTIMIZATION NEEDED
 
         if(labId == 0 && lectureId == 0 && seminarId == 0){
-            //throw exeption
+            courseList.push_back(Course{courseName,id});
+            break;
         }
 
         if(labId == 0){
