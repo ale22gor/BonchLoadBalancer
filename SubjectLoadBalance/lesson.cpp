@@ -73,6 +73,8 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
         std::copy_if(m_administrativeUnit.begin(), m_administrativeUnit.end(), std::back_inserter(admUinitToDelegate),
                      [this,&amount,amountOffound] (AdministrativeUnit& admUnit) mutable
         {
+            if (amountOffound >= amount)
+                return false;
             bool wasFree{false};
             if(admUnit.isFree()){
                 amountOffound++;
@@ -80,7 +82,7 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
                 admUnit.setFree(false);
                 this->m_idToUpdate.push_back(admUnit.getId());
             }
-            return wasFree && (amountOffound <= amount);
+            return wasFree;
         });
     }
     //qDebug()<<"m_amountOfFree"<<m_amountOfFree;

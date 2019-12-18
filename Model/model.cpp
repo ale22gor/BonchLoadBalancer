@@ -54,7 +54,7 @@ void Model::addProf(QString profName, int labAmount, int lectureAmount, int semi
 
         tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
         qDebug() <<"3";
-        //tmpCourse.test();
+        tmpProf.test();
         m_repository.UpdateLessonsStatus(tmpCourse);
         qDebug() <<"4";
 
