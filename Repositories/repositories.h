@@ -42,15 +42,13 @@ public:
     int add(AdministrativeUnit&);
 
     void Update(Professor &);
-
     void Update(Course &);
-    void UpdateLessonsStatus(Course &);
 
+    void UpdateLessonsStatus(Course &);
 
     int Update(Lecture&);
     int Update(Seminar&);
     int Update(Lab&);
-
     int Update(Lesson&);
 
 
@@ -72,8 +70,7 @@ public:
     std::vector<std::pair<int,QString> > getProffessorsNames();
     std::vector<std::pair<int,QString> > getCoursesNames();
 
-
-
+    int getFreeLessons();
 
 
 };

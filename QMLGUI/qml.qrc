@@ -16,5 +16,6 @@
         <file>ChooseAdmUnitList.qml</file>
         <file>CourseDetailWindow.qml</file>
         <file>CourseDetailList.qml</file>
+        <file>CheckWindow.qml</file>
     </qresource>
 </RCC>

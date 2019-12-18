@@ -145,8 +145,7 @@ void Repositories::add(Professor &entity)
 void Repositories::add(Course &entity )
 {
     qDebug()<<entity.getName();
-    if(entity.m_lab == nullptr && entity.m_seminar == nullptr && entity.m_lecture == nullptr
-            && entity.getName() == "")
+    if(entity.m_lab == nullptr && entity.m_seminar == nullptr && entity.m_lecture == nullptr)
         //throw exeption notify user
         return;
 
@@ -191,11 +190,11 @@ void Repositories::add(Course &entity )
     QString loh{"INSERT INTO course (course_name, " + labId + seminarId + lectureId + ")VALUES (:course_name," + labId2 + seminarId2 + lectureId2 + ")"};
     qDebug() << loh;
     if(entity.m_lab != nullptr)
-        query.bindValue(":lab_id", labFK);
+        query.bindValue(labId2, labFK);
     if(entity.m_seminar != nullptr)
-        query.bindValue(":seminar_id", seminarFK);
+        query.bindValue(seminarId2, seminarFK);
     if(entity.m_lecture != nullptr)
-        query.bindValue(":lecture_id", lectureFK);
+        query.bindValue(lectureId2, lectureFK);
 
 
     if( !query.exec() )
@@ -224,9 +223,9 @@ void Repositories::add(Course &entity, int profPk)
     QString profId2;
 
     if(entity.m_lab != nullptr || entity.m_seminar != nullptr || entity.m_lecture != nullptr)
-        profId = "proffesor_id,";
+        profId = "proffesor_id, ";
     else
-        profId = "proffesor_id";
+        profId = "proffesor_id ";
 
     profId2 =":"+profId;
 
@@ -253,16 +252,16 @@ void Repositories::add(Course &entity, int profPk)
     }
 
     QSqlQuery query(Database);
-    query.prepare("INSERT INTO course (course_name, proffesor_id, " + labId + seminarId + lectureId + ")"
-                  "VALUES (:course_name, :proffesor_id, " + labId2 + seminarId2 + lectureId2 + ")");
+    query.prepare("INSERT INTO course (course_name,"+ profId + labId + seminarId + lectureId + ")"
+                 "VALUES (:course_name," + profId2 + labId2 + seminarId2 + lectureId2 + ")");
     query.bindValue(":course_name", entity.getName().toStdString().c_str());
     if(entity.m_lab != nullptr)
-        query.bindValue(":lab_id", labFK);
+        query.bindValue(labId2, labFK);
     if(entity.m_seminar != nullptr)
-        query.bindValue(":seminar_id", seminarFK);
+        query.bindValue(seminarId2, seminarFK);
     if(entity.m_lecture != nullptr)
-        query.bindValue(":lecture_id", lectureFK);
-    query.bindValue(":proffesor_id", profPk);
+        query.bindValue(lectureId2, lectureFK);
+    query.bindValue(profId2, profPk);
 
     if( !query.exec() )
         qDebug() << query.lastError() <<" course";
@@ -333,6 +332,11 @@ int Repositories::add(Lesson &entity)
 
 void Repositories::UpdateLessonsStatus(Course &course)
 {
+    if(course.m_lab->m_idToUpdate.size() == 0 &&
+            course.m_lecture->m_idToUpdate.size() ==0 &&
+            course.m_seminar->m_idToUpdate.size() ==0)
+        return;
+
     QString lessonIdInterval;
     lessonIdInterval += QString::number(course.m_lab->getID());
     lessonIdInterval += ',';
@@ -344,11 +348,13 @@ void Repositories::UpdateLessonsStatus(Course &course)
 
     for(auto &id:course.m_lab->m_idToUpdate){
         admUnitIdInterval += QString::number(id);
-        admUnitIdInterval += ',';
+        if(course.m_lecture->m_idToUpdate.size() !=0 || course.m_seminar->m_idToUpdate.size() !=0)
+            admUnitIdInterval += ',';
     }
     for(auto &id:course.m_lecture->m_idToUpdate){
         admUnitIdInterval += QString::number(id);
-        admUnitIdInterval += ',';
+        if(course.m_seminar->m_idToUpdate.size() !=0)
+            admUnitIdInterval += ',';
     }
     for(auto &id:course.m_seminar->m_idToUpdate){
         admUnitIdInterval += QString::number(id);
@@ -359,6 +365,9 @@ void Repositories::UpdateLessonsStatus(Course &course)
                   "SET free=0 "
                   "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ");
     //query.bindValue(":free", lesson.);
+    qDebug() << "UPDATE lessonToAdmUnit "
+                "SET free=0 "
+                "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ";
 
 
     if( !query.exec() )
@@ -730,6 +739,22 @@ std::vector<std::pair<int,QString> > Repositories::getCoursesNames()
         coursesNames.push_back(std::make_pair(query.value(0).toInt(),QString{query.value(1).toString()}));
     }
     return coursesNames;
+}
+
+int Repositories::getFreeLessons()
+{
+    QSqlQuery query(Database);
+
+    query.prepare("SELECT COUNT(lesson_id) FROM lessonToAdmUnit WHERE free=1");
+    if(!query.exec()){
+        qDebug() << query.lastError();
+    }
+    else
+        qDebug() << "getFreeLessons selected";
+    if (query.next()) {
+        return  query.value(0).toInt();
+    }
+
 }
 
 int Repositories::add(Lecture &entity)

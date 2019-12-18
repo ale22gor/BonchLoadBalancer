@@ -79,6 +79,11 @@ void Model::resetSelectedAdmUnits()
     m_admUnitModel->resetData();
 }
 
+int Model::getFreeLessons()
+{
+    return m_repository.getFreeLessons();
+}
+
 void Model::getProf(int id)
 {
     m_professorDetail->setProf(m_repository.getProfessorByID(id));

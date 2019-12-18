@@ -43,7 +43,7 @@ class MODEL_EXPORT Model: public QObject
        void addCourse(QString, int, int, int);
        void resetSelectedAdmUnits();
 
-
+       int getFreeLessons();
 };
 
 #endif // MODEL_H

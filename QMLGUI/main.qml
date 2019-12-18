@@ -88,9 +88,14 @@ ApplicationWindow {
                     Layout.bottomMargin: 24
 
                     text: "Check"
-                    //onClicked: view.push(proffWindow)
-                }
+                    onClicked:{
+                        var popupComponent
+                        popupComponent = Qt.createComponent("CheckWindow.qml")
+                        var popup = popupComponent.createObject(view, {"parent" : view});
+                        popup.open()
+                    }
 
+                }
             }
         }
 
