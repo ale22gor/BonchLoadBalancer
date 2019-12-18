@@ -38,7 +38,7 @@ AdmUnitsModel *Model::getAdmUnitsModel()
 
 void Model::addProf(QString profName, int labAmount, int lectureAmount, int seminarAmount, QString courseName)
 {
-
+    qDebug()<<labAmount<<lectureAmount<<seminarAmount;
     //find way to return int -> remove friend from model classes names + remove find if
     auto it = std::find_if(m_coursesNames->m_coursesNames.begin(),m_coursesNames->m_coursesNames.end(),
                            [courseName](std::pair<int,QString> tmpPair){
@@ -47,14 +47,17 @@ void Model::addProf(QString profName, int labAmount, int lectureAmount, int semi
             );
 
     Professor tmpProf(100,200,profName);
-    tmpProf.test();
     try {
-
+        qDebug() <<"1";
         Course tmpCourse = m_repository.getCourseByID(it->first);
-        //tmpCourse.test();
+        qDebug() <<"2";
 
         tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
+        qDebug() <<"3";
+        //tmpCourse.test();
         m_repository.UpdateLessonsStatus(tmpCourse);
+        qDebug() <<"4";
+
         m_repository.add(tmpProf);
     }catch (RepositoryException& myException) {
         qDebug() << myException.getTable();

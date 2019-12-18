@@ -3,6 +3,7 @@
 #include <QSqlError>
 #include <QString>
 #include <QVariant>
+#include <QDebug>
 
 Repositories::Repositories()
 {
@@ -236,7 +237,7 @@ void Repositories::add(Course &entity, int profPk)
         query.bindValue(":seminar_id", seminarFK);
     if(entity.m_lecture != nullptr)
         query.bindValue(":lecture_id", lectureFK);
-    query.bindValue(profId2, profPk);
+    query.bindValue(":proffesor_id", profPk);
 
     if( !query.exec() )
         throw RepositoryException("repository Exception","course","insert",query.lastError().text().toStdString());
@@ -300,39 +301,58 @@ int Repositories::add(Lesson &entity)
 
 void Repositories::UpdateLessonsStatus(Course &course)
 {
-    if(course.m_lab->m_idToUpdate.size() == 0 &&
-            course.m_lecture->m_idToUpdate.size() ==0 &&
-            course.m_seminar->m_idToUpdate.size() ==0)
+    qDebug()<<"a1";
+
+    if(course.m_lab != nullptr &&
+            course.m_lecture != nullptr &&
+            course.m_seminar != nullptr)
         return;
 
+
     QString lessonIdInterval;
-    lessonIdInterval += QString::number(course.m_lab->getID());
-    lessonIdInterval += ',';
-    lessonIdInterval += QString::number(course.m_lecture->getID());
-    lessonIdInterval += ',';
-    lessonIdInterval += QString::number(course.m_seminar->getID());
+    if(course.m_lab != nullptr && course.m_lab->m_idToUpdate.size() > 0)  {
+        lessonIdInterval += QString::number(course.m_lab->getID());
+        if(course.m_lecture != nullptr && course.m_lecture->m_idToUpdate.size() > 0)
+            lessonIdInterval += ',';
+    }
+    if(course.m_lecture != nullptr && course.m_lecture->m_idToUpdate.size() > 0) {
+        lessonIdInterval += QString::number(course.m_lecture->getID());
+        if(course.m_seminar != nullptr && course.m_seminar->m_idToUpdate.size() > 0)
+            lessonIdInterval += ',';
+    }
+
+    if(course.m_seminar != nullptr && course.m_seminar->m_idToUpdate.size() > 0)
+        lessonIdInterval += QString::number(course.m_seminar->getID());
 
     QString admUnitIdInterval;
+    if(course.m_lab != nullptr)
+        for(auto &id:course.m_lab->m_idToUpdate){
+            admUnitIdInterval += QString::number(id);
+            //if(course.m_lecture->m_idToUpdate.size() !=0 || course.m_seminar->m_idToUpdate.size() !=0)
 
-    for(auto &id:course.m_lab->m_idToUpdate){
-        admUnitIdInterval += QString::number(id);
-        if(course.m_lecture->m_idToUpdate.size() !=0 || course.m_seminar->m_idToUpdate.size() !=0)
             admUnitIdInterval += ',';
-    }
-    for(auto &id:course.m_lecture->m_idToUpdate){
-        admUnitIdInterval += QString::number(id);
-        if(course.m_seminar->m_idToUpdate.size() !=0)
+        }
+    if(course.m_lecture != nullptr)
+        for(auto &id:course.m_lecture->m_idToUpdate){
+            admUnitIdInterval += QString::number(id);
+            //if(course.m_seminar->m_idToUpdate.size() !=0)
             admUnitIdInterval += ',';
-    }
-    for(auto &id:course.m_seminar->m_idToUpdate){
-        admUnitIdInterval += QString::number(id);
-    }
+        }
+    if(course.m_seminar != nullptr)
+        for(auto &id:course.m_seminar->m_idToUpdate){
+            admUnitIdInterval += QString::number(id);
+            admUnitIdInterval += ',';
+        }
+    admUnitIdInterval.chop(1);
     QSqlQuery query(Database);
     query.prepare("UPDATE lessonToAdmUnit "
                   "SET free=0 "
                   "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ");
-    //query.bindValue(":free", lesson.);
 
+    //query.bindValue(":free", lesson.);
+    qDebug()<<"UPDATE lessonToAdmUnit "
+              "SET free=0 "
+              "WHERE lesson_id IN ("+lessonIdInterval+") AND admUnit_id IN("+admUnitIdInterval+") ";
     if( !query.exec() )
         throw RepositoryException("repository Exception","lessonToAdmUnit","update",query.lastError().text().toStdString());
 }

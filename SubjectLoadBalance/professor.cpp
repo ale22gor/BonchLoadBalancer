@@ -19,9 +19,9 @@ Professor::Professor(std::vector<Course> subCourses, int maxHours, int averageHo
 
 }
 
-void Professor::addSubCourse(Course *course,int seminarAmount,int labAmount,int lecturesamount)
+void Professor::addSubCourse(Course *course,int labAmount,int lecturesamount,int seminarAmount)
 {
-    m_subCourses.push_back(Course{course, seminarAmount, labAmount, lecturesamount});
+    m_subCourses.push_back(Course{course, labAmount, lecturesamount, seminarAmount});
 }
 
 void Professor::test()

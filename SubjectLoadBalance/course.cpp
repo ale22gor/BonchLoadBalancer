@@ -4,6 +4,8 @@
 #include "lecture.h"
 #include "seminar.h"
 
+#include<QDebug>
+
 QString Course::getName() const
 {
     return m_courseName;
@@ -112,11 +114,14 @@ Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmo
         if(admUnits.size()>0)
             m_lecture =  std::make_shared<Lecture>(admUnits, course->m_lecture->getHours());
     }
+    qDebug()<<"seminarAmount:"<<seminarAmount;
     if(seminarAmount > 0 && course->m_seminar != nullptr){
         admUnits = course->m_seminar->delegate(seminarAmount);
         if(admUnits.size()>0)
             m_seminar =  std::make_shared<Seminar>(admUnits, course->m_seminar->getHours());
     }
+    qDebug()<<(m_seminar != nullptr);
+
     m_courseName = course->getName();
 
 
