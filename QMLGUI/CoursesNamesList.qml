@@ -9,32 +9,33 @@ ListView {
     objectName: "coursesNamesList"
     model: CoursesNamesListModel
     spacing: 1
-    delegate:Row{
+    delegate:Button{
         width: parent.width
-        Rectangle {
-            color: "lavender"
-            width: parent.width
-            height: courseName.height + 5
-            border.color: "black"
+        id:courseName
+        anchors.centerIn: parent
+        text: name
+        font.family: "Robotos"
+        font.pointSize: 28
+        font.weight:Font.Light
+        font.pixelSize: 30
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    myModel.getCourse(model.courseId)
-                    var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
-                    var popup = popupComponent.createObject(view, {"parent" : view});
-                    popup.open()
-                }
-            }
-
-            Label {
-                id:courseName
-                anchors.centerIn: parent
-                text: name
-                font.pixelSize: 30
-
-            }
+        onClicked: {
+            myModel.getCourse(model.courseId)
+            var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
+            var popup = popupComponent.createObject(view, {"parent" : view});
+            popup.open()
         }
+        background: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 25
+            opacity: enabled ? 1 : 0.3
+            color: courseName.down?"powderblue":"aliceblue"
+            border.color: "black"
+            border.width: 0.5
+            radius: 2
+
+        }
+
     }
 
 }

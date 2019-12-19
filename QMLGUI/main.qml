@@ -88,6 +88,7 @@ ApplicationWindow {
     StackView {
         id: view
         anchors.fill: parent
+
         initialItem: Page {
             title: qsTr("Main window")
             background: Rectangle {

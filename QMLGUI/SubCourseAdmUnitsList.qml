@@ -10,25 +10,35 @@ ListView {
     delegate: ColumnLayout {
         width: parent.width
         spacing: 2
-        Rectangle {
+        Button {
             Layout.fillWidth: true
             height: courseName.height
-            color: "steelblue"
-            border.color: "black"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    header.visible = !header.visible
-                    body.visible = !body.visible
-                }
-                Label {
-                    anchors.centerIn: parent
-                    id:courseName
-                    text: name
-                    font.pixelSize: 30
-                }
+
+            id:courseName
+            text: name
+            font.family: "Robotos"
+            font.pointSize: 28
+            font.weight:Font.Light
+            font.pixelSize: 30
+
+            onClicked: {
+                header.visible = !header.visible
+                body.visible = !body.visible
             }
+
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 25
+                opacity: enabled ? 1 : 0.3
+                color: courseName.down?"powderblue":"aliceblue"
+                border.color: "black"
+                border.width: 0.5
+                radius: 2
+
+            }
+
         }
+
         RowLayout{
             id:header
             visible: false
