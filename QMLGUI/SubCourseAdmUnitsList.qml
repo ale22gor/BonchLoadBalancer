@@ -19,7 +19,6 @@ ListView {
             font.family: "Robotos"
             font.pointSize: 28
             font.weight:Font.Light
-            font.pixelSize: 30
 
             onClicked: {
                 header.visible = !header.visible

@@ -1,9 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.5
-Popup{
-    width: parent.width
-    height: parent.height
+Page{
+    title: qsTr("Stuff")
+    background: Rectangle {
+        implicitWidth: 100
+        implicitHeight: 40
+        opacity: enabled ? 1 : 0.3
+        color: "lavender"
+    }
     RowLayout{
         anchors.fill: parent
         SubCourseAdmUnitsList{

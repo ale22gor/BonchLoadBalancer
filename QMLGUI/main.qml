@@ -23,17 +23,17 @@ ApplicationWindow {
             border.color: "black"
 
             anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                    bottom: parent.bottom
+            {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
 
-                    topMargin    :  -tBorderwidth
-                    bottomMargin :  -bBorderwidth
-                    leftMargin   :  -lBorderwidth
-                    rightMargin  :  -rBorderwidth
-                }
+                topMargin    :  -tBorderwidth
+                bottomMargin :  -bBorderwidth
+                leftMargin   :  -lBorderwidth
+                rightMargin  :  -rBorderwidth
+            }
         }
         ToolButton {
             background: Rectangle {
@@ -88,7 +88,6 @@ ApplicationWindow {
     StackView {
         id: view
         anchors.fill: parent
-
         initialItem: Page {
             title: qsTr("Main window")
             background: Rectangle {
@@ -115,7 +114,7 @@ ApplicationWindow {
                     font.pointSize: 28
                     font.weight:Font.Light
 
-                    onClicked: view.push(courseWindow)
+                    onClicked: view.push(Qt.createComponent("CourseWindow.qml").createObject())
 
 
                     contentItem:
@@ -170,7 +169,7 @@ ApplicationWindow {
                     font.pointSize: 28
                     font.weight:Font.Light
 
-                    onClicked: view.push(proffWindow)
+                    onClicked: view.push(Qt.createComponent("ProffWindow.qml").createObject())
 
                     contentItem:
                         Item{
@@ -272,32 +271,6 @@ ApplicationWindow {
                     }
 
                 }
-            }
-        }
-
-        Page{
-            id:courseWindow
-            title: qsTr("Courses")
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 40
-                opacity: enabled ? 1 : 0.3
-                color: "lavender"
-            }
-            CourseWindow{
-            }
-        }
-
-        Page{
-            id:proffWindow
-            title: qsTr("Proffesors")
-            background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 40
-                opacity: enabled ? 1 : 0.3
-                color: "lavender"
-            }
-            ProffWindow{
             }
         }
 

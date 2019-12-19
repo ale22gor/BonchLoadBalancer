@@ -8,7 +8,7 @@ ListView {
     id: coursesNamesList
     objectName: "coursesNamesList"
     model: CoursesNamesListModel
-    spacing: 1
+    spacing: 3
     delegate:Button{
         width: parent.width
         id:courseName
@@ -17,13 +17,15 @@ ListView {
         font.family: "Robotos"
         font.pointSize: 28
         font.weight:Font.Light
-        font.pixelSize: 30
 
         onClicked: {
+
             myModel.getCourse(model.courseId)
-            var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
-            var popup = popupComponent.createObject(view, {"parent" : view});
-            popup.open()
+            view.push(Qt.createComponent("CourseDetailWindow.qml").createObject())
+
+            //var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
+            //var popup = popupComponent.createObject(view, {"parent" : view});
+            //popup.open()
         }
         background: Rectangle {
             implicitWidth: 100

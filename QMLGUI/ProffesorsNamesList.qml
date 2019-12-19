@@ -6,7 +6,7 @@ ListView {
     id: proffesorsNamesList
     objectName: "proffesorsNamesList"
     model: ProffesorsNamesListModel
-    spacing: 1
+    spacing: 3
     delegate:Button{
 
         width: parent.width
@@ -15,12 +15,9 @@ ListView {
         font.family: "Robotos"
         font.pointSize: 28
         font.weight:Font.Light
-        font.pixelSize: 30
         onClicked: {
             myModel.getProf(model.profId)
-            var popupComponent = Qt.createComponent("ProffDetailWindow.qml")
-            var popup = popupComponent.createObject(view, {"parent" : view});
-            popup.open()
+            view.push(Qt.createComponent("ProffDetailWindow.qml").createObject())
         }
         background: Rectangle {
             implicitWidth: 100
