@@ -19,7 +19,7 @@ ApplicationWindow {
             implicitWidth: 100
             implicitHeight: 40
             opacity: enabled ? 1 : 0.3
-            color: "lavender"
+            color: "cornflowerblue"
             border.color: "black"
 
             anchors
@@ -39,7 +39,7 @@ ApplicationWindow {
             background: Rectangle {
 
                 opacity: enabled ? 1 : 0.3
-                color: "lavender"
+                color: "cornflowerblue"
 
             }
             text:"Back"
@@ -63,7 +63,7 @@ ApplicationWindow {
             background: Rectangle {
 
                 opacity: enabled ? 1 : 0.3
-                color: "lavender"
+                color: "cornflowerblue"
             }
             enabled: view.depth > 1
 
