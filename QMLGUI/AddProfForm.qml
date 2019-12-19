@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
 
 ColumnLayout {
@@ -62,15 +62,28 @@ ColumnLayout {
 
     }
     ComboBox {
-        id: courseCombo
+        id: control
         //editable: true
-
         Layout.fillWidth: true
         Layout.fillHeight: true
-        model: CoursesNamesListModel
-        textRole:"name"
-        onAccepted: {
 
+        textRole: "name"
+
+        model: CoursesNamesListModel
+        delegate: ItemDelegate {
+            width: control.width
+            contentItem: Text {
+                text: name //+ model.courseId
+                font: control.font
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+            }
+            highlighted: control.highlightedIndex === index
+        }
+        onFocusChanged:   {
+            var currentItem = delegateModel.items.get(currentIndex)
+            console.log("Read Model Value: " + currentItem.model.courseId);
+            myModel.setCourseLessonsAmount(currentIndex,currentItem.model.courseId,labAmount.text, lectureAmount.text, seminarAmount.text)
         }
     }
     Button {
@@ -78,7 +91,9 @@ ColumnLayout {
         Layout.fillHeight: true
         text:"add"
         onClicked:{
-            myModel.addProf(name.text, labAmount.text, lectureAmount.text, seminarAmount.text,courseCombo.currentText)
+            //myModel.setCourseLessonsAmount(control.currentIndex,control.model.courseId,labAmount.text, lectureAmount.text, seminarAmount.text)
+            myModel.addProf(name.text)
+            //console.debug(courseCombo.get(currentIndex).name + ", " + courseCombo.get(currentIndex).id)
             //onClicked: model.setupConnection(name.text,localPort.text,serverPort.text,serverIp.text)
             //accepted()
         }

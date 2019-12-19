@@ -19,7 +19,7 @@ ListView {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    myModel.getCourse(id.text)
+                    myModel.getCourse(model.courseId)
                     var popupComponent = Qt.createComponent("CourseDetailWindow.qml")
                     var popup = popupComponent.createObject(view, {"parent" : view});
                     popup.open()
@@ -27,19 +27,12 @@ ListView {
             }
 
             Label {
-
                 id:courseName
                 anchors.centerIn: parent
                 text: name
                 font.pixelSize: 30
 
             }
-            Label {
-                id: id
-                text: courseId
-                visible: false
-            }
-
         }
     }
 

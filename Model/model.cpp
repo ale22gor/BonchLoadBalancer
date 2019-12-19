@@ -8,6 +8,7 @@ Model::Model(QObject *parent) : QObject{parent}
         m_coursesNames = new CoursesNamesModel{m_repository.getCoursesNames(),this};
         m_professorsNames = new ProffesorsNamesModel{m_repository.getProffessorsNames(),this};
         m_admUnitModel = new AdmUnitsModel{m_repository.getAdmUnits(),this};
+        m_courseLessonsAMount.resize(m_coursesNames->m_coursesNames.size());
     }catch (RepositoryException& myException) {
         qDebug() << myException.getTable();
         qDebug() << myException.getOperation();
@@ -36,27 +37,20 @@ AdmUnitsModel *Model::getAdmUnitsModel()
     return  m_admUnitModel;
 }
 
-void Model::addProf(QString profName, int labAmount, int lectureAmount, int seminarAmount, QString courseName)
+void Model::addProf(QString profName)
 {
-    qDebug()<<labAmount<<lectureAmount<<seminarAmount;
-    //find way to return int -> remove friend from model classes names + remove find if
-    auto it = std::find_if(m_coursesNames->m_coursesNames.begin(),m_coursesNames->m_coursesNames.end(),
-                           [courseName](std::pair<int,QString> tmpPair){
-            return tmpPair.second == courseName;
-}
-            );
-
     Professor tmpProf(100,200,profName);
     try {
-        qDebug() <<"1";
-        Course tmpCourse = m_repository.getCourseByID(it->first);
-        qDebug() <<"2";
-
-        tmpProf.addSubCourse(&tmpCourse,labAmount,lectureAmount,seminarAmount);
-        qDebug() <<"3";
-        tmpProf.test();
-        m_repository.UpdateLessonsStatus(tmpCourse);
-        qDebug() <<"4";
+        for(auto& courseLessonsAmount:m_courseLessonsAMount){
+            if(courseLessonsAmount.m_labAmount == 0 &&
+                    courseLessonsAmount.m_lectureAmount == 0 &&
+                    courseLessonsAmount.m_seminarAmount == 0)
+                continue;
+            Course tmpCourse = m_repository.getCourseByID(courseLessonsAmount.m_id);
+            tmpProf.addSubCourse(&tmpCourse,courseLessonsAmount.m_labAmount,courseLessonsAmount.m_lectureAmount,courseLessonsAmount.m_seminarAmount);
+            tmpProf.test();
+            m_repository.UpdateLessonsStatus(tmpCourse);
+        }
 
         m_repository.add(tmpProf);
     }catch (RepositoryException& myException) {
@@ -101,6 +95,13 @@ void Model::addCourse(QString name, int labHour, int lectureHour, int seminarHou
 void Model::resetSelectedAdmUnits()
 {
     m_admUnitModel->resetData();
+}
+
+void Model::setCourseLessonsAmount(int currentIndex,int id, int labHour, int lectureHour, int seminarHour)
+{
+    qDebug() << labHour<<lectureHour<<seminarHour<<id<<currentIndex;
+
+    m_courseLessonsAMount[currentIndex] = CourseLessonsAmount{labHour,lectureHour,seminarHour,id};
 }
 
 int Model::getFreeLessons()

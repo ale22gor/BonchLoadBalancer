@@ -31,6 +31,7 @@ HEADERS += \
     admUnitToSelect.h \
     admunitsmodel.h \
     coursedetail.h \
+    courselessonsamount.h \
     coursesnamesmodel.h \
     model.h \
     professordetail.h \

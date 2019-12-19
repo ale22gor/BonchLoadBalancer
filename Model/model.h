@@ -11,6 +11,7 @@
 #include "repositories.h"
 #include "admunitsmodel.h"
 #include "coursedetail.h"
+#include "courselessonsamount.h"
 
 #include"repositoryexception.h"
 
@@ -28,6 +29,7 @@ class MODEL_EXPORT Model: public QObject
        CourseDetail *m_courseDetail;
 
        std::list<int> m_selecttedUnitsId;
+       std::vector<CourseLessonsAmount> m_courseLessonsAMount;
 
    public:
        explicit Model(QObject *parent = nullptr);
@@ -41,9 +43,11 @@ class MODEL_EXPORT Model: public QObject
        void getProf(int id);
        void getCourse(int id);
 
-       void addProf(QString, int, int, int, QString);
+       void addProf(QString);
        void addCourse(QString, int, int, int);
        void resetSelectedAdmUnits();
+
+       void setCourseLessonsAmount(int,int,int, int, int);
 
        int getFreeLessons();
 };
