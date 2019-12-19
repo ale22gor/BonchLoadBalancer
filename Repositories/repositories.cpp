@@ -301,11 +301,6 @@ int Repositories::add(Lesson &entity)
 
 void Repositories::UpdateLessonsStatus(Course &course)
 {
-    qDebug()<<"a1";
-
-
-
-
     QString lessonIdInterval;
     if(course.m_lab != nullptr && course.m_lab->m_idToUpdate.size() > 0)  {
         lessonIdInterval += QString::number(course.m_lab->getID());

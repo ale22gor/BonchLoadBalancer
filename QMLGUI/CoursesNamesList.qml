@@ -12,6 +12,7 @@ ListView {
     delegate:Row{
         width: parent.width
         Rectangle {
+            color: "lavender"
             width: parent.width
             height: courseName.height + 5
             border.color: "black"

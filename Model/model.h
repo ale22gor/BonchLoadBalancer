@@ -50,6 +50,9 @@ class MODEL_EXPORT Model: public QObject
        void setCourseLessonsAmount(int,int,int, int, int);
 
        int getFreeLessons();
+
+       int getCoursecCount();
+       int getProffSCount();
 };
 
 #endif // MODEL_H

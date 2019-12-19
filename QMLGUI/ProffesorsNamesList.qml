@@ -10,6 +10,8 @@ ListView {
     delegate:Row{
         width: parent.width
         Rectangle {
+            color: "lavender"
+
             MouseArea {
                 anchors.fill: parent
                 onClicked: {

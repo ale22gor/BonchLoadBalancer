@@ -116,6 +116,17 @@ int Model::getFreeLessons()
     }
 }
 
+int Model::getCoursecCount()
+{
+    return m_coursesNames->rowCount();
+}
+
+int Model::getProffSCount()
+{
+    return m_professorsNames->rowCount();
+
+}
+
 void Model::getProf(int id)
 {
     try {

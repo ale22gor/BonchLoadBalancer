@@ -23,10 +23,10 @@ Popup{
         }
         Button{
             id:addAdmUnitsButton
-            text: "Add"
+            text: "back"
             Layout.fillWidth: true
             onClicked: {
-
+                selectPopup.close();
             }
 
         }

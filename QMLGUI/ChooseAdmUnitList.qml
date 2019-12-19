@@ -12,36 +12,13 @@ ListView {
     spacing: 1
     delegate:Rectangle {
         //fix width
-        width: admUnitsLayoute.width
+        width: admUnitsModel.width
         height: admUnitsLayoute.height
         border.color: "black"
         RowLayout{
             id: admUnitsLayoute
             height: facultyLabel.height + 5
-            CheckBox{
-                id:admUnitsCheckBox
-                Component.onCompleted: {
-                    if(selectPopup.objectName === "lab")
-                        checked = labCheckStatus
-                    else if(selectPopup.objectName === "lecture")
-                        checked = lectureCheckStatus
-                    else if(selectPopup.objectName === "seminar")
-                        checked = seminarCheckStatus
-                    else
-                        checked = false
-                }
-                onCheckedChanged: {
-                    if(selectPopup.objectName === "lab")
-                        labCheckStatus = checked
-                    else if(selectPopup.objectName === "lecture")
-                        lectureCheckStatus = checked
-                    else if(selectPopup.objectName === "seminar")
-                        seminarCheckStatus = checked
-                }
 
-                //text: selectPopup.objectName
-
-            }
 
             Label {
                 id:facultyLabel
@@ -58,6 +35,33 @@ ListView {
                 text: amount
                 font.pixelSize: 30
             }
+
+
+        }
+        CheckBox{
+            id:admUnitsCheckBox
+            anchors.right: parent.right
+            Component.onCompleted: {
+                if(selectPopup.objectName === "lab")
+                    checked = labCheckStatus
+                else if(selectPopup.objectName === "lecture")
+                    checked = lectureCheckStatus
+                else if(selectPopup.objectName === "seminar")
+                    checked = seminarCheckStatus
+                else
+                    checked = false
+            }
+            onCheckedChanged: {
+                if(selectPopup.objectName === "lab")
+                    labCheckStatus = checked
+                else if(selectPopup.objectName === "lecture")
+                    lectureCheckStatus = checked
+                else if(selectPopup.objectName === "seminar")
+                    seminarCheckStatus = checked
+            }
+
+            //text: selectPopup.objectName
+
         }
 
 

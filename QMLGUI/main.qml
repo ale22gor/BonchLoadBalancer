@@ -10,9 +10,38 @@ ApplicationWindow {
     height: 480
     title: qsTr("BonchLoadBalancer")
 
-
     header:ToolBar {
+        background: Rectangle {
+            property int lBorderwidth : 1
+            property int rBorderwidth : 1
+            property int tBorderwidth : 1
+            property int bBorderwidth : 1
+            implicitWidth: 100
+            implicitHeight: 40
+            opacity: enabled ? 1 : 0.3
+            color: "lavender"
+            border.color: "black"
+
+            anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+
+                    topMargin    :  -tBorderwidth
+                    bottomMargin :  -bBorderwidth
+                    leftMargin   :  -lBorderwidth
+                    rightMargin  :  -rBorderwidth
+                }
+        }
         ToolButton {
+            background: Rectangle {
+
+                opacity: enabled ? 1 : 0.3
+                color: "lavender"
+
+            }
             text:"Back"
             anchors.left: parent.left
             anchors.leftMargin: 10
@@ -31,6 +60,11 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
         ToolButton {
+            background: Rectangle {
+
+                opacity: enabled ? 1 : 0.3
+                color: "lavender"
+            }
             enabled: view.depth > 1
 
             text:"Add"
@@ -56,7 +90,12 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: Page {
             title: qsTr("Main window")
-
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 40
+                opacity: enabled ? 1 : 0.3
+                color: "lavender"
+            }
             RowLayout {
                 anchors.fill: parent
 
@@ -68,8 +107,54 @@ ApplicationWindow {
                     Layout.topMargin: 24
                     Layout.bottomMargin: 24
 
-                    text: "Course"
+                    id:courseButton
+
+                    text: qsTr("Course")
+                    font.family: "Robotos"
+                    font.pointSize: 28
+                    font.weight:Font.Light
+
                     onClicked: view.push(courseWindow)
+
+
+                    contentItem:
+                        Item{
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter:  parent.horizontalCenter
+                            text: myModel.getCoursecCount()
+                            font.family: "Roboto"
+                            font.pointSize: 72
+                            font.weight:Font.Light
+                            color: "dodgerblue"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            //elide: Text.ElideRight
+                        }
+                        Text {
+                            anchors.bottom: parent.bottom
+                            text: courseButton.text
+                            font: courseButton.font
+                            color: "Gray"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            elide: Text.ElideLeft
+                        }
+                    }
+
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        opacity: enabled ? 1 : 0.3
+                        color: courseButton.down?"powderblue":"aliceblue"
+                        border.color: "black"
+                        border.width: 0.5
+                        radius: 2
+
+                    }
                 }
                 Button {
                     Layout.fillHeight: true
@@ -77,8 +162,53 @@ ApplicationWindow {
                     Layout.topMargin: 24
                     Layout.bottomMargin: 24
 
-                    text: "Proff"
+                    id:proffButton
+
+                    text: qsTr("Stuff")
+                    font.family: "Robotos"
+                    font.pointSize: 28
+                    font.weight:Font.Light
+
                     onClicked: view.push(proffWindow)
+
+                    contentItem:
+                        Item{
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter:  parent.horizontalCenter
+                            text: myModel.getProffSCount()
+                            font.family: "Roboto"
+                            font.pointSize: 72
+                            font.weight:Font.Light
+                            color: "dodgerblue"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            //elide: Text.ElideRight
+                        }
+                        Text {
+                            anchors.bottom: parent.bottom
+                            text: proffButton.text
+                            font: proffButton.font
+                            color: "Gray"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            elide: Text.ElideLeft
+                        }
+                    }
+
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        opacity: enabled ? 1 : 0.3
+                        color: proffButton.down?"powderblue":"aliceblue"
+                        border.color: "black"
+                        border.width: 0.5
+                        radius: 2
+
+                    }
                 }
                 Button {
                     Layout.fillHeight: true
@@ -87,12 +217,57 @@ ApplicationWindow {
                     Layout.topMargin: 24
                     Layout.bottomMargin: 24
 
-                    text: "Check"
+                    id:checkButton
+
+                    text: qsTr("Check")
+                    font.family: "Robotos"
+                    font.pointSize: 28
+
                     onClicked:{
                         var popupComponent
                         popupComponent = Qt.createComponent("CheckWindow.qml")
                         var popup = popupComponent.createObject(view, {"parent" : view});
                         popup.open()
+                    }
+
+
+                    contentItem:
+                        Item{
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter:  parent.horizontalCenter
+                            text: "0"
+                            font.family: "Roboto"
+                            font.pointSize: 72
+                            font.weight:Font.Light
+                            color: "dodgerblue"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            //elide: Text.ElideRight
+                        }
+                        Text {
+                            anchors.bottom: parent.bottom
+                            text: checkButton.text
+                            font: checkButton.font
+                            color: "Gray"
+                            opacity: enabled ? 1.0 : 0.3
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignBottom
+                            elide: Text.ElideLeft
+                        }
+                    }
+
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        opacity: enabled ? 1 : 0.3
+                        color: checkButton.down?"powderblue":"aliceblue"
+                        border.color: "black"
+                        border.width: 0.5
+                        radius: 2
+
                     }
 
                 }
@@ -102,6 +277,12 @@ ApplicationWindow {
         Page{
             id:courseWindow
             title: qsTr("Courses")
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 40
+                opacity: enabled ? 1 : 0.3
+                color: "lavender"
+            }
             CourseWindow{
             }
         }
@@ -109,6 +290,12 @@ ApplicationWindow {
         Page{
             id:proffWindow
             title: qsTr("Proffesors")
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 40
+                opacity: enabled ? 1 : 0.3
+                color: "lavender"
+            }
             ProffWindow{
             }
         }
