@@ -27,6 +27,10 @@ public:
     QString getName();
     int getInt();
 
+    friend bool operator== (const Professor &p, const Course &c);
+    friend bool operator== (const Professor &p1, const Professor &p2);
+
+
     friend class Repositories;
     friend class ProfessorDetail;
 

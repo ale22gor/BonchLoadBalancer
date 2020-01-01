@@ -26,7 +26,7 @@ class REPOSITORIES_EXPORT Repositories
     
 public:
 
-    Repositories();
+    Repositories(const char *);
 
     void add(Professor &);
     void add(Course &);

@@ -114,13 +114,11 @@ Course::Course(Course* course, int labAmount,int lecturesamount, int  seminarAmo
         if(admUnits.size()>0)
             m_lecture =  std::make_shared<Lecture>(admUnits, course->m_lecture->getHours());
     }
-    qDebug()<<"seminarAmount:"<<seminarAmount;
     if(seminarAmount > 0 && course->m_seminar != nullptr){
         admUnits = course->m_seminar->delegate(seminarAmount);
         if(admUnits.size()>0)
             m_seminar =  std::make_shared<Seminar>(admUnits, course->m_seminar->getHours());
     }
-    qDebug()<<(m_seminar != nullptr);
 
     m_courseName = course->getName();
 
@@ -154,4 +152,11 @@ void Course::test() const
     if(m_seminar != nullptr)
         m_seminar->test();
 
+}
+
+bool operator==(const Course &c1, const Course &c2)
+{
+    return (*c1.m_lab == *c2.m_lab &&
+            *c1.m_lecture == *c2.m_lecture &&
+            *c1.m_seminar == *c2.m_seminar);
 }

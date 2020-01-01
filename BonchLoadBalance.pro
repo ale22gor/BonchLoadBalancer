@@ -5,4 +5,4 @@ SUBDIRS += \
     QMLGUI \
     Repositories \
     SubjectLoadBalance \
-    testApp
+    test

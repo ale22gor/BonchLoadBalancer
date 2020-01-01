@@ -36,6 +36,7 @@ public:
 
     std::list<AdministrativeUnit> delegate(int amount);
 
+    friend bool operator== (const Lesson &l1, const Lesson &l2);
     friend class Repositories;
 };
 

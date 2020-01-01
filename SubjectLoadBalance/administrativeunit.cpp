@@ -57,3 +57,13 @@ QString AdministrativeUnit::getFaculty() const
         return QString("ISIT");
     }
 }
+
+bool operator==(const AdministrativeUnit &a1, const AdministrativeUnit &a2)
+{
+    return (a1.m_id == a2.m_id &&
+            a1.m_free == a2.m_free &&
+            a1.m_number == a2.m_number &&
+            a2.m_faculty == a2.m_faculty &&
+            a2.m_amountOfPeople == a2.m_amountOfPeople);
+
+}

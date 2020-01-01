@@ -61,8 +61,7 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
 {
 
     std::list<AdministrativeUnit> admUinitToDelegate;
-    //qDebug()<<"m_amountOfFree"<<m_amountOfFree;
-    qDebug()<<"amount"<<amount;
+
 
     if(m_amountOfFree >= amount && amount > 0){
         m_amountOfFree -=amount;
@@ -88,4 +87,12 @@ std::list<AdministrativeUnit> Lesson::delegate(int amount)
     //qDebug()<<"m_amountOfFree"<<m_amountOfFree;
 
     return admUinitToDelegate;
+}
+
+bool operator==(const Lesson &l1, const Lesson &l2)
+{
+    return (l1.m_hours == l2.m_hours &&
+            l1.m_administrativeUnit == l2.m_administrativeUnit &&
+            l1.m_amountOfFree == l2.m_amountOfFree);
+
 }

@@ -45,6 +45,7 @@ public:
 
     void test() const;
 
+    friend bool operator== (const Course &c1, const Course &c2);
     friend class Repositories;
 
 };

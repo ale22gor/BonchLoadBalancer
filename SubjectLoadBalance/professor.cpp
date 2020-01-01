@@ -38,3 +38,28 @@ QString Professor::getName()
 {
     return  m_name;
 }
+
+bool operator==(const Professor &p1, const Professor &p2)
+{
+    if(p1.m_name != p2.m_name ||
+            p1.m_maxHours != p2.m_maxHours ||
+            p1.m_averageHours != p2.m_averageHours)
+        return false;
+
+    if(p1.m_subCourses.size() != p2.m_subCourses.size())
+        return false;
+
+    for(int i{0};i<p1.m_subCourses.size();++i){
+        if(!(p1.m_subCourses[i] == p2.m_subCourses[i]))
+            return false;
+    }
+
+    return true;
+}
+
+bool operator==(const Professor &p, const Course &c)
+{
+    if(p.m_subCourses.size() > 0)
+        return (p.m_subCourses[0] == c);
+    return false;
+}

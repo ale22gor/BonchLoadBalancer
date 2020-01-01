@@ -1,14 +1,15 @@
 #include "model.h"
 #include<QDebug>
 #include <algorithm>
-Model::Model(QObject *parent) : QObject{parent}
+Model::Model(QObject *parent) : QObject{parent},
+    m_repository{"myDb.db"}
 
 {
     try {
         m_coursesNames = new CoursesNamesModel{m_repository.getCoursesNames(),this};
         m_professorsNames = new ProffesorsNamesModel{m_repository.getProffessorsNames(),this};
         m_admUnitModel = new AdmUnitsModel{m_repository.getAdmUnits(),this};
-        m_courseLessonsAMount.resize(m_coursesNames->m_coursesNames.size());
+        m_courseLessonsAMount.resize(m_coursesNames->rowCount());
     }catch (RepositoryException& myException) {
         qDebug() << myException.getTable();
         qDebug() << myException.getOperation();

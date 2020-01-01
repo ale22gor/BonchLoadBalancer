@@ -28,6 +28,8 @@ public:
     int getNumber() const;
     int getamountOfPeople() const;
     QString getFaculty() const;
+
+    friend bool operator== (const AdministrativeUnit &a1, const AdministrativeUnit &a2);
 };
 
 #endif // ADMINISTRATIVEUNIT_H

@@ -5,10 +5,10 @@
 #include <QVariant>
 #include <QDebug>
 
-Repositories::Repositories()
+Repositories::Repositories(const char *name)
 {
     Database = QSqlDatabase::addDatabase("QSQLITE");
-    Database.setDatabaseName("/home/dmitry/WorkSpace/BonchLoadBalance/myDb.db");
+    Database.setDatabaseName(name);
     if (!Database.open())
     {
         throw RepositoryException("repository Exception","Database","create",Database.lastError().text().toStdString());
@@ -535,16 +535,15 @@ std::list<AdministrativeUnit> Repositories::getAdmUnitsByID(int lessonPK)
         QString strFaculty {query.value(3).toString()};
         bool free {query.value(4).toBool()};
         Faculty faculty;
-        if(strFaculty.compare("ISIT"))
+        if(strFaculty == "ISIT")
             faculty = Faculty::ISIT;
-        else if(strFaculty.compare("RTS"))
+        else if(strFaculty == "RTS")
             faculty = Faculty::RTS;
-        else if(strFaculty.compare("IKSS"))
+        else if(strFaculty == "IKSS")
             faculty = Faculty::IKSS;
         else
             //default value
             faculty = Faculty::ISIT;
-
         tmpList.push_back(AdministrativeUnit{faculty,amountOfPeople,number,id,free});
     }
     return tmpList;
@@ -570,11 +569,11 @@ std::vector<AdministrativeUnit> Repositories::getAdmUnits()
         QString strFaculty {query.value(3).toString()};
 
         Faculty faculty;
-        if(strFaculty.compare("ISIT"))
+        if(strFaculty == "ISIT")
             faculty = Faculty::ISIT;
-        else if(strFaculty.compare("RTS"))
+        else if(strFaculty == "RTS")
             faculty = Faculty::RTS;
-        else if(strFaculty.compare("IKSS"))
+        else if(strFaculty == "IKSS")
             faculty = Faculty::IKSS;
         else
             //default value
